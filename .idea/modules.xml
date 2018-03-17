@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Ajandam.iml" filepath="$PROJECT_DIR$/Ajandam.iml" />
+      <module fileurl="file://C:\Users\MrRobot\Documents\GitHub\Ajandam-Mobile\Ajandam.iml" filepath="C:\Users\MrRobot\Documents\GitHub\Ajandam-Mobile\Ajandam.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Ajandam-Mobile.iml" filepath="$PROJECT_DIR$/Ajandam-Mobile.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

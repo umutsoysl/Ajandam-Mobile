@@ -10,17 +10,19 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -29,13 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umutsoysal.ajandam.Adapter.AkademisyenBildirimAdapter;
-import com.umutsoysal.ajandam.Adapter.BildirimListesiAdapter;
 import com.umutsoysal.ajandam.Adapter.DersListesiAdapter;
-import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.HttpHandler;
-import com.umutsoysal.ajandam.LoginPage;
-import com.umutsoysal.ajandam.Ogrenci.Duyurular;
-import com.umutsoysal.ajandam.Ogrenci.MainActivity;
 import com.umutsoysal.ajandam.R;
 
 import org.json.JSONArray;
@@ -55,47 +52,48 @@ public class DuyuruGonder extends Activity {
 
     ImageButton back;
     Button gonder;
-    EditText baslik,icerik;
+    EditText baslik, icerik;
     DersListesiAdapter adapter;
     private ProgressDialog progressDialog;
-    public static String id="";
-    public static String jsonStr="";
+    public static String id = "";
+    public static String jsonStr = "";
     String dersID[];
     Spinner dersListesi;
     String dersAdi[];
-    Dialog dialog;
+    Dialog dialog, dialogEdit;
     String dersAdiListe[];
     String tarihListe[];
     String baslikListe[];
     String icerikListe[];
     String duyuruSahibi[];
     String duyuruID[];
+    public static String duyuruDuzenlemeID;
     AkademisyenBildirimAdapter bildirimListesiAdapter;
-    public static int Selectindexlesson=0;
+    public static int Selectindexlesson = 0;
     RelativeLayout add;
-    public static int DuyuruSecilenID=0;
+    public static int DuyuruSecilenID = 0;
     ImageButton add2;
-    public static String BAslik,metin;
+    public static String BAslik, metin;
     ListView liste;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_duyuru_gonder);
 
 
-        back=(ImageButton)findViewById(R.id.back);
-        add=(RelativeLayout) findViewById(R.id.duyuruEkle);
-        add2=(ImageButton)findViewById(R.id.images);
-        liste=(ListView)findViewById(R.id.duyurular);
+        back = (ImageButton) findViewById(R.id.back);
+        add = (RelativeLayout) findViewById(R.id.duyuruEkle);
+        add2 = (ImageButton) findViewById(R.id.images);
+        liste = (ListView) findViewById(R.id.duyurular);
 
 
-
-       add.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               duyuruGonder();
-           }
-       });
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                duyuruGonder();
+            }
+        });
 
         add2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,24 +105,24 @@ public class DuyuruGonder extends Activity {
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                id= null;
-                jsonStr=null;
+            if (extras == null) {
+                id = null;
+                jsonStr = null;
             } else {
-                id= extras.getString("id");
-                jsonStr=extras.getString("jsonStr");
+                id = extras.getString("id");
+                jsonStr = extras.getString("jsonStr");
             }
         } else {
-            id= (String) savedInstanceState.getSerializable("id");
-            id=Main2Activity.akademisyenID;
-            jsonStr=Main2Activity.jsonStr;
+            id = (String) savedInstanceState.getSerializable("id");
+            id = Main2Activity.akademisyenID;
+            jsonStr = Main2Activity.jsonStr;
         }
 
         new DuyuruListele().execute();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(getApplicationContext(),Main2Activity.class);
+                Intent i = new Intent(getApplicationContext(), Main2Activity.class);
                 startActivity(i);
             }
         });
@@ -138,16 +136,81 @@ public class DuyuruGonder extends Activity {
         });
 
 
-
     }
 
 
-
-    private class DuyuruyuGonder extends AsyncTask<Object, Void, Object>
-    {
+    private class DuyuruDuzenle extends AsyncTask<Object, Void, Object> {
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Object doInBackground(Object... params) {
+            final MediaType mediaType
+                    = MediaType.parse("application/json");
+
+            OkHttpClient httpClient = new OkHttpClient();
+            String url = "https://spring-kou-service.herokuapp.com/api/announcement/update";
+
+
+            String a = dersID[Selectindexlesson];
+            String b = duyuruID[Integer.parseInt(duyuruDuzenlemeID)];
+            String jsonStr = "{ \"id\" : \"" + b + "\",\n" +
+                    "\"title\": \"" + BAslik + " \",\n" +
+                    "\"content\": \"" + metin + "\",\n" +
+                    "  \"lesson\" : {\n" +
+                    "    \"id\" : \"" + a + "\"\n" +
+                    "  }\n" +
+                    "}";
+
+            //post json using okhttp
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(RequestBody.create(mediaType, jsonStr))
+                    .build();
+            Response response = null;
+            try {
+                response = httpClient.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    return response.body().string();
+                }
+
+            } catch (IOException e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object result) {
+            super.onPostExecute(result);
+            dialogEdit.dismiss();
+            dialogEdit.cancel();
+
+            if (result == null) {
+                Toast.makeText(getApplicationContext(), "Malesef beklenmedik hata oluştu!!!",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                String a = result.toString();
+
+                if (a.equals("true")) {
+
+                    Toast.makeText(getApplicationContext(), BAslik + " duyurusu güncellenmiştir.",
+                            Toast.LENGTH_LONG).show();
+                    new DuyuruListele().execute();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Beklenmedik hata oluştu",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+
+    private class DuyuruyuGonder extends AsyncTask<Object, Void, Object> {
+        @Override
+        protected void onPreExecute() {
             super.onPreExecute();
        /*     dialog.dismiss();
             progressDialog = new ProgressDialog(DuyuruGonder.this);
@@ -157,8 +220,7 @@ public class DuyuruGonder extends Activity {
         }
 
         @Override
-        protected Object doInBackground(Object... params)
-        {
+        protected Object doInBackground(Object... params) {
             final MediaType mediaType
                     = MediaType.parse("application/json");
 
@@ -166,16 +228,16 @@ public class DuyuruGonder extends Activity {
             String url = "https://spring-kou-service.herokuapp.com/api/announcement";
 
 
-            int a=Selectindexlesson;
+            int a = Selectindexlesson;
             String jsonStr = "{ \n" +
-                    "\"title\": \""+BAslik+"\",\n" +
-                    "\"content\": \""+metin+"\",\n" +
+                    "\"title\": \"" + BAslik + "\",\n" +
+                    "\"content\": \"" + metin + "\",\n" +
                     "\"date\": \"2018-04-05\",\n" +
                     "\"academician\" : {\n" +
-                    "\t\t\"id\" : \""+id+"\"\n" +
+                    "\t\t\"id\" : \"" + id + "\"\n" +
                     "\t},\n" +
                     "\t\"lesson\" : {\n" +
-                    "\t\t\"id\" : \""+dersID[Selectindexlesson]+"\"\n" +
+                    "\t\t\"id\" : \"" + dersID[Selectindexlesson] + "\"\n" +
                     "\t}\n" +
                     "}\n" +
                     "\n";
@@ -185,37 +247,31 @@ public class DuyuruGonder extends Activity {
                     .post(RequestBody.create(mediaType, jsonStr))
                     .build();
             Response response = null;
-            try
-            {
+            try {
                 response = httpClient.newCall(request).execute();
-                if (response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
                     return response.body().string();
                 }
 
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(Object result)
-        {
+        protected void onPostExecute(Object result) {
             super.onPostExecute(result);
             dialog.cancel();
             dialog.dismiss();
 
-            String a=result.toString();
+            String a = result.toString();
 
-            if(a.equals("true")) {
+            if (a.equals("true")) {
 
                 Toast.makeText(getApplicationContext(), BAslik + " duyurusu gönderilmiştir.",
                         Toast.LENGTH_LONG).show();
-                        new DuyuruListele().execute();
-            }
-            else {
+                new DuyuruListele().execute();
+            } else {
                 Toast.makeText(getApplicationContext(), "Beklenmedik hata oluştu",
                         Toast.LENGTH_LONG).show();
             }
@@ -223,16 +279,14 @@ public class DuyuruGonder extends Activity {
     }
 
 
-    private class DersListele extends AsyncTask<String, Void, String>
-    {
+    private class DersListele extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected String doInBackground(String... params)
-        {
+        protected String doInBackground(String... params) {
             HttpHandler sh = new HttpHandler();
 
             if (jsonStr != null) {
@@ -242,13 +296,13 @@ public class DuyuruGonder extends Activity {
                     JSONArray object = jsonObj.getJSONArray("lessons");
 
                     // looping through All Contacts
-                    dersAdi=new String[object.length()];
-                    dersID=new String[object.length()];
+                    dersAdi = new String[object.length()];
+                    dersID = new String[object.length()];
 
                     for (int i = 0; i < object.length(); i++) {
                         JSONObject c = object.getJSONObject(i);
                         dersAdi[i] = c.getString("name");
-                        dersID[i]=c.getString("id");
+                        dersID[i] = c.getString("id");
                     }
 
 
@@ -279,10 +333,8 @@ public class DuyuruGonder extends Activity {
         }
 
 
-
         @Override
-        protected void onPostExecute(String aVoid)
-        {
+        protected void onPostExecute(String aVoid) {
             super.onPostExecute(aVoid);
             ArrayAdapter adapter2 = new ArrayAdapter(DuyuruGonder.this,
                     android.R.layout.simple_spinner_item, dersAdi);
@@ -291,6 +343,7 @@ public class DuyuruGonder extends Activity {
         }
 
     }
+
     public void duyuruGonder() {
 
         dialog = new Dialog(DuyuruGonder.this);
@@ -306,31 +359,34 @@ public class DuyuruGonder extends Activity {
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
 
-        View dis =(View) dialog.findViewById(R.id.arkaplan);
-        RelativeLayout kapat=(RelativeLayout)dialog.findViewById(R.id.kapat);
-        RelativeLayout gonder=(RelativeLayout)dialog.findViewById(R.id.gonder);
-         baslik= (EditText) dialog.findViewById(R.id.baslik);
-        icerik= (EditText) dialog.findViewById(R.id.icerik);
-        dersListesi=(Spinner)dialog.findViewById(R.id.dersler);
-        final TextView yazi=(TextView)dialog.findViewById(R.id.yazi);
-        final ProgressBar prs=(ProgressBar)dialog.findViewById(R.id.loading);
+        View dis = (View) dialog.findViewById(R.id.arkaplan);
+        RelativeLayout kapat = (RelativeLayout) dialog.findViewById(R.id.kapat);
+        RelativeLayout gonder = (RelativeLayout) dialog.findViewById(R.id.gonder);
+        baslik = (EditText) dialog.findViewById(R.id.baslik);
+        icerik = (EditText) dialog.findViewById(R.id.icerik);
+        dersListesi = (Spinner) dialog.findViewById(R.id.dersler);
+        final TextView yazi = (TextView) dialog.findViewById(R.id.yazi);
+        final ProgressBar prs = (ProgressBar) dialog.findViewById(R.id.loading);
         prs.setVisibility(View.INVISIBLE);
         yazi.setVisibility(View.VISIBLE);
         new DersListele().execute();
-        Selectindexlesson=dersListesi.getSelectedItemPosition()+1;
+        Selectindexlesson = dersListesi.getSelectedItemPosition() + 1;
+
         gonder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(baslik.getText().length()>0&&icerik.getText().length()>0) {
+                Animation animation1 = new AlphaAnimation(0.3f, 1.0f);
+                animation1.setDuration(900);
+                view.startAnimation(animation1);
+                if (baslik.getText().length() > 0 && icerik.getText().length() > 0) {
 
-                    BAslik=baslik.getText().toString();
-                    metin=icerik.getText().toString();
+                    BAslik = baslik.getText().toString();
+                    metin = icerik.getText().toString();
                     prs.setVisibility(View.VISIBLE);
                     yazi.setVisibility(View.INVISIBLE);
                     new DuyuruyuGonder().execute();
 
-                }
-                else{
+                } else {
                     prs.setVisibility(View.INVISIBLE);
                     yazi.setVisibility(View.VISIBLE);
                     Toast.makeText(getApplicationContext(), "Lütfen Boşlukları Doldurunuz..",
@@ -343,6 +399,9 @@ public class DuyuruGonder extends Activity {
         kapat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation animation1 = new AlphaAnimation(0.3f, 1.0f);
+                animation1.setDuration(900);
+                v.startAnimation(animation1);
                 dialog.dismiss();
             }
         });
@@ -352,8 +411,86 @@ public class DuyuruGonder extends Activity {
     }
 
 
-    private class DuyuruListele extends AsyncTask<String, Void, String>
-    {
+    public void duyuruEditDialog(final int pozisyon) {
+
+        dialogEdit = new Dialog(DuyuruGonder.this);
+        dialogEdit.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogEdit.setContentView(R.layout.duyuru_gonder);
+
+        dialogEdit.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        Window window = dialogEdit.getWindow();
+        WindowManager.LayoutParams param = window.getAttributes();
+        param.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
+        dialogEdit.setCanceledOnTouchOutside(true);
+
+        dialogEdit.setCanceledOnTouchOutside(true);
+        dialogEdit.setCancelable(true);
+
+        View dis = (View) dialogEdit.findViewById(R.id.arkaplan);
+        RelativeLayout kapat = (RelativeLayout) dialogEdit.findViewById(R.id.kapat);
+        RelativeLayout gonder = (RelativeLayout) dialogEdit.findViewById(R.id.gonder);
+        TextView bb = (TextView) dialogEdit.findViewById(R.id.dialogdeneemeemsd);
+        baslik = (EditText) dialogEdit.findViewById(R.id.baslik);
+        icerik = (EditText) dialogEdit.findViewById(R.id.icerik);
+        dersListesi = (Spinner) dialogEdit.findViewById(R.id.dersler);
+        final TextView yazi = (TextView) dialogEdit.findViewById(R.id.yazi);
+        final ProgressBar prs = (ProgressBar) dialogEdit.findViewById(R.id.loading);
+
+        new DersListele().execute();
+        prs.setVisibility(View.INVISIBLE);
+        yazi.setVisibility(View.VISIBLE);
+        bb.setText("Duyuru Düzenle");
+        yazi.setText("Düzenle");
+
+        baslik.setText(baslikListe[pozisyon]);
+        icerik.setText(icerikListe[pozisyon]);
+
+
+        Selectindexlesson = dersListesi.getSelectedItemPosition() + 1;
+
+        gonder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (baslik.getText().length() > 0 && icerik.getText().length() > 0) {
+
+                    Animation animation1 = new AlphaAnimation(0.3f, 1.0f);
+                    animation1.setDuration(900);
+                    view.startAnimation(animation1);
+
+                    Selectindexlesson = dersListesi.getSelectedItemPosition() + 1;
+                    duyuruDuzenlemeID = String.valueOf(pozisyon);
+                    BAslik = baslik.getText().toString();
+                    metin = icerik.getText().toString();
+                    prs.setVisibility(View.VISIBLE);
+                    yazi.setVisibility(View.INVISIBLE);
+                    new DuyuruDuzenle().execute();
+
+                } else {
+                    prs.setVisibility(View.INVISIBLE);
+                    yazi.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(), "Lütfen Boşlukları Doldurunuz..",
+                            Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
+
+        kapat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation animation1 = new AlphaAnimation(0.3f, 1.0f);
+                animation1.setDuration(900);
+                v.startAnimation(animation1);
+                dialogEdit.dismiss();
+            }
+        });
+
+        dialogEdit.show();
+
+    }
+
+
+    private class DuyuruListele extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -364,12 +501,11 @@ public class DuyuruGonder extends Activity {
         }
 
         @Override
-        protected String doInBackground(String... params)
-        {
+        protected String doInBackground(String... params) {
             HttpHandler sh = new HttpHandler();
 
-            String aza=id;
-            String jsonStr=sh.makeServiceCall("https://spring-kou-service.herokuapp.com/api/announcement/academician?academicianId="+id);
+            String aza = id;
+            String jsonStr = sh.makeServiceCall("https://spring-kou-service.herokuapp.com/api/announcement/academician?academicianId=" + id);
 
             if (jsonStr != null) {
                 try {
@@ -378,27 +514,27 @@ public class DuyuruGonder extends Activity {
                     JSONArray object = jsonObj.getJSONArray("duyurular");
 
                     // looping through All Contacts
-                    duyuruID=new String[object.length()];
-                    dersAdiListe=new String[object.length()];
-                    tarihListe=new String[object.length()];
-                    baslikListe=new String[object.length()];
-                    icerikListe=new String[object.length()];
-                    duyuruSahibi=new String[object.length()];
-                    int a=object.length();
+                    duyuruID = new String[object.length()];
+                    dersAdiListe = new String[object.length()];
+                    tarihListe = new String[object.length()];
+                    baslikListe = new String[object.length()];
+                    icerikListe = new String[object.length()];
+                    duyuruSahibi = new String[object.length()];
+                    int a = object.length();
                     for (int i = 0; i < object.length(); i++) {
                         JSONObject c = object.getJSONObject(i);
-                        duyuruID[i]=c.getString("id");
+                        duyuruID[i] = c.getString("id");
                         baslikListe[i] = c.getString("title");
-                        icerikListe[i]=c.getString("content");
-                        tarihListe[i]=c.getString("date");
+                        icerikListe[i] = c.getString("content");
+                        tarihListe[i] = c.getString("date");
 
                         JSONObject lesson = c.getJSONObject("lesson");
-                        dersAdiListe[i]=lesson.getString("name");
-                        duyuruSahibi[i]="  ";
+                        dersAdiListe[i] = lesson.getString("name");
+                        duyuruSahibi[i] = "  ";
 
                     }
 
-                    bildirimListesiAdapter=new AkademisyenBildirimAdapter(getApplicationContext(),baslikListe,icerikListe,tarihListe,dersAdiListe,duyuruSahibi);
+                    bildirimListesiAdapter = new AkademisyenBildirimAdapter(getApplicationContext(), baslikListe, icerikListe, tarihListe, dersAdiListe, duyuruSahibi);
 
 
                 } catch (final JSONException e) {
@@ -428,10 +564,8 @@ public class DuyuruGonder extends Activity {
         }
 
 
-
         @Override
-        protected void onPostExecute(String aVoid)
-        {
+        protected void onPostExecute(String aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.cancel();
             progressDialog.dismiss();
@@ -456,16 +590,39 @@ public class DuyuruGonder extends Activity {
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
 
-        View dis =(View) dialog.findViewById(R.id.arkaplan);
-        RelativeLayout kapat=(RelativeLayout)dialog.findViewById(R.id.kapat);
-        RelativeLayout sil=(RelativeLayout)dialog.findViewById(R.id.sil);
-        TextView header= (TextView) dialog.findViewById(R.id.baslik);
-        TextView metin= (TextView) dialog.findViewById(R.id.icerik);
+        View dis = (View) dialog.findViewById(R.id.arkaplan);
+        RelativeLayout kapat = (RelativeLayout) dialog.findViewById(R.id.kapat);
+        RelativeLayout sil = (RelativeLayout) dialog.findViewById(R.id.sil);
+        RelativeLayout edit = (RelativeLayout) dialog.findViewById(R.id.edit);
+        TextView header = (TextView) dialog.findViewById(R.id.baslik);
+        TextView metin = (TextView) dialog.findViewById(R.id.icerik);
+        final ImageView cizgi=(ImageView)dialog.findViewById(R.id.sadas);
+        cizgi.setVisibility(View.VISIBLE);
         sil.setVisibility(View.VISIBLE);
+        edit.setVisibility(View.VISIBLE);
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Animation animation1 = new AlphaAnimation(0.3f, 1.0f);
+                animation1.setDuration(900);
+                view.startAnimation(animation1);
+
+                dialog.dismiss();
+                dialog.cancel();
+                duyuruEditDialog(pozisyon);
+            }
+        });
 
         sil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Animation animation1 = new AlphaAnimation(0.3f, 1.0f);
+                animation1.setDuration(900);
+                view.startAnimation(animation1);
+
                 dialog.dismiss();
                 final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         DuyuruGonder.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
@@ -476,7 +633,7 @@ public class DuyuruGonder extends Activity {
                         .setPositiveButton("EVET", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                DuyuruSecilenID=pozisyon;
+                                DuyuruSecilenID = pozisyon;
                                 new DuyuruSil().execute();
 
                             }
@@ -504,39 +661,32 @@ public class DuyuruGonder extends Activity {
         kapat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation animation1 = new AlphaAnimation(0.3f, 1.0f);
+                animation1.setDuration(900);
+                v.startAnimation(animation1);
                 dialog.dismiss();
             }
         });
 
-        dis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
 
         dialog.show();
 
     }
 
 
-
-    private class DuyuruSil extends AsyncTask<Object, Void, Object>
-    {
+    private class DuyuruSil extends AsyncTask<Object, Void, Object> {
 
         private String TAG = DuyuruGonder.DuyuruSil.class.getSimpleName();
         private Context contx;
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
 
         }
 
         @Override
-        protected Object doInBackground(Object... params)
-        {
+        protected Object doInBackground(Object... params) {
             OkHttpClient httpClient = new OkHttpClient();
             String url = "https://spring-kou-service.herokuapp.com/api/announcement/delete";
 
@@ -548,36 +698,29 @@ public class DuyuruGonder extends Activity {
                     .post(formBody)
                     .build();
             Response response = null;
-            try
-            {
+            try {
                 response = httpClient.newCall(request).execute();
-                if (response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
                     Log.e(TAG, "Got response from server using OkHttp ");
                     return response.body().string();
                 }
 
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 Log.e(TAG, "error in getting response post request okhttp");
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(Object result)
-        {
+        protected void onPostExecute(Object result) {
             super.onPostExecute(result);
-            if(result.equals("true"))
-            {
+            if (result.equals("true")) {
                 dialog.dismiss();
                 dialog.cancel();
-               new  DuyuruListele().execute();
-               Toast.makeText(getApplicationContext(),"Duyuru silme başarılı",Toast.LENGTH_LONG);
-            }
-            else{
-                Toast.makeText(getApplicationContext(),"SİLİNEMEDİ!!!Beklenmedik hata",Toast.LENGTH_LONG);
+                new DuyuruListele().execute();
+                Toast.makeText(getApplicationContext(), "Duyuru silme başarılı", Toast.LENGTH_LONG);
+            } else {
+                Toast.makeText(getApplicationContext(), "SİLİNEMEDİ!!!Beklenmedik hata", Toast.LENGTH_LONG);
             }
 
         }

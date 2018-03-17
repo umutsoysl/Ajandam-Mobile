@@ -23,6 +23,14 @@
             android:id="@+id/dialogdeneemeemsd"
             android:textColor="#1d1d1d"/>
 
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="#cecece"
+            android:id="@+id/desd2"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/dialogdeneemeemsd"/>
+
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -30,7 +38,7 @@
             android:layout_marginRight="16dp"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="16dp"
-            android:layout_below="@+id/dialogdeneemeemsd"
+            android:layout_below="@+id/desd2"
             android:layout_marginBottom="12dp"
             android:textColor="#1d1d1d"
             android:background="#ffffff"
@@ -154,6 +162,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"/>
         </RelativeLayout>
+
 
 
 

@@ -206,12 +206,6 @@ public class Duyurular extends Activity {
             }
         });
 
-        dis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
 
         dialog.show();
 
