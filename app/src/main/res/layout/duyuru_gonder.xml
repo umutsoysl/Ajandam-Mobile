@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/arkaplan"
+    android:background="#88545454">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp"
+        android:background="@drawable/islemekle"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Duyuru Gönder"
+            android:textSize="16dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/dialogdeneemeemsd"
+            android:textColor="#1d1d1d"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/dialogdeneemeemsd"
+            android:layout_marginBottom="12dp"
+            android:textColor="#1d1d1d"
+            android:background="#ffffff"
+            android:id="@+id/baslik"
+            android:hint="Duyuru Başlığı"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="#e7e7e7"
+            android:id="@+id/imageline"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/baslik"/>
+
+
+
+
+        <EditText
+            android:id="@+id/icerik"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="6dp"
+            android:hint="Birşeyler yaz..."
+            android:textColor="#1d1d1d"
+            android:background="#ffffff"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@+id/imageline"
+            android:textSize="14dp" />
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="#e7e7e7"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:id="@+id/tempss"
+            android:layout_marginTop="11dp"
+            android:layout_below="@+id/icerik"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tempss"
+            android:text="Ders Seç : "
+            android:textSize="12dp"
+            android:id="@+id/aq"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/aq"
+            android:textSize="18dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="#131313"
+            android:id="@+id/dersler"></Spinner>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="#cecece"
+            android:id="@+id/desd"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/dersler"/>
+
+        <RelativeLayout
+            android:layout_width="90dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/desd"
+            android:layout_marginTop="5dp"
+            android:id="@+id/gonder"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GÖNDER"
+                android:textColor="#17a919"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:id="@+id/yazi"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
+
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:minWidth="40dp"
+                android:visibility="invisible"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="90dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/desd"
+            android:layout_marginTop="5dp"
+            android:id="@+id/kapat"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="İPTAL"
+                android:textColor="#666666"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_clear_all_black_24dp"
+            android:title="Ders Programı" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_clear_all_black_24dp"
+            android:title="Yoklama Başlat" />
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/ic_timer_black_24dp"
+            android:title="Alarm Oluştur" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="Duyuru Gönder" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_move_to_inbox_black_24dp"
+                android:title="Yeni Ders Programı Ekle" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="Ayarlar" />
+
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help_outline_black_24dp"
+                android:title="Yardım" />
+            <item
+                android:id="@+id/nav_out"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
+                android:title="Oturumu Kapat" />
+        </menu>
+    </item>
+</menu>

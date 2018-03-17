@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.umutsoysal.ajandam.Personel.YoklamaBaslat">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <FrameLayout
+            android:id="@+id/frameLayout303"
+            android:layout_width="fill_parent"
+            android:layout_height="58dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimary"
+            >
+
+            <ImageButton
+                android:id="@+id/back2"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="left|top"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Öğrenci Yoklama Sistemi"
+                android:layout_gravity="left|top"
+                android:layout_marginTop="18dp"
+                android:layout_marginLeft="60dp"
+                android:textSize="16dp"
+                android:textColor="#ffffff" />
+
+
+
+        </FrameLayout>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="8dp"
+            android:layout_below="@+id/frameLayout303"
+            android:background="@drawable/toolbarshadow"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:layout_marginTop="70dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/metin"
+            android:text="Yoklamayı başlattıktan sonra süre girmediğinizde 10 dk sonra yoklama otomatik olarak tamamlanır."/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="39dp"
+            android:padding="9dp"
+            android:id="@+id/sure"
+            android:fontFamily="serif"
+            android:backgroundTint="#60000000"
+            android:textColor="#ffffff"
+            android:inputType="number"
+            android:drawableLeft="@drawable/timer"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/metin"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:textColorHint="#ffffff"
+            android:background="@drawable/edittext_round"
+            android:hint="  Süre Giriniz.." />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="43dp"
+            android:padding="10dp"
+            android:id="@+id/submit"
+            android:textColor="#ffffff"
+            android:text="Yoklamayı Başlat"
+            android:fontFamily="serif"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/sure"
+            android:layout_marginRight="65dp"
+            android:layout_marginLeft="65dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:background="@drawable/button_round"
+            />
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="10dp"
+            android:id="@+id/ogrenciListesi"
+            android:layout_below="@+id/submit"
+            ></ListView>
+
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

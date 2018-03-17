@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relative"
+        android:layout_marginTop="0.1dp"
+        android:background="#ffffff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="#414141"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/now_lesson"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="16dp"
+            android:text="DAĞITIK SİSTEMLERE GİRİŞ"/>
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13dp"
+        android:id="@+id/bugun_dersiVeren"
+        android:textColor="#979797"
+        android:layout_below="@+id/now_lesson"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Devam : "/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:id="@+id/devam"
+            android:textColor="@color/colorAccent"
+            android:layout_below="@+id/now_lesson"
+            android:layout_marginLeft="65dp"
+            android:layout_marginBottom="5dp"
+            android:text="-"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:id="@+id/sda"
+            android:textColor="#979797"
+            android:layout_below="@+id/now_lesson"
+            android:layout_marginLeft="100dp"
+            android:layout_marginBottom="8dp"
+            android:text="Devamsizlik : "/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:fontFamily="serif"
+            android:id="@+id/devamsizlik"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/colorAccent"
+            android:layout_marginLeft="178dp"
+            android:layout_below="@+id/now_lesson"
+            android:layout_marginBottom="10dp"
+            android:text="-"/>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/devamsizlik"
+            android:background="#f2f2f2"/>
+    </RelativeLayout>
+</LinearLayout>

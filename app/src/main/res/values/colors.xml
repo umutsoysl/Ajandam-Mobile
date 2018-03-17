@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00a1d9</color>
+    <color name="colorPrimaryDark">#007aa4</color>
+    <color name="colorAccent">#f2ae2d</color>
+    <color name="gri">#a3a3a3</color>
+    <color name="alti">#00a1d9</color>
+
+    <color name="black_overlay">#66000000</color>
+
+    <color name="bir">#d49f43</color>
+    <color name="iki">#40b0c5</color>
+    <color name="uc">#9a59b5</color>
+    <color name="dort">#e4405f</color>
+    <color name="bes">#3fc87a</color>
+    <color name="altire">#f29c11</color>
+    <color name="yedi">#de5681</color>
+    <color name="sekiz">#f68751</color>
+    <color name="dokuz">#7bc862</color>
+    <color name="on">#f65b63</color>
+    <color name="onbir">#45a2e7</color>
+    <color name="oniki">#e3702d</color>
+    <color name="onuc">#fb9386</color>
+    <color name="ondort">#a47ad9</color>
+
+
+    <color name="Grafikbir">#2e73fc</color>
+    <color name="Grafikiki">#ce2f5d</color>
+    <color name="Grafikuc">#1cb952</color>
+    <color name="Grafikdort">#f2a12a</color>
+    <color name="Grafikbes">#b7701b</color>
+    <color name="Grafikalti">#e02189</color>
+    <color name="Grafikyedi">#8a39e1</color>
+    <color name="Grafiksekiz">#658bf4</color>
+    <color name="Grafikdokuz">#ff6600</color>
+    <color name="Grafikon">#19af0b</color>
+    <color name="Grafikonbir">#f85e5e</color>
+    <color name="Grafikoniki">#f56c9c</color>
+    <color name="Grafikonuc">#5c718a</color>
+
+
+</resources>

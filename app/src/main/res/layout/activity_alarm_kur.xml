@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context="com.umutsoysal.ajandam.Ogrenci.AlarmKur">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    <FrameLayout
+        android:id="@+id/frameLayout303"
+        android:layout_width="fill_parent"
+        android:layout_height="58dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        >
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="left|top"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Alarm Oluştur"
+            android:layout_gravity="left|top"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="60dp"
+            android:textSize="16dp"
+            android:textColor="#ffffff" />
+
+    </FrameLayout>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="8dp"
+            android:layout_below="@+id/frameLayout303"
+            android:background="@drawable/toolbarshadow"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="67dp"
+            android:textColor="#000"
+            android:id="@+id/metin"
+            android:text="Ders takip aktif duruma getirildiğinde ders programından alınan bilgiler doğrultusunda kullanıcıya ders saatinden önce bildirim atarak kullanıcının dersi kaçırmasını önler."
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/metin"
+                android:text="Ders Takip Başlat"
+                android:textColor="#000"
+                android:id="@+id/deed2"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:textSize="18dp"
+                />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/deed2"
+            android:text="Bu dersler için bana bildirim atma :"
+            android:textColor="#000"
+            android:id="@+id/deed"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:textSize="14dp"
+            />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/metin"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="17dp"
+                android:layout_marginRight="30dp"
+                />
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/deed"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="70dp"
+            android:id="@+id/dersler"
+            android:layout_marginTop="10dp"
+            ></ListView>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="42dp"
+            android:id="@+id/kaydet"
+            android:textColor="#ffffff"
+            android:text="Kaydet"
+            android:fontFamily="serif"
+            android:textSize="17dp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="65dp"
+            android:layout_marginLeft="65dp"
+            android:background="@drawable/button_round"
+            />
+
+</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

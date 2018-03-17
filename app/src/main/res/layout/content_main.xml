@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.umutsoysal.ajandam.Ogrenci.MainActivity"
+    tools:showIn="@layout/app_bar_main">
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relative"
+        android:background="@color/colorPrimary">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:id="@+id/saat"
+            android:layout_marginLeft="13dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="30dp"
+            android:text="17\n00"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="19dp"
+            android:textColor="#ffffff"
+            android:id="@+id/now_lesson"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="30dp"
+            android:text="DAĞITIK SİSTEMLERE GİRİŞ"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:id="@+id/bugun_dersiVeren"
+            android:layout_centerHorizontal="true"
+            android:textColor="#ffffff"
+            android:layout_below="@+id/now_lesson"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="Doç.Dr.AHMET SAYAR"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:id="@+id/location"
+            android:layout_below="@+id/bugun_dersiVeren"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="20dp"
+            android:text="Amfi-A"/>
+
+    </RelativeLayout>
+
+   <ImageView
+       android:layout_width="fill_parent"
+       android:layout_height="30dp"
+       android:layout_below="@+id/relative"
+       android:id="@+id/alt"
+       android:layout_marginTop="-1dp"
+       android:background="@drawable/bottomlayoutmavi"/>
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/derslistesi"
+        android:divider="@null"
+        android:layout_below="@+id/alt"
+        ></ListView>
+
+</RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,104 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/arkaplan"
+    android:padding="4dp"
+    android:layout_marginBottom="5dp">
+
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/round_layout"
+        >
+
+        <TextView
+            android:id="@+id/duyuru_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text="Duyuru"
+            android:textSize="14dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="22dp"
+            android:textColor="#308dbc" />
+
+        <TextView
+            android:id="@+id/dersAdi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="194 defa görüntülendi"
+            android:textSize="9dp"
+            android:layout_marginBottom="5dp"
+            android:visibility="visible"
+            android:layout_below="@+id/duyuru_title"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="22dp"
+            android:textColor="#737373" />
+        <TextView
+            android:id="@+id/detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="194 defa görüntülendi"
+            android:textSize="12dp"
+            android:visibility="visible"
+            android:layout_below="@+id/dersAdi"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="22dp"
+            android:textColor="#6f6f6f" />
+
+        <TextView
+            android:id="@+id/gonderen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="194 defa görüntülendi"
+            android:textSize="12dp"
+            android:visibility="visible"
+            android:layout_below="@+id/detail"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="22dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#e19d1c" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/date_frame"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_gravity="left|top"
+        android:layout_margin="4dp"
+        android:layout_centerVertical="true"
+        android:backgroundTint="@color/colorAccent"
+        android:background="@drawable/circle_layout">
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerHorizontal="true"
+           android:text="16"
+           android:textSize="19dp"
+           android:id="@+id/date"
+           android:layout_marginTop="4dp"
+           android:textStyle="bold"
+           android:textColor="#ffffff"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Agu,2018"
+            android:textSize="10dp"
+            android:layout_marginTop="-2dp"
+            android:id="@+id/date_string"
+            android:layout_below="@id/date"
+            android:textColor="#ffffff"/>
+
+    </RelativeLayout>
+</RelativeLayout>
