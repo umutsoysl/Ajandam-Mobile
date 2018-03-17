@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.umutsoysal.ajandam.Adapter.DersListesiAdapter;
 import com.umutsoysal.ajandam.R;
+import es.dmoral.toasty.Toasty;
 
 public class AlarmKur extends Activity {
 
@@ -46,7 +47,7 @@ public class AlarmKur extends Activity {
             public void onClick(View view) {
 
 
-                Toast.makeText(getApplicationContext(), "Bilgiler Kaydedildi.",
+                Toasty.success(getApplicationContext(), "Bilgiler Kaydedildi.",
                         Toast.LENGTH_LONG).show();
 
                 Intent i=new Intent(getApplicationContext(),MainActivity.class);

@@ -35,6 +35,7 @@ import com.umutsoysal.ajandam.Adapter.DersListesiAdapter;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.R;
 
+import es.dmoral.toasty.Toasty;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -157,12 +158,8 @@ public class DuyuruGonder extends Activity {
 
             String a = dersID[Selectindexlesson];
             String b = duyuruID[Integer.parseInt(duyuruDuzenlemeID)];
-            String jsonStr = "{ \"id\" : \"" + b + "\",\n" +
-                    "\"title\": \"" + BAslik + " \",\n" +
-                    "\"content\": \"" + metin + "\",\n" +
-                    "  \"lesson\" : {\n" +
-                    "    \"id\" : \"" + a + "\"\n" +
-                    "  }\n" +
+            String jsonStr = "{ \"id\" : \"" + b + "\",\"title\" : \"" + BAslik + "\",\"content\": \"" + metin + "\",\"lesson\" : " +
+                    "{ \"id\" : \"" + a + "\"}" +
                     "}";
 
             //post json using okhttp
@@ -189,18 +186,20 @@ public class DuyuruGonder extends Activity {
             dialogEdit.cancel();
 
             if (result == null) {
-                Toast.makeText(getApplicationContext(), "Malesef beklenmedik hata oluştu!!!",
-                        Toast.LENGTH_LONG).show();
+
+                Toasty.error(getApplicationContext(), "Malesef beklenmedik hata oluştu!!!", Toast.LENGTH_SHORT, true).show();
+
             } else {
                 String a = result.toString();
 
                 if (a.equals("true")) {
 
-                    Toast.makeText(getApplicationContext(), BAslik + " duyurusu güncellenmiştir.",
-                            Toast.LENGTH_LONG).show();
+                    Toasty.success(getApplicationContext(),BAslik + " duyurusu güncellenmiştir.",Toast.LENGTH_LONG,true).show();
+
                     new DuyuruListele().execute();
+
                 } else {
-                    Toast.makeText(getApplicationContext(), "Beklenmedik hata oluştu",
+                    Toasty.error(getApplicationContext(), "Beklenmedik hata oluştu",
                             Toast.LENGTH_LONG).show();
                 }
             }
@@ -268,11 +267,11 @@ public class DuyuruGonder extends Activity {
 
             if (a.equals("true")) {
 
-                Toast.makeText(getApplicationContext(), BAslik + " duyurusu gönderilmiştir.",
-                        Toast.LENGTH_LONG).show();
+                Toasty.success(getApplicationContext(), BAslik + " duyurusu gönderilmiştir.",
+                        Toast.LENGTH_LONG,true).show();
                 new DuyuruListele().execute();
             } else {
-                Toast.makeText(getApplicationContext(), "Beklenmedik hata oluştu",
+                Toasty.error(getApplicationContext(), "Beklenmedik hata oluştu",
                         Toast.LENGTH_LONG).show();
             }
         }
@@ -310,7 +309,7 @@ public class DuyuruGonder extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(),
+                            Toasty.error(getApplicationContext(),
                                     "Json parsing error: " + e.getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
@@ -322,7 +321,7 @@ public class DuyuruGonder extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),
+                        Toasty.error(getApplicationContext(),
                                 "Bilgiler alınırken beklenmedik hata oldu.Tekrar deneyiniz!",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -389,7 +388,7 @@ public class DuyuruGonder extends Activity {
                 } else {
                     prs.setVisibility(View.INVISIBLE);
                     yazi.setVisibility(View.VISIBLE);
-                    Toast.makeText(getApplicationContext(), "Lütfen Boşlukları Doldurunuz..",
+                    Toasty.warning(getApplicationContext(), "Lütfen Boşlukları Doldurunuz..",
                             Toast.LENGTH_LONG).show();
 
                 }
@@ -468,8 +467,8 @@ public class DuyuruGonder extends Activity {
                 } else {
                     prs.setVisibility(View.INVISIBLE);
                     yazi.setVisibility(View.VISIBLE);
-                    Toast.makeText(getApplicationContext(), "Lütfen Boşlukları Doldurunuz..",
-                            Toast.LENGTH_LONG).show();
+                    Toasty.warning(getApplicationContext(), "Lütfen Boşlukları Doldurunuz..",
+                            Toast.LENGTH_LONG,true).show();
 
                 }
             }
@@ -541,7 +540,7 @@ public class DuyuruGonder extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(),
+                            Toasty.error(getApplicationContext(),
                                     "Json parsing error: " + e.getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
@@ -553,7 +552,7 @@ public class DuyuruGonder extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),
+                        Toasty.error(getApplicationContext(),
                                 "Bilgiler alınırken beklenmedik hata oldu.Tekrar deneyiniz!",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -718,9 +717,9 @@ public class DuyuruGonder extends Activity {
                 dialog.dismiss();
                 dialog.cancel();
                 new DuyuruListele().execute();
-                Toast.makeText(getApplicationContext(), "Duyuru silme başarılı", Toast.LENGTH_LONG);
+                Toasty.success(getApplicationContext(), "Duyuru silme başarılı", Toast.LENGTH_LONG,true).show();
             } else {
-                Toast.makeText(getApplicationContext(), "SİLİNEMEDİ!!!Beklenmedik hata", Toast.LENGTH_LONG);
+                Toasty.error(getApplicationContext(), "SİLİNEMEDİ!!!Beklenmedik hata", Toast.LENGTH_LONG).show();
             }
 
         }

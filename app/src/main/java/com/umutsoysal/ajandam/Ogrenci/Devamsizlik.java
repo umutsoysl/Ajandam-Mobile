@@ -14,6 +14,7 @@ import com.umutsoysal.ajandam.Adapter.DevamsizlikAdapter;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.R;
 
+import es.dmoral.toasty.Toasty;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,7 +108,7 @@ public class Devamsizlik extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(),
+                            Toasty.error(getApplicationContext(),
                                     "Json parsing error: " + e.getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
@@ -119,7 +120,7 @@ public class Devamsizlik extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),
+                        Toasty.error(getApplicationContext(),
                                 "Bilgiler alınırken beklenmedik hata oldu.Tekrar deneyiniz!",
                                 Toast.LENGTH_LONG).show();
                     }
