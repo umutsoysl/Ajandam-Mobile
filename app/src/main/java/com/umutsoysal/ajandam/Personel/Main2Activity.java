@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ public class Main2Activity extends AppCompatActivity
     String[] name;
     String[] location;
     String[] bolum;
+    String[] dersID;
     public static int index=0;
     private Calendar calendar;
     public static String username="";
@@ -66,7 +68,7 @@ public class Main2Activity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Bugün");
-        derslistesi=(ListView)findViewById(R.id.derslistesi);
+
         derslistesi=(ListView)findViewById(R.id.derslistesi);
         saati=(TextView)findViewById(R.id.saat);
         yeri=(TextView)findViewById(R.id.location);
@@ -90,6 +92,18 @@ public class Main2Activity extends AppCompatActivity
         jsonStr= Bilgiler.get(0).get("json").toString();
         Task tsk = new Task();
         tsk.execute();
+
+
+        derslistesi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Intent i = new Intent(getApplicationContext(), DersiAlanOgrenciler.class);
+                i.putExtra("id",dersID[position]);
+                i.putExtra("ders",name[position]);
+                startActivity(i);
+            }
+        });
+
 
 
 
@@ -224,6 +238,7 @@ public class Main2Activity extends AppCompatActivity
                     day=new String[object.length()];
                     location=new String[object.length()];
                     bolum=new String[object.length()];
+                    dersID=new String[object.length()];
                     calendar = Calendar.getInstance();
                     int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -243,11 +258,13 @@ public class Main2Activity extends AppCompatActivity
                         name[i] = c.getString("name");
                         day[i] = c.getString("day");
 
-                        if(day[i].equals(dayOfTheWeek))
+
+                        if(dayOfTheWeek!=null&&day[i].equals(dayOfTheWeek))
                         {
                             index=i;
                         }
                         clock[i] = c.getString("clock");
+                        dersID[i] = c.getString("id");
                         location[i] = c.getString("location");
 
                         JSONObject department = c.getJSONObject("academician");
@@ -295,11 +312,19 @@ public class Main2Activity extends AppCompatActivity
             derslistesi.setAdapter(adapter);
             if(day.length>0)
             {
-                String dd[]=clock[index].split(":");
-                saati.setText(dd[0]+"\n"+dd[1]);
-           //     hocaninismi.setText(name[index]);
-                dersiveren.setText(name[index]);
-                yeri.setText(location[index]);
+                if(dayOfTheWeek!=null) {
+                    String dd[] = clock[index].split(":");
+                    saati.setText(dd[0] + "\n" + dd[1]);
+                    hocaninismi.setText(name[index]);
+                    dersiveren.setText(name[index]);
+                    yeri.setText(location[index]);
+                }
+                else{
+                    saati.setText(" ");
+                    hocaninismi.setText(name[index]);
+                    dersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
+                    yeri.setText("");
+                }
             }
 
             Textviewusername.setText(username);

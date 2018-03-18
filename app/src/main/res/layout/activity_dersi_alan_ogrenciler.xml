@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.umutsoysal.ajandam.Personel.DersiAlanOgrenciler">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Ders Adi"
+            android:layout_marginTop="70dp"
+            android:textColor="#251c00"
+            android:textStyle="bold"
+            android:id="@+id/dersAdi"
+            android:textSize="15dp"/>
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="90dp"
+            android:id="@+id/derslistesi"
+            android:divider="@null"
+            android:layout_below="@+id/ogrenci"
+            ></ListView>
+
+
+        <FrameLayout
+            android:id="@+id/frameLayout303"
+            android:layout_width="fill_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimary"
+            >
+
+            <ImageButton
+                android:id="@+id/back"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="left|top"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Öğrenciler"
+                android:layout_gravity="left|top"
+                android:layout_marginTop="18dp"
+                android:layout_marginLeft="60dp"
+                android:textSize="16dp"
+                android:textColor="#ffffff" />
+
+
+
+        </FrameLayout>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="8dp"
+            android:layout_below="@+id/frameLayout303"
+            android:background="@drawable/toolbarshadow"/>
+
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

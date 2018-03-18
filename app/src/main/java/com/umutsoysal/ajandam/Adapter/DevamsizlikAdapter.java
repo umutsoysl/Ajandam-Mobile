@@ -2,6 +2,7 @@ package com.umutsoysal.ajandam.Adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +70,7 @@ public class DevamsizlikAdapter  extends BaseAdapter {
         devamsizligi=(TextView)itemView.findViewById(R.id.devamsizlik);
 
 
-        dersADi.setText(lesson[position]);
+        dersADi.setText(Html.fromHtml(lesson[position]));
         devamSAyisi.setText(devam[position]);
         devamsizligi.setText(devamsizlik[position]);
 

@@ -307,12 +307,19 @@ public class MainActivity extends AppCompatActivity
             derslistesi.setAdapter(adapter);
             if(day.length>0)
             {
+                if(dayOfTheWeek!=null) {
                 String dd[]=clock[index].split(":");
                 saati.setText(dd[0]+"\n"+dd[1]);
                 dersinismi.setText(name[index]);
                 dersiveren.setText(dersiVeren[index]);
                 yeri.setText(location[index]);
-
+                }
+                else{
+                    saati.setText(" ");
+                    dersinismi.setText("Sn."+username);
+                    dersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
+                    yeri.setText("");
+                }
 
             }
 

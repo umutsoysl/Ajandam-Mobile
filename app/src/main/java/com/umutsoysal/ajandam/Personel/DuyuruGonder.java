@@ -161,6 +161,7 @@ public class DuyuruGonder extends Activity {
             String jsonStr = "{ \"id\" : \"" + b + "\",\"title\" : \"" + BAslik + "\",\"content\": \"" + metin + "\",\"lesson\" : " +
                     "{ \"id\" : \"" + a + "\"}" +
                     "}";
+            jsonStr = jsonStr.replace("\n","\\n");
 
             //post json using okhttp
             Request request = new Request.Builder()
@@ -228,18 +229,14 @@ public class DuyuruGonder extends Activity {
 
 
             int a = Selectindexlesson;
-            String jsonStr = "{ \n" +
-                    "\"title\": \"" + BAslik + "\",\n" +
-                    "\"content\": \"" + metin + "\",\n" +
-                    "\"date\": \"2018-04-05\",\n" +
-                    "\"academician\" : {\n" +
-                    "\t\t\"id\" : \"" + id + "\"\n" +
-                    "\t},\n" +
-                    "\t\"lesson\" : {\n" +
-                    "\t\t\"id\" : \"" + dersID[Selectindexlesson] + "\"\n" +
-                    "\t}\n" +
-                    "}\n" +
-                    "\n";
+
+            String jsonStr = "{ \"title\" : \"" + BAslik + "\",\"content\": \"" + metin + "\",\"lesson\" : " +
+                    "{ \"id\" : \"" + dersID[Selectindexlesson] + "\"}," + "\"academician\" : " +
+                    "{ \"id\" : \"" + id + "\"}" +
+                    "}";
+
+            jsonStr = jsonStr.replace("\n","\\n");
+
             //post json using okhttp
             Request request = new Request.Builder()
                     .url(url)
@@ -445,7 +442,7 @@ public class DuyuruGonder extends Activity {
         icerik.setText(icerikListe[pozisyon]);
 
 
-        Selectindexlesson = dersListesi.getSelectedItemPosition() + 1;
+        Selectindexlesson = dersListesi.getSelectedItemPosition();
 
         gonder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -456,7 +453,7 @@ public class DuyuruGonder extends Activity {
                     animation1.setDuration(900);
                     view.startAnimation(animation1);
 
-                    Selectindexlesson = dersListesi.getSelectedItemPosition() + 1;
+                    Selectindexlesson = dersListesi.getSelectedItemPosition();
                     duyuruDuzenlemeID = String.valueOf(pozisyon);
                     BAslik = baslik.getText().toString();
                     metin = icerik.getText().toString();

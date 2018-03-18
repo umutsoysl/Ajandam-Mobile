@@ -78,13 +78,54 @@
             android:layout_marginTop="-1dp"
             android:background="@drawable/bottomlayoutmavi"/>
 
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alt"
+            android:id="@+id/linetop">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saat"
+                android:textColor="#251c00"
+                android:textStyle="bold"
+                android:layout_marginLeft="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ders Adı"
+                android:textColor="#251c00"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sınıf"
+                android:textColor="#251c00"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"/>
+
+
+
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/linetop"
+            android:background="#f1f1f1"
+            android:layout_marginTop="2dp"
+            android:id="@+id/temp"/>
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/derslistesi"
             android:divider="@null"
-            android:layout_below="@+id/alt"
+            android:layout_below="@+id/temp"
             ></ListView>
 
     </RelativeLayout>
