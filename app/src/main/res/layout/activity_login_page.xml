@@ -39,7 +39,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="serif"
             android:textColor="#ffffff"
-            android:text="Bitirme Prjesi Prototipi"/>
+            android:text="Bitirme Projesi"/>
 
         <EditText
             android:layout_width="fill_parent"
@@ -56,7 +56,7 @@
             android:backgroundTint="#60000000"
             android:textColorHint="#ffffff"
             android:background="@drawable/edittext_round"
-            android:hint="Kullanıcı adı" />
+            android:hint=" Kullanıcı adı yada numara" />
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="41dp"
@@ -73,7 +73,7 @@
             android:layout_marginLeft="30dp"
             android:textColorHint="#ffffff"
             android:background="@drawable/edittext_round"
-            android:hint="Şifre" />
+            android:hint=" Şifre" />
 
         <Button
             android:layout_width="fill_parent"
