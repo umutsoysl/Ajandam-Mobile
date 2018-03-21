@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class Sqllite extends SQLiteOpenHelper {
 
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION =1;
 
     // Database Name
     private static final String DATABASE_NAME = "Ajandam";

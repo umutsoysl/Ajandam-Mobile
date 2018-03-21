@@ -11,12 +11,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.Toast;
-
 import com.umutsoysal.ajandam.Adapter.DersListesiAdapter;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.HttpHandler;
+import com.umutsoysal.ajandam.NotificationReceiver.NotificationEventReceiver;
 import com.umutsoysal.ajandam.R;
-
+import es.dmoral.toasty.Toasty;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,9 +24,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import es.dmoral.toasty.Toasty;
-
-public class Alarm extends Activity {
+public class Alarm extends Activity
+{
     ImageButton back;
     ListView liste;
     Button kaydet;
@@ -43,8 +42,10 @@ public class Alarm extends Activity {
     Sqllite db;
     ArrayList<HashMap<String, String>> Bilgiler;
     Switch tumdersler;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
         liste = (ListView) findViewById(R.id.dersler);
@@ -60,15 +61,22 @@ public class Alarm extends Activity {
         Task tsk = new Task();
         tsk.execute();
 
-        tumdersler.setOnClickListener(new View.OnClickListener() {
+        tumdersler.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                if (tumdersler.isChecked()){
-                    for(int i=0;i<name.length;i++){
-                        db.alarmEkle(name[i],clock[i],location[i],day[i]);
+            public void onClick(View view)
+            {
+                if (tumdersler.isChecked())
+                {
+                    for (int i = 0; i < name.length; i++)
+                    {
+                        db.resetALARM();
+                        db.alarmEkle(name[i], clock[i], location[i], day[i]);
                     }
                     liste.setVisibility(View.INVISIBLE);
-                }else{
+                }
+                else
+                {
                     liste.setVisibility(View.VISIBLE);
                 }
 
@@ -77,21 +85,40 @@ public class Alarm extends Activity {
         });
 
 
-        back.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent i = new Intent(getApplicationContext(), Main2Activity.class);
                 startActivity(i);
             }
         });
 
-        kaydet.setOnClickListener(new View.OnClickListener() {
+        kaydet.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
 
+                ArrayList<HashMap<String, String>> alarmlar;
+                db = new Sqllite(getApplicationContext());
+                alarmlar = db.alarmGET();
+                if (alarmlar.size() > 0)
+                {
+                    NotificationEventReceiver.setupAlarm(getApplicationContext());
+                    Toasty.success(getApplicationContext(), "Bildirim Sistemi Aktif Edildi.",
+                            Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    NotificationEventReceiver.cancelAlarm(getApplicationContext());
+                    NotificationEventReceiver.getDeleteIntent(getApplicationContext());
+                    Toasty.success(getApplicationContext(), "Bildirim Sistemi Devredışı edildi.",
+                            Toast.LENGTH_LONG).show();
 
-                Toasty.success(getApplicationContext(), "Bilgiler Kaydedildi.",
-                        Toast.LENGTH_LONG).show();
+                }
+
 
                 Intent i = new Intent(getApplicationContext(), Main2Activity.class);
                 startActivity(i);
@@ -100,9 +127,11 @@ public class Alarm extends Activity {
 
     }
 
-    private class Task extends AsyncTask<String, Void, String> {
+    private class Task extends AsyncTask<String, Void, String>
+    {
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
             progressDialog = new ProgressDialog(Alarm.this);
             progressDialog.setMessage("Lütfen Bekleyiniz..");
@@ -111,11 +140,14 @@ public class Alarm extends Activity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(String... params)
+        {
             HttpHandler sh = new HttpHandler();
 
-            if (jsonStr != null) {
-                try {
+            if (jsonStr != null)
+            {
+                try
+                {
                     // Getting JSON Array node
                     JSONObject jsonObj2 = new JSONObject(jsonStr);
                     JSONArray object = jsonObj2.getJSONArray("lessons");
@@ -127,7 +159,8 @@ public class Alarm extends Activity {
                     location = new String[object.length()];
 
 
-                    for (int i = 0; i < object.length(); i++) {
+                    for (int i = 0; i < object.length(); i++)
+                    {
                         JSONObject c = object.getJSONObject(i);
                         name[i] = c.getString("name");
                         day[i] = c.getString("day");
@@ -136,12 +169,16 @@ public class Alarm extends Activity {
 
                     }
 
-                    adapter = new DersListesiAdapter(Alarm.this, name);
+                    adapter = new DersListesiAdapter(Alarm.this, name, day, clock, location);
 
-                } catch (final JSONException e) {
-                    runOnUiThread(new Runnable() {
+                }
+                catch (final JSONException e)
+                {
+                    runOnUiThread(new Runnable()
+                    {
                         @Override
-                        public void run() {
+                        public void run()
+                        {
                             Toasty.error(getApplicationContext(),
                                     "Json parsing error: " + e.getMessage(),
                                     Toast.LENGTH_LONG).show();
@@ -150,10 +187,14 @@ public class Alarm extends Activity {
 
                 }
 
-            } else {
-                runOnUiThread(new Runnable() {
+            }
+            else
+            {
+                runOnUiThread(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         Toasty.error(getApplicationContext(),
                                 "Couldn't get json from server. Check LogCat for possible errors!",
                                 Toast.LENGTH_LONG).show();
@@ -166,7 +207,8 @@ public class Alarm extends Activity {
 
 
         @Override
-        protected void onPostExecute(String aVoid) {
+        protected void onPostExecute(String aVoid)
+        {
             super.onPostExecute(aVoid);
             progressDialog.cancel();
             progressDialog.dismiss();

@@ -11,6 +11,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,7 +22,10 @@ import com.umutsoysal.ajandam.Ogrenci.MainActivity;
 import com.umutsoysal.ajandam.Personel.Main2Activity;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import okhttp3.FormBody;
@@ -54,6 +58,7 @@ public class Splashscreen extends Activity {
         final ImageView imageView = (ImageView) findViewById(R.id.loadingImage);
         final AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
         animationDrawable.start();
+
 
         if(checkInternetConnection()) {
             db = new Sqllite(getApplicationContext());

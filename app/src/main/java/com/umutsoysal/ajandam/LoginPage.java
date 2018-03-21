@@ -172,7 +172,6 @@ public class LoginPage extends Activity {
 
                         Bilgiler = db.getOgrenci();
                         db.resetOgrenci();
-                        db.resetUSER();
                         db.ogrenciEkle(govde);
                         db.close();
                         startActivity(i);
@@ -182,7 +181,6 @@ public class LoginPage extends Activity {
                         Bilgiler = db.getOgrenci();
 
                         db.resetAkademisyen();
-                        db.resetUSER();
                         db.akademisyenEkle(govde);
                         db.close();
                         startActivity(i);

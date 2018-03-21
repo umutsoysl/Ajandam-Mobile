@@ -18,7 +18,7 @@ public class NotificationEventReceiver extends WakefulBroadcastReceiver {
     private static final String ACTION_START_NOTIFICATION_SERVICE = "ACTION_START_NOTIFICATION_SERVICE";
     private static final String ACTION_DELETE_NOTIFICATION = "ACTION_DELETE_NOTIFICATION";
 
-    private static final int NOTIFICATIONS_INTERVAL_IN_HOURS = 24;
+    private static final int NOTIFICATIONS_INTERVAL_IN_HOURS = 1;
 
     public static void setupAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

@@ -60,12 +60,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/metin"
-                android:text="Ders Takip Başlat"
+                android:text="Tüm Derslerin Takibini Başlat"
                 android:textColor="#260e0e"
                 android:id="@+id/deed2"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 />
 
         <TextView
