@@ -171,9 +171,8 @@ public class LoginPage extends Activity {
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
 
                         Bilgiler = db.getOgrenci();
-                        if(Bilgiler.size()>0) {
-                            db.resetOgrenci();
-                        }
+                        db.resetOgrenci();
+                        db.resetUSER();
                         db.ogrenciEkle(govde);
                         db.close();
                         startActivity(i);
@@ -181,9 +180,9 @@ public class LoginPage extends Activity {
                     else{
                         Intent i = new Intent(getApplicationContext(), Main2Activity.class);
                         Bilgiler = db.getOgrenci();
-                        if(Bilgiler.size()>0) {
-                            db.resetAkademisyen();
-                        }
+
+                        db.resetAkademisyen();
+                        db.resetUSER();
                         db.akademisyenEkle(govde);
                         db.close();
                         startActivity(i);

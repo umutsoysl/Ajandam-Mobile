@@ -28,6 +28,12 @@ public class Sqllite extends SQLiteOpenHelper {
     private static final String TABLE_NAME_2 = "ogrenci";
     private static String OGRENCI_JSON = "json";
 
+    private static final String ALARM = "alarm";
+    private static String LESSON = "ders";
+    private static String CLOCK = "saat";
+    private static String CLASS = "sinif";
+    private static String DAY = "gun";
+
 
     public Sqllite(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,6 +55,13 @@ public class Sqllite extends SQLiteOpenHelper {
         db.execSQL(tablom);
 
 
+        String notify = "CREATE TABLE " + ALARM + "( "
+                + LESSON + " TEXT ,"
+                + CLOCK + " TEXT ,"
+                + CLASS + " TEXT ,"
+                + DAY + " TEXT" + ")";
+        db.execSQL(notify);
+
 
     }
 
@@ -56,6 +69,21 @@ public class Sqllite extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
+
+
+    public void alarmEkle(String dersAdi,String dersSaati,String sinif,String dersGunu) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(LESSON,dersAdi);
+        values.put(CLOCK,dersSaati);
+        values.put(CLASS,sinif);
+        values.put(DAY,dersGunu);
+
+        db.insert(ALARM, null, values);
+        db.close(); //Database Bağlantısını kapattık*/
+    }
+
 
     public void userEkle(String username,String password) {
 
@@ -87,6 +115,41 @@ public class Sqllite extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, values);
         db.close(); //Database Bağlantısını kapattık*/
     }
+
+
+    public void AlarmSil(String dersAdi){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(ALARM, LESSON + " = ?",
+                new String[] { dersAdi });
+        db.close();
+    }
+
+
+    public ArrayList<HashMap<String, String>> alarmGET(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + ALARM;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        ArrayList<HashMap<String, String>> islemlist = new ArrayList<HashMap<String, String>>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                for(int i=0; i<cursor.getColumnCount();i++)
+                {
+                    map.put(cursor.getColumnName(i), cursor.getString(i));
+                }
+
+                islemlist.add(map);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        // return islem liste
+        return islemlist;
+    }
+
+
 
 
     public ArrayList<HashMap<String, String>> getOgrenci(){
@@ -176,6 +239,12 @@ public class Sqllite extends SQLiteOpenHelper {
     public void resetAkademisyen(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, null, null);
+        db.close();
+    }
+
+    public void resetALARM(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(ALARM, null, null);
         db.close();
     }
 

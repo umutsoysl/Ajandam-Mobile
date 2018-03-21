@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="67dp"
-            android:textColor="#000"
+            android:textColor="#4e4e4e"
             android:id="@+id/metin"
             android:text="Ders takip aktif duruma getirildiğinde ders programından alınan bilgiler doğrultusunda kullanıcıya ders saatinden önce bildirim atarak kullanıcının dersi kaçırmasını önler."
             android:layout_marginLeft="16dp"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/metin"
                 android:text="Ders Takip Başlat"
-                android:textColor="#000"
+                android:textColor="#260e0e"
                 android:id="@+id/deed2"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/deed2"
             android:text="Bu dersler için bana bildirim atma :"
-            android:textColor="#000"
+            android:textColor="#4e4e4e"
             android:id="@+id/deed"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
@@ -86,6 +86,7 @@
                 android:layout_below="@+id/metin"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="17dp"
+                android:id="@+id/tumdersler"
                 android:layout_marginRight="30dp"
                 />
         <ListView
@@ -96,16 +97,16 @@
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="70dp"
             android:id="@+id/dersler"
+            android:divider="@null"
             android:layout_marginTop="10dp"
             ></ListView>
 
         <Button
             android:layout_width="fill_parent"
-            android:layout_height="42dp"
+            android:layout_height="41dp"
             android:id="@+id/kaydet"
             android:textColor="#ffffff"
             android:text="Kaydet"
-            android:fontFamily="serif"
             android:textSize="17dp"
             android:layout_marginTop="10dp"
             android:textStyle="bold"

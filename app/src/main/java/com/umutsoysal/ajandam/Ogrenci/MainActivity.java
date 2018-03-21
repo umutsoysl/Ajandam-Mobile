@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_out) {
             db=new Sqllite(getApplicationContext());
+            db.resetOgrenci();
             db.resetUSER();
             Intent i = new Intent(getApplicationContext(), LoginPage.class);
             startActivity(i);
@@ -229,12 +230,12 @@ public class MainActivity extends AppCompatActivity
                     JSONArray object = jsonObj2.getJSONArray("lessons");
 
                     // looping through All Contacts
-                        name=new String[object.length()];
-                        clock=new String[object.length()];
-                        day=new String[object.length()];
-                        location=new String[object.length()];
-                        dersiVeren=new String[object.length()];
-                        dersId=new String[object.length()];
+                    name=new String[object.length()];
+                    clock=new String[object.length()];
+                    day=new String[object.length()];
+                    location=new String[object.length()];
+                    dersiVeren=new String[object.length()];
+                    dersId=new String[object.length()];
                     calendar = Calendar.getInstance();
                     int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -251,15 +252,15 @@ public class MainActivity extends AppCompatActivity
                     }
                     for (int i = 0; i < object.length(); i++) {
                         JSONObject c = object.getJSONObject(i);
-                         name[i] = c.getString("name");
-                         day[i] = c.getString("day");
-                         dersId[i]=c.getString("id");
+                        name[i] = c.getString("name");
+                        day[i] = c.getString("day");
+                        dersId[i]=c.getString("id");
                         if(day[i].equals(dayOfTheWeek))
                         {
                             index=i;
                         }
-                         clock[i] = c.getString("clock");
-                         location[i] = c.getString("location");
+                        clock[i] = c.getString("clock");
+                        location[i] = c.getString("location");
 
                         JSONObject phone = c.getJSONObject("academician");
                         String n = phone.getString("name");
@@ -308,11 +309,11 @@ public class MainActivity extends AppCompatActivity
             if(day.length>0)
             {
                 if(dayOfTheWeek!=null) {
-                String dd[]=clock[index].split(":");
-                saati.setText(dd[0]+"\n"+dd[1]);
-                dersinismi.setText(name[index]);
-                dersiveren.setText(dersiVeren[index]);
-                yeri.setText(location[index]);
+                    String dd[]=clock[index].split(":");
+                    saati.setText(dd[0]+"\n"+dd[1]);
+                    dersinismi.setText(name[index]);
+                    dersiveren.setText(dersiVeren[index]);
+                    yeri.setText(location[index]);
                 }
                 else{
                     saati.setText(" ");

@@ -41,6 +41,22 @@
             android:label="@string/title_activity_splashscreen"
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".Personel.DersiAlanOgrenciler"></activity>
+
+
+        <service
+            android:name=".notifications.NotificationIntentService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver android:name=".NotificationReceiver.NotificationEventReceiver" />
+        <receiver android:name=".NotificationReceiver.NotificationServiceStarterReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

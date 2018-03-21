@@ -186,6 +186,7 @@ public class Main2Activity extends AppCompatActivity
 
         } else if (id == R.id.nav_out) {
             db=new Sqllite(getApplicationContext());
+            db.resetAkademisyen();
             db.resetUSER();
             Intent i = new Intent(getApplicationContext(), LoginPage.class);
             startActivity(i);
