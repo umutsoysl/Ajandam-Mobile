@@ -123,15 +123,12 @@ public class NotificationIntentService extends IntentService
         Date now = Calendar.getInstance().getTime();
         Calendar cal=Calendar.getInstance();
         cal.setTime(now);
-        cal.add(Calendar.HOUR,-1);
+        cal.add(Calendar.HOUR,+1);
         now=cal.getTime();
         // Different formatters for 12 and 24 hour timestamps
-        SimpleDateFormat formatter24 = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat formatter24 = new SimpleDateFormat("HHmm");
 
             simdikiSaat = formatter24.format(now);
-
-
-
 
 
         if (alarmlar.size() > 0)
@@ -148,8 +145,9 @@ public class NotificationIntentService extends IntentService
                 day[i]=alarmlar.get(i).get("gun");
                 location[i]=alarmlar.get(i).get("sinif");
                 clock[i]=alarmlar.get(i).get("saat");
+                int saat=Integer.parseInt( alarmlar.get(i).get("saat").replace(":", ""));
                 //
-                if (alarmlar.get(i).get("gun").equals(dayOfTheWeek)&& alarmlar.get(i).get("saat").replace(":", "").equals(simdikiSaat) )
+                if (alarmlar.get(i).get("gun").equals(dayOfTheWeek)&& saat==Integer.parseInt(simdikiSaat) )
                 {
                     bildirimAt(lesson[i],location[i],clock[i]);
                 }
@@ -163,23 +161,19 @@ public class NotificationIntentService extends IntentService
 
     public void bildirimAt(String dersAdi,String mekan,String saat)
     {
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle("A J A N D A M")
-                .setAutoCancel(true)
-                .setColor(getResources().getColor(R.color.colorPrimaryDark))
-                .setContentText("Merhaba,bugün "+dersAdi+" saat "+saat+" "+mekan+" sınıfında başlayacaktır")
-                .setSmallIcon(R.drawable.logo);
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.logo)
+                        .setContentTitle("A J A N D A M")
+                        .setContentText("Merhaba,bugün "+dersAdi+" dersin saat "+saat+" 'de "+mekan+" sınıfında başlayacaktır.");
 
+        Intent notificationIntent = new Intent(this, Splashscreen.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
 
-        Intent mainIntent = new Intent(this, Splashscreen.class);
-        PendingIntent pendingIntent = android.app.PendingIntent.getActivity(this,
-                NOTIFICATION_ID,
-                mainIntent,
-                android.app.PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(pendingIntent);
-        builder.setDeleteIntent(NotificationEventReceiver.getDeleteIntent(this));
-        final NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(NOTIFICATION_ID, builder.build());
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
     }
 }

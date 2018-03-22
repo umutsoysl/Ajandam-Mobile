@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Switch;
@@ -40,6 +41,7 @@ public class Alarm extends Activity
     public static String jsonStr = "";
     public static int position = 0;
     Sqllite db;
+    ArrayList<HashMap<String, String>> alarmlar;
     ArrayList<HashMap<String, String>> Bilgiler;
     Switch tumdersler;
 
@@ -66,21 +68,47 @@ public class Alarm extends Activity
             @Override
             public void onClick(View view)
             {
+                db.resetALARM();
                 if (tumdersler.isChecked())
                 {
                     for (int i = 0; i < name.length; i++)
                     {
-                        db.resetALARM();
                         db.alarmEkle(name[i], clock[i], location[i], day[i]);
                     }
-                    liste.setVisibility(View.INVISIBLE);
                 }
                 else
                 {
+                    tumdersler.setOnCheckedChangeListener(null);
+                    tumdersler.setChecked(false);
                     liste.setVisibility(View.VISIBLE);
                 }
+                Task tsk = new Task();
+                tsk.execute();
 
+            }
+        });
 
+        tumdersler.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+            {
+                db.resetALARM();
+                if (tumdersler.isChecked())
+                {
+                    for (int i = 0; i < name.length; i++)
+                    {
+                        db.alarmEkle(name[i], clock[i], location[i], day[i]);
+                    }
+                }
+                else
+                {
+                    tumdersler.setOnCheckedChangeListener(null);
+                    tumdersler.setChecked(false);
+                    liste.setVisibility(View.VISIBLE);
+                }
+                Task tsk = new Task();
+                tsk.execute();
             }
         });
 
@@ -169,7 +197,7 @@ public class Alarm extends Activity
 
                     }
 
-                    adapter = new DersListesiAdapter(Alarm.this, name, day, clock, location);
+                    adapter = new DersListesiAdapter(Alarm.this,name,clock,day,location);
 
                 }
                 catch (final JSONException e)
@@ -213,6 +241,21 @@ public class Alarm extends Activity
             progressDialog.cancel();
             progressDialog.dismiss();
             liste.setAdapter(adapter);
+
+            db = new Sqllite(getApplicationContext());
+            alarmlar = db.alarmGET();
+            if(alarmlar.size()==name.length)
+            {
+                tumdersler.setOnCheckedChangeListener(null);
+                tumdersler.setChecked(!tumdersler.isChecked());
+                liste.setVisibility(View.INVISIBLE);
+            }
+            else {
+                tumdersler.setOnCheckedChangeListener(null);
+                tumdersler.setChecked(false);
+                liste.setVisibility(View.VISIBLE);
+            }
+
 
         }
 
