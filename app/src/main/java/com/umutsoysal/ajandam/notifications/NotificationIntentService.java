@@ -183,8 +183,9 @@ public class NotificationIntentService extends IntentService
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
         builder.setDeleteIntent(NotificationEventReceiver.getDeleteIntent(this));
-       
-        // Add as notification
+       builder.setAutoCancel(true);
+
+       // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
     }
