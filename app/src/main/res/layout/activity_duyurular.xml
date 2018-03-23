@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Bildirimler"
+                android:text="Duyurular"
                 android:layout_gravity="left|top"
                 android:layout_marginTop="18dp"
                 android:layout_marginLeft="60dp"
