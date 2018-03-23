@@ -126,7 +126,7 @@ public class NotificationIntentService extends IntentService
         cal.add(Calendar.HOUR,+1);
         now=cal.getTime();
         // Different formatters for 12 and 24 hour timestamps
-        SimpleDateFormat formatter24 = new SimpleDateFormat("HHmm");
+        SimpleDateFormat formatter24 = new SimpleDateFormat("HH");
 
             simdikiSaat = formatter24.format(now);
 
@@ -145,8 +145,9 @@ public class NotificationIntentService extends IntentService
                 day[i]=alarmlar.get(i).get("gun");
                 location[i]=alarmlar.get(i).get("sinif");
                 clock[i]=alarmlar.get(i).get("saat");
-                int saat=Integer.parseInt( alarmlar.get(i).get("saat").replace(":", ""));
-                //
+                String arry[]=clock[i].split(":");
+                int saat=Integer.parseInt(arry[0]);
+
                 if (alarmlar.get(i).get("gun").equals(dayOfTheWeek)&& saat==Integer.parseInt(simdikiSaat) )
                 {
                     bildirimAt(lesson[i],location[i],clock[i]);
@@ -165,7 +166,7 @@ public class NotificationIntentService extends IntentService
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.logo)
                         .setContentTitle("A J A N D A M")
-                        .setContentText("Merhaba,bugün "+dersAdi+" dersin saat "+saat+" 'de "+mekan+" sınıfında başlayacaktır.");
+                        .setContentText("Merhaba, bugün "+dersAdi+" dersin saat "+saat+" 'de "+mekan+" sınıfında başlayacaktır.");
 
         Intent notificationIntent = new Intent(this, Splashscreen.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
