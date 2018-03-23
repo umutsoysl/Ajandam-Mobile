@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
-import android.text.format.DateFormat;
 import android.util.Log;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.NotificationReceiver.NotificationEventReceiver;
@@ -33,7 +32,7 @@ public class NotificationIntentService extends IntentService
     String[] day;
     String[] location;
     String dayOfTheWeek;
-    String simdikiSaat;
+    String simdikiSaat,simdikiSaat2;
     private Calendar calendar;
     ArrayList<HashMap<String, String>> alarmlar;
 
@@ -121,14 +120,22 @@ public class NotificationIntentService extends IntentService
 
 
         Date now = Calendar.getInstance().getTime();
-        Calendar cal=Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.setTime(now);
-        cal.add(Calendar.HOUR,+1);
-        now=cal.getTime();
+        cal.add(Calendar.HOUR, +2);
+        now = cal.getTime();
         // Different formatters for 12 and 24 hour timestamps
         SimpleDateFormat formatter24 = new SimpleDateFormat("HH");
 
-            simdikiSaat = formatter24.format(now);
+        simdikiSaat = formatter24.format(now);
+
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(now);
+        cal2.add(Calendar.HOUR, +1);
+        now = cal2.getTime();
+        // Different formatters for 12 and 24 hour timestamps
+        simdikiSaat2 = formatter24.format(now);
 
 
         if (alarmlar.size() > 0)
@@ -141,16 +148,19 @@ public class NotificationIntentService extends IntentService
 
             for (int i = 0; i < alarmlar.size(); i++)
             {
-                lesson[i]=alarmlar.get(i).get("ders");
-                day[i]=alarmlar.get(i).get("gun");
-                location[i]=alarmlar.get(i).get("sinif");
-                clock[i]=alarmlar.get(i).get("saat");
-                String arry[]=clock[i].split(":");
-                int saat=Integer.parseInt(arry[0]);
+                lesson[i] = alarmlar.get(i).get("ders");
+                day[i] = alarmlar.get(i).get("gun");
+                location[i] = alarmlar.get(i).get("sinif");
+                clock[i] = alarmlar.get(i).get("saat");
+                String arry[] = clock[i].split(":");
+                int saat = Integer.parseInt(arry[0]);
 
-                if (alarmlar.get(i).get("gun").equals(dayOfTheWeek)&& saat==Integer.parseInt(simdikiSaat) )
+                if (alarmlar.get(i).get("gun").equals(dayOfTheWeek) && saat == Integer.parseInt(simdikiSaat))
                 {
-                    bildirimAt(lesson[i],location[i],clock[i]);
+                    bildirimAt(lesson[i], location[i], clock[i]);
+                }else if (alarmlar.get(i).get("gun").equals(dayOfTheWeek) && saat == Integer.parseInt(simdikiSaat2))
+                {
+                    bildirimAt(lesson[i], location[i], clock[i]);
                 }
             }
 
@@ -160,19 +170,20 @@ public class NotificationIntentService extends IntentService
 
     }
 
-    public void bildirimAt(String dersAdi,String mekan,String saat)
+    public void bildirimAt(String dersAdi, String mekan, String saat)
     {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.logo)
                         .setContentTitle("A J A N D A M")
-                        .setContentText("Merhaba, bugün "+dersAdi+" dersin saat "+saat+" 'de "+mekan+" sınıfında başlayacaktır.");
+                        .setContentText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır.");
 
         Intent notificationIntent = new Intent(this, Splashscreen.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
-
+        builder.setDeleteIntent(NotificationEventReceiver.getDeleteIntent(this));
+       
         // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
