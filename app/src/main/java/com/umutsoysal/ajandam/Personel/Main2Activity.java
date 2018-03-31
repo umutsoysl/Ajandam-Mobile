@@ -29,8 +29,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Main2Activity extends AppCompatActivity
@@ -51,6 +53,8 @@ public class Main2Activity extends AppCompatActivity
     String[] bolum;
     String[] dersID;
     String dayOfTheWeek;
+    ArrayList<Integer> saatFarki = new ArrayList<>();
+    ArrayList<Integer> inlastindex = new ArrayList<>();
     TextView saati, yeri, dersiveren, hocaninismi;
     TextView Textviewusername, Textviewnumber;
     Sqllite db;
@@ -287,27 +291,37 @@ public class Main2Activity extends AppCompatActivity
                     {
                         dayOfTheWeek = "Cuma";
                     }
-                    else if (Calendar.SATURDAY == dayOfWeek)
-                    {
-                        dayOfTheWeek = "Cumartesi";
-                    }
-                    else if (Calendar.SUNDAY == dayOfWeek)
-                    {
-                        dayOfTheWeek = "Pazar";
-                    }
+
+                    String simdikiSaat;
+                    SimpleDateFormat formatter24 = new SimpleDateFormat("HH");
+
+                    Date now = Calendar.getInstance().getTime();
+                    Calendar cal2 = Calendar.getInstance();
+                    now = cal2.getTime();
+                    cal2.setTime(now);
+                    now = cal2.getTime();
+                    // Different formatters for 12 and 24 hour timestamps
+                    simdikiSaat = formatter24.format(now);
+
+                    int fark = 0;
+
 
                     for (int i = 0; i < object.length(); i++)
                     {
                         JSONObject c = object.getJSONObject(i);
                         name[i] = c.getString("name");
                         day[i] = c.getString("day");
-
+                        clock[i] = c.getString("clock");
+                        String[] ar = clock[i].split(":");
 
                         if (dayOfTheWeek != null && day[i].equals(dayOfTheWeek))
                         {
+                            int a = Math.abs(Integer.parseInt(ar[0]) - Integer.parseInt(simdikiSaat));
+                            saatFarki.add(a);
                             index = i;
+                            inlastindex.add(index);
                         }
-                        clock[i] = c.getString("clock");
+
                         dersID[i] = c.getString("id");
                         location[i] = c.getString("location");
 
@@ -365,6 +379,15 @@ public class Main2Activity extends AppCompatActivity
             {
                 if (dayOfTheWeek != null)
                 {
+                    int temp=saatFarki.get(0);
+                    for(int i=0;i<saatFarki.size();i++)
+                    {
+                        if(saatFarki.get(i)<=temp)
+                        {
+                            index=inlastindex.get(i);
+                        }
+                    }
+
                     String dd[] = clock[index].split(":");
                     saati.setText(dd[0] + "\n" + dd[1]);
                     hocaninismi.setText(name[index]);
