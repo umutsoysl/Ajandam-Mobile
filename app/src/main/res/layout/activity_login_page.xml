@@ -53,6 +53,7 @@
             android:layout_marginLeft="30dp"
             android:layout_centerInParent="true"
             android:layout_marginTop="30dp"
+            android:inputType="textPersonName"
             android:backgroundTint="#60000000"
             android:textColorHint="#ffffff"
             android:background="@drawable/edittext_round"

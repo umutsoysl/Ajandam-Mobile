@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -198,7 +199,7 @@ public class Duyurular extends Activity {
         TextView metin= (TextView) dialog.findViewById(R.id.icerik);
 
         header.setText(baslik[position].toString());
-        metin.setText(icerik[position].toString());
+        metin.setText(Html.fromHtml(icerik[position].toString()));
 
         kapat.setOnClickListener(new View.OnClickListener() {
             @Override

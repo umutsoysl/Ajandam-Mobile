@@ -58,11 +58,6 @@ public class Splashscreen extends Activity {
         setContentView(R.layout.activity_splashscreen);
 
 
-        final ImageView imageView = (ImageView) findViewById(R.id.loadingImage);
-        final AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
-        animationDrawable.start();
-
-
         if(checkInternetConnection()) {
             db = new Sqllite(getApplicationContext());
             Bilgiler = db.getUSERINFO();

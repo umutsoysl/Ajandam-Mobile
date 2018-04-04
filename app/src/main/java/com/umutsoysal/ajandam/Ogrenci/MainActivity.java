@@ -1,8 +1,13 @@
 package com.umutsoysal.ajandam.Ogrenci;
 
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -12,9 +17,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +29,7 @@ import com.umutsoysal.ajandam.Adapter.OgrenciDersListesiAdapter;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.LoginPage;
+import com.umutsoysal.ajandam.Personel.AcademicianPassChange;
 import com.umutsoysal.ajandam.R;
 import es.dmoral.toasty.Toasty;
 import org.json.JSONArray;
@@ -58,12 +66,18 @@ public class MainActivity extends AppCompatActivity
     ArrayList<Integer> inlastindex = new ArrayList<>();
     String dayOfTheWeek;
     TextView saati, yeri, dersiveren, dersinismi;
+    TextView Hsaati, Hyeri, Hdersiveren, Hdersinismi;
     TextView Textviewusername, Textviewnumber;
     Sqllite db;
     ArrayList<HashMap<String, String>> Bilgiler;
     private Boolean exit = false;
     private ProgressDialog progressDialog;
     private Calendar calendar;
+    private BluetoothManager btManager;
+    private BluetoothAdapter btAdapter;
+    private Handler scanHandler = new Handler();
+    private int scan_interval_ms = 5000;
+    private boolean isScanning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -73,10 +87,16 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         derslistesi = (ListView) findViewById(R.id.derslistesi);
+        LayoutInflater inflater2 = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View listHeader = inflater2.inflate(R.layout.listheader, null);
         saati = (TextView) findViewById(R.id.saat);
         yeri = (TextView) findViewById(R.id.location);
         dersiveren = (TextView) findViewById(R.id.bugun_dersiVeren);
         dersinismi = (TextView) findViewById(R.id.now_lesson);
+        Hsaati = (TextView) listHeader.findViewById(R.id.saat);
+        Hyeri = (TextView) listHeader.findViewById(R.id.location);
+        Hdersiveren = (TextView) listHeader.findViewById(R.id.bugun_dersiVeren);
+        Hdersinismi = (TextView) listHeader.findViewById(R.id.now_lesson);
 
         getSupportActionBar().setTitle("Bugün");
 
@@ -85,6 +105,37 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+
+        btManager = (BluetoothManager)getSystemService(Context.BLUETOOTH_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+        {
+            btAdapter = btManager.getAdapter();
+        }
+
+        scanHandler.post(scanRunnable);
+
+
+        derslistesi.addHeaderView(listHeader);
+        /* Handle list View scroll events */
+        derslistesi.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                /* Check if the first item is already reached to top.*/
+                if (derslistesi.getFirstVisiblePosition() == 0) {
+                    View firstChild = derslistesi.getChildAt(0);
+                    int topY = 0;
+                    if (firstChild != null) {
+                        topY = firstChild.getTop();
+                    }
+                }
+            }
+        });
+
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -190,13 +241,10 @@ public class MainActivity extends AppCompatActivity
             i.putExtra("id", MainActivity.id);
             startActivity(i);
         }
-        else if (id == R.id.nav_share)
-        {
-
-        }
         else if (id == R.id.nav_send)
         {
-
+            Intent i = new Intent(getApplicationContext(), StudentPassChange.class);
+            startActivity(i);
         }
         else if (id == R.id.nav_out)
         {
@@ -379,10 +427,15 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     String dd[] = clock[index].split(":");
-                    saati.setText(dd[0] + "\n" + dd[1]);
+                    saati.setText(clock[index]);
                     dersinismi.setText(name[index]);
                     dersiveren.setText(dersiVeren[index]);
                     yeri.setText(location[index]);
+
+                    Hsaati.setText(clock[index]);
+                    Hdersinismi.setText(name[index]);
+                    Hdersiveren.setText(dersiVeren[index]);
+                    Hyeri.setText(location[index]);
                 }
                 else
                 {
@@ -475,5 +528,94 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback()
+    {
+        @Override
+        public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord)
+        {
+            int startByte = 2;
+            boolean patternFound = false;
+            while (startByte <= 5)
+            {
+                if (    ((int) scanRecord[startByte + 2] & 0xff) == 0x02 && //Identifies an iBeacon
+                        ((int) scanRecord[startByte + 3] & 0xff) == 0x15)
+                { //Identifies correct data length
+                    patternFound = true;
+                    break;
+                }
+                startByte++;
+            }
+
+            if (patternFound)
+            {
+                //Convert to hex String
+                byte[] uuidBytes = new byte[16];
+                System.arraycopy(scanRecord, startByte + 4, uuidBytes, 0, 16);
+                String hexString = bytesToHex(uuidBytes);
+
+                //UUID detection
+                String uuid =  hexString.substring(0,8) + "-" +
+                        hexString.substring(8,12) + "-" +
+                        hexString.substring(12,16) + "-" +
+                        hexString.substring(16,20) + "-" +
+                        hexString.substring(20,32);
+
+                // major
+                final int major = (scanRecord[startByte + 20] & 0xff) * 0x100 + (scanRecord[startByte + 21] & 0xff);
+
+                // minor
+                final int minor = (scanRecord[startByte + 22] & 0xff) * 0x100 + (scanRecord[startByte + 23] & 0xff);
+
+                Toast.makeText(getApplicationContext(),"UUID: " +uuid + "\\nmajor: " +major +"\\nminor" +minor,Toast.LENGTH_LONG).show();
+
+            }
+
+        }
+    };
+
+    static final char[] hexArray = "0123456789ABCDEF".toCharArray();
+    private static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for ( int j = 0; j < bytes.length; j++ ) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
+
+    private Runnable scanRunnable = new Runnable()
+    {
+        @Override
+        public void run() {
+
+            if (isScanning)
+            {
+                if (btAdapter != null)
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                    {
+                        btAdapter.stopLeScan(leScanCallback);
+                    }
+                }
+            }
+            else
+            {
+                if (btAdapter != null)
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                    {
+                        btAdapter.startLeScan(leScanCallback);
+                    }
+                }
+            }
+
+            isScanning = !isScanning;
+
+            scanHandler.postDelayed(this, scan_interval_ms);
+        }
+    };
 
 }

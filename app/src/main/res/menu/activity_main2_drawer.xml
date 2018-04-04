@@ -8,7 +8,7 @@
             android:title="Ders Programı" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_clear_all_black_24dp"
+            android:icon="@drawable/ic_flash_on_black_24dp"
             android:title="Yoklama Başlat" />
         <item
             android:id="@+id/nav_slideshow"
@@ -20,16 +20,13 @@
             android:title="Duyuru Gönder" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Daha Fazla">
         <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_move_to_inbox_black_24dp"
-                android:title="Yeni Ders Programı Ekle" />
+            
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_settings_black_24dp"
-                android:title="Ayarlar" />
+                android:icon="@drawable/ic_lock_black_24dp"
+                android:title="Şifre Yenile" />
 
             <item
                 android:id="@+id/nav_help"

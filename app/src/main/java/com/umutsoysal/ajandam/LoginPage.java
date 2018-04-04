@@ -2,9 +2,13 @@ package com.umutsoysal.ajandam;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -23,9 +27,6 @@ import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.Ogrenci.MainActivity;
 import com.umutsoysal.ajandam.Personel.Main2Activity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +42,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LoginPage extends Activity {
+public class LoginPage extends Activity
+{
 
     Button giris;
     EditText username;
@@ -53,8 +55,10 @@ public class LoginPage extends Activity {
     private String TAG = LoginPage.class.getSimpleName();
     Sqllite db;
     ArrayList<HashMap<String, String>> Bilgiler;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -62,20 +66,23 @@ public class LoginPage extends Activity {
         setContentView(R.layout.activity_login_page);
 
         //nesne cagirilma olaylari
-        username=(EditText)findViewById(R.id.username);
-        giris=(Button) findViewById(R.id.submit);
-        password=(EditText)findViewById(R.id.password);
-        uyariMesaji=(TextView)findViewById(R.id.uyari);
+        username = (EditText) findViewById(R.id.username);
+        giris = (Button) findViewById(R.id.submit);
+        password = (EditText) findViewById(R.id.password);
+        uyariMesaji = (TextView) findViewById(R.id.uyari);
 
         //giris butonuna basildiğinda..
-        giris.setOnClickListener(new View.OnClickListener() {
+        giris.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
 
-                if(username.getText().length()>0&&password.getText().length()>0) {
+                if (username.getText().length() > 0 && password.getText().length() > 0)
+                {
                     uyariMesaji.setVisibility(View.INVISIBLE);
 
-                    new OkHttpAync().execute(this, "post",username.getText().toString(),password.getText().toString());
+                    new OkHttpAync().execute(this, "post", username.getText().toString(), password.getText().toString());
                 }
 
                 else
@@ -87,8 +94,6 @@ public class LoginPage extends Activity {
         });
 
     }
-
-
 
 
     public Object postHttpResponse(String requestParam, String pass)
@@ -148,10 +153,10 @@ public class LoginPage extends Activity {
 
             Log.e(TAG, "processing http request in async task");
 
-             if ("post".equals(requestType))
+            if ("post".equals(requestType))
             {
                 Log.e(TAG, "processing post http request using OkHttp");
-                return postHttpResponse(requestParam,pass);
+                return postHttpResponse(requestParam, pass);
             }
             return null;
         }
@@ -162,35 +167,38 @@ public class LoginPage extends Activity {
             super.onPostExecute(result);
             progressDialog.dismiss();
             progressDialog.cancel();
-            if (result.toString().length()>4)
+            if (result.toString().length() > 4)
             {
                 db = new Sqllite(LoginPage.this);
-                db.userEkle(username.getText().toString(),password.getText().toString());
+                db.userEkle(username.getText().toString(), password.getText().toString());
                 uyariMesaji.setVisibility(View.INVISIBLE);
                 Log.e(TAG, "populate UI after response from service using OkHttp client");
-               govde=result.toString();
+                govde = result.toString();
 
-                    if((username.getText().toString()).matches("\\d+(?:\\.\\d+)?")) {
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                if ((username.getText().toString()).matches("\\d+(?:\\.\\d+)?"))
+                {
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
 
-                        Bilgiler = db.getOgrenci();
-                        db.resetOgrenci();
-                        db.ogrenciEkle(govde);
-                        db.close();
-                        startActivity(i);
-                    }
-                    else{
-                        Intent i = new Intent(getApplicationContext(), Main2Activity.class);
-                        Bilgiler = db.getOgrenci();
+                    Bilgiler = db.getOgrenci();
+                    db.resetOgrenci();
+                    db.ogrenciEkle(govde);
+                    db.close();
+                    startActivity(i);
+                }
+                else
+                {
+                    Intent i = new Intent(getApplicationContext(), Main2Activity.class);
+                    Bilgiler = db.getOgrenci();
 
-                        db.resetAkademisyen();
-                        db.akademisyenEkle(govde);
-                        db.close();
-                        startActivity(i);
-                    }
+                    db.resetAkademisyen();
+                    db.akademisyenEkle(govde);
+                    db.close();
+                    startActivity(i);
+                }
 
             }
-            else {
+            else
+            {
                 uyariMesaji.setVisibility(View.VISIBLE);
                 uyariMesaji.setText("Kullanıcı veya şifre yanlış!");
             }
@@ -203,12 +211,12 @@ public class LoginPage extends Activity {
     @Override
     public void onBackPressed()
     {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-            System.exit(0);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+        System.exit(0);
     }
 
 }

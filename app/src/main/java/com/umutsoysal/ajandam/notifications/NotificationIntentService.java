@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
@@ -157,10 +159,10 @@ public class NotificationIntentService extends IntentService
 
                 if (alarmlar.get(i).get("gun").equals(dayOfTheWeek) && saat == Integer.parseInt(simdikiSaat))
                 {
-                    bildirimAt(lesson[i], location[i], clock[i]);
+                    headsUpNotification(lesson[i], location[i], clock[i]);
                 }else if (alarmlar.get(i).get("gun").equals(dayOfTheWeek) && saat == Integer.parseInt(simdikiSaat2))
                 {
-                    bildirimAt(lesson[i], location[i], clock[i]);
+                    headsUpNotification(lesson[i], location[i], clock[i]);
                 }
             }
 
@@ -174,19 +176,52 @@ public class NotificationIntentService extends IntentService
     {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.logo)
+                        .setSmallIcon(R.drawable.logo2)
                         .setContentTitle("A J A N D A M")
-                        .setContentText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır.");
+                        .setContentText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır.")
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır."));
 
         Intent notificationIntent = new Intent(this, Splashscreen.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
         builder.setDeleteIntent(NotificationEventReceiver.getDeleteIntent(this));
-       builder.setAutoCancel(true);
+        builder.setAutoCancel(true);
 
        // Add as notification
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, builder.build());
+    }
+
+
+    private void headsUpNotification(String dersAdi, String mekan, String saat) {
+
+        int NOTIFICATION_ID = 1;
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.harf)
+                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                                R.mipmap.ic_launcher))
+                        .setContentTitle("HAYDİ DERSE!")
+                        .setContentText(dersAdi + " dersin başlamak üzere hemen hazırlan...")
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır."))
+                        .setAutoCancel(true)
+                        .setDefaults(NotificationCompat.DEFAULT_ALL)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        Intent notificationIntent = new Intent(this, Splashscreen.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+        builder.setDeleteIntent(NotificationEventReceiver.getDeleteIntent(this));
+
+        Intent buttonIntent = new Intent(getBaseContext(), NotificationEventReceiver.class);
+        buttonIntent.putExtra("notificationId", NOTIFICATION_ID);
+        PendingIntent dismissIntent = PendingIntent.getBroadcast(getBaseContext(), 0, buttonIntent, 0);
+
+        builder.addAction(android.R.drawable.presence_invisible, "DISMISS", dismissIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 }

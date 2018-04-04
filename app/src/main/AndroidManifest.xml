@@ -1,64 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.umutsoysal.ajandam">
+          package="com.umutsoysal.ajandam">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".Splashscreen"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity
+                android:name=".Splashscreen"
+                android:label="@string/app_name"
+                android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".Ogrenci.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+                android:name=".Ogrenci.MainActivity"
+                android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".Personel.Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Ogrenci.Devamsizlik" />
-        <activity android:name=".Personel.YoklamaBaslat" />
-        <activity android:name=".Ogrenci.AlarmKur" />
-        <activity android:name=".Personel.DuyuruGonder" />
-        <activity android:name=".Ogrenci.Duyurular" />
-        <activity android:name=".Personel.Alarm" />
+                android:name=".Personel.Main2Activity"
+                android:label="@string/title_activity_main2"
+                android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Ogrenci.Devamsizlik"/>
+        <activity android:name=".Personel.YoklamaBaslat"/>
+        <activity android:name=".Ogrenci.AlarmKur"/>
+        <activity android:name=".Personel.DuyuruGonder"/>
+        <activity android:name=".Ogrenci.Duyurular"/>
+        <activity android:name=".Personel.Alarm"/>
         <activity
-            android:name=".LoginPage"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_splashscreen"
-            android:theme="@style/FullscreenTheme" />
-        <activity android:name=".Personel.DersiAlanOgrenciler"></activity>
-
+                android:name=".LoginPage"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:label="@string/title_activity_splashscreen"
+                android:theme="@style/FullscreenTheme"/>
+        <activity android:name=".Personel.DersiAlanOgrenciler"/>
 
         <service
-            android:name=".notifications.NotificationIntentService"
-            android:enabled="true"
-            android:exported="false" />
+                android:name=".notifications.NotificationIntentService"
+                android:enabled="true"
+                android:exported="false"/>
 
-        <receiver android:name=".NotificationReceiver.NotificationEventReceiver" />
+        <receiver android:name=".NotificationReceiver.NotificationEventReceiver"/>
         <receiver android:name=".NotificationReceiver.NotificationServiceStarterReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
             </intent-filter>
         </receiver>
 
+        <activity android:name=".Ogrenci.StudentPassChange">
+        </activity>
+        <activity android:name=".Personel.AcademicianPassChange">
+        </activity>
     </application>
 
 </manifest>

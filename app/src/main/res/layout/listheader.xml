@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+>
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relative"
+                android:background="@color/colorPrimary">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="23dp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:id="@+id/saat"
+                    android:background="@drawable/textbackground"
+                    android:layout_marginLeft="25dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/bugun_dersiVeren"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="16dp"
+                    android:text="17:00"/>
+            <TextView
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/now_lesson"
+                    android:textSize="23dp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="30dp"
+                    android:text="DAĞITIK SİSTEMLERE GİRİŞ"/>
+
+            <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="5dp"
+                    android:layout_below="@+id/now_lesson"
+                    android:id="@+id/cizgi"
+                    android:layout_marginLeft="25dp"
+                    android:background="@drawable/cizgim"
+                    android:layout_marginBottom="8dp"
+            />
+            <TextView
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:id="@+id/bugun_dersiVeren"
+                    android:textColor="#ffffff"
+                    android:layout_below="@+id/cizgi"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Doç.Dr.AHMET SAYAR"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="23dp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:id="@+id/location"
+                    android:layout_alignLeft="@+id/saat"
+                    android:layout_below="@+id/bugun_dersiVeren"
+                    android:layout_marginLeft="105dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:background="@drawable/textbackgroundtransparent"
+                    android:text="Amfi-A"/>
+
+        </RelativeLayout>
+
+        <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_below="@+id/relative"
+                android:id="@+id/alt"
+                android:layout_marginTop="-1dp"
+                android:background="@drawable/bottomlayout"/>
+
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/alt"
+                android:id="@+id/linetop">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Saat"
+                    android:textColor="#251c00"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="16dp"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ders Adı"
+                    android:textColor="#251c00"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="16dp"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sınıf"
+                    android:textColor="#251c00"
+                    android:textStyle="bold"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"/>
+
+        </RelativeLayout>
+
+        <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linetop"
+                android:layout_marginTop="2dp"
+                android:id="@+id/temp"
+                android:background="#f1f1f1"/>
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

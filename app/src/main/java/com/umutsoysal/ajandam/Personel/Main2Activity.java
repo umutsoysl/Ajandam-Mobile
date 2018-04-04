@@ -1,6 +1,7 @@
 package com.umutsoysal.ajandam.Personel;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,9 +13,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -57,6 +60,7 @@ public class Main2Activity extends AppCompatActivity
     ArrayList<Integer> inlastindex = new ArrayList<>();
     TextView saati, yeri, dersiveren, hocaninismi;
     TextView Textviewusername, Textviewnumber;
+    TextView Hsaati, Hyeri, Hdersiveren, Hdersinismi;
     Sqllite db;
     ArrayList<HashMap<String, String>> Bilgiler;
     private Boolean exit = false;
@@ -73,10 +77,16 @@ public class Main2Activity extends AppCompatActivity
         getSupportActionBar().setTitle("Bugün");
 
         derslistesi = (ListView) findViewById(R.id.derslistesi);
+        LayoutInflater inflater2 = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View listHeader = inflater2.inflate(R.layout.listheader, null);
         saati = (TextView) findViewById(R.id.saat);
         yeri = (TextView) findViewById(R.id.location);
         dersiveren = (TextView) findViewById(R.id.bugun_dersiVeren);
         hocaninismi = (TextView) findViewById(R.id.isim);
+        Hsaati = (TextView) listHeader.findViewById(R.id.saat);
+        Hyeri = (TextView) listHeader.findViewById(R.id.location);
+        Hdersiveren = (TextView) listHeader.findViewById(R.id.bugun_dersiVeren);
+        Hdersinismi = (TextView) listHeader.findViewById(R.id.isim);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -89,6 +99,25 @@ public class Main2Activity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         Textviewusername = (TextView) header.findViewById(R.id.navusername);
         Textviewnumber = (TextView) header.findViewById(R.id.navnumber);
+
+        derslistesi.addHeaderView(listHeader);
+        /* Handle list View scroll events */
+        derslistesi.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                /* Check if the first item is already reached to top.*/
+                if (derslistesi.getFirstVisiblePosition() == 0) {
+                    View firstChild = derslistesi.getChildAt(0);
+                    int topY = 0;
+                    if (firstChild != null) {
+                        topY = firstChild.getTop();
+                    }
+                }
+            }
+        });
 
         db = new Sqllite(Main2Activity.this);
         Bilgiler = db.getAkademisyen();
@@ -203,9 +232,10 @@ public class Main2Activity extends AppCompatActivity
             startActivity(i);
 
         }
-        else if (id == R.id.nav_share)
+        else if (id == R.id.nav_send)
         {
-
+            Intent i = new Intent(getApplicationContext(), AcademicianPassChange.class);
+            startActivity(i);
         }
         else if (id == R.id.nav_out)
         {
@@ -388,11 +418,11 @@ public class Main2Activity extends AppCompatActivity
                         }
                     }
 
-                    String dd[] = clock[index].split(":");
-                    saati.setText(dd[0] + "\n" + dd[1]);
-                    hocaninismi.setText(name[index]);
-                    dersiveren.setText(name[index]);
-                    yeri.setText(location[index]);
+
+                    Hsaati.setText(clock[index]);
+                    Hdersinismi.setText(name[index]);
+                    Hdersiveren.setText(name[index]);
+                    Hyeri.setText(location[index]);;
                 }
                 else
                 {
