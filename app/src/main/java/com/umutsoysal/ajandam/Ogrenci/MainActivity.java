@@ -29,7 +29,6 @@ import com.umutsoysal.ajandam.Adapter.OgrenciDersListesiAdapter;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.LoginPage;
-import com.umutsoysal.ajandam.Personel.AcademicianPassChange;
 import com.umutsoysal.ajandam.R;
 import es.dmoral.toasty.Toasty;
 import org.json.JSONArray;
@@ -39,7 +38,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -107,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
 
-        btManager = (BluetoothManager)getSystemService(Context.BLUETOOTH_SERVICE);
+        btManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
         {
             btAdapter = btManager.getAdapter();
@@ -118,23 +116,28 @@ public class MainActivity extends AppCompatActivity
 
         derslistesi.addHeaderView(listHeader);
         /* Handle list View scroll events */
-        derslistesi.setOnScrollListener(new AbsListView.OnScrollListener() {
+        derslistesi.setOnScrollListener(new AbsListView.OnScrollListener()
+        {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            public void onScrollStateChanged(AbsListView view, int scrollState)
+            {
             }
+
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+            {
                 /* Check if the first item is already reached to top.*/
-                if (derslistesi.getFirstVisiblePosition() == 0) {
+                if (derslistesi.getFirstVisiblePosition() == 0)
+                {
                     View firstChild = derslistesi.getChildAt(0);
                     int topY = 0;
-                    if (firstChild != null) {
+                    if (firstChild != null)
+                    {
                         topY = firstChild.getTop();
                     }
                 }
             }
         });
-
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -417,34 +420,52 @@ public class MainActivity extends AppCompatActivity
             {
                 if (dayOfTheWeek != null)
                 {
-                    int temp=saatFarki.get(0);
-                    for(int i=0;i<saatFarki.size();i++)
+
+                    if (saatFarki.size() != 0)
                     {
-                        if(saatFarki.get(i)<=temp)
+                        int temp = saatFarki.get(0);
+                        for (int i = 0; i < saatFarki.size(); i++)
                         {
-                            index=inlastindex.get(i);
+                            if (saatFarki.get(i) <= temp)
+                            {
+                                index = inlastindex.get(i);
+                            }
                         }
+
+                        String dd[] = clock[index].split(":");
+                        saati.setText(clock[index]);
+                        dersinismi.setText(name[index]);
+                        dersiveren.setText(dersiVeren[index]);
+                        yeri.setText(location[index]);
+
+                        Hsaati.setText(clock[index]);
+                        Hdersinismi.setText(name[index]);
+                        Hdersiveren.setText(dersiVeren[index]);
+                        Hyeri.setText(location[index]);
                     }
-
-                    String dd[] = clock[index].split(":");
-                    saati.setText(clock[index]);
-                    dersinismi.setText(name[index]);
-                    dersiveren.setText(dersiVeren[index]);
-                    yeri.setText(location[index]);
-
-                    Hsaati.setText(clock[index]);
-                    Hdersinismi.setText(name[index]);
-                    Hdersiveren.setText(dersiVeren[index]);
-                    Hyeri.setText(location[index]);
+                    else
+                    {
+                        Hsaati.setVisibility(View.INVISIBLE);
+                        Hdersinismi.setText("Sn." + username);
+                        Hdersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
+                        Hyeri.setVisibility(View.INVISIBLE);
+                    }
                 }
                 else
                 {
-                    saati.setText(" ");
-                    dersinismi.setText("Sn." + username);
-                    dersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
-                    yeri.setText("");
+                    Hsaati.setVisibility(View.INVISIBLE);
+                    Hdersinismi.setText("Sn." + username);
+                    Hdersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
+                    Hyeri.setVisibility(View.INVISIBLE);
                 }
 
+            }
+            else
+            {
+                Hsaati.setVisibility(View.INVISIBLE);
+                Hdersinismi.setText("Sn." + username);
+                Hdersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
+                Hyeri.setVisibility(View.INVISIBLE);
             }
 
             Textviewusername.setText(username);
@@ -538,7 +559,7 @@ public class MainActivity extends AppCompatActivity
             boolean patternFound = false;
             while (startByte <= 5)
             {
-                if (    ((int) scanRecord[startByte + 2] & 0xff) == 0x02 && //Identifies an iBeacon
+                if (((int) scanRecord[startByte + 2] & 0xff) == 0x02 && //Identifies an iBeacon
                         ((int) scanRecord[startByte + 3] & 0xff) == 0x15)
                 { //Identifies correct data length
                     patternFound = true;
@@ -555,11 +576,11 @@ public class MainActivity extends AppCompatActivity
                 String hexString = bytesToHex(uuidBytes);
 
                 //UUID detection
-                String uuid =  hexString.substring(0,8) + "-" +
-                        hexString.substring(8,12) + "-" +
-                        hexString.substring(12,16) + "-" +
-                        hexString.substring(16,20) + "-" +
-                        hexString.substring(20,32);
+                String uuid = hexString.substring(0, 8) + "-" +
+                        hexString.substring(8, 12) + "-" +
+                        hexString.substring(12, 16) + "-" +
+                        hexString.substring(16, 20) + "-" +
+                        hexString.substring(20, 32);
 
                 // major
                 final int major = (scanRecord[startByte + 20] & 0xff) * 0x100 + (scanRecord[startByte + 21] & 0xff);
@@ -567,7 +588,7 @@ public class MainActivity extends AppCompatActivity
                 // minor
                 final int minor = (scanRecord[startByte + 22] & 0xff) * 0x100 + (scanRecord[startByte + 23] & 0xff);
 
-                Toast.makeText(getApplicationContext(),"UUID: " +uuid + "\\nmajor: " +major +"\\nminor" +minor,Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "UUID: " + uuid + "\\nmajor: " + major + "\\nminor" + minor, Toast.LENGTH_LONG).show();
 
             }
 
@@ -575,9 +596,12 @@ public class MainActivity extends AppCompatActivity
     };
 
     static final char[] hexArray = "0123456789ABCDEF".toCharArray();
-    private static String bytesToHex(byte[] bytes) {
+
+    private static String bytesToHex(byte[] bytes)
+    {
         char[] hexChars = new char[bytes.length * 2];
-        for ( int j = 0; j < bytes.length; j++ ) {
+        for (int j = 0; j < bytes.length; j++)
+        {
             int v = bytes[j] & 0xFF;
             hexChars[j * 2] = hexArray[v >>> 4];
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
@@ -589,7 +613,8 @@ public class MainActivity extends AppCompatActivity
     private Runnable scanRunnable = new Runnable()
     {
         @Override
-        public void run() {
+        public void run()
+        {
 
             if (isScanning)
             {

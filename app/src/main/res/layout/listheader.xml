@@ -63,11 +63,8 @@
                     android:textSize="14dp"
                     android:id="@+id/bugun_dersiVeren"
                     android:textColor="#ffffff"
-                    android:layout_below="@+id/cizgi"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="Doç.Dr.AHMET SAYAR"/>
+                    android:text="Doç.Dr.AHMET SAYAR" android:layout_below="@+id/cizgi"
+                    android:layout_alignLeft="@+id/cizgi" android:layout_alignStart="@+id/cizgi"/>
 
             <TextView
                     android:layout_width="wrap_content"

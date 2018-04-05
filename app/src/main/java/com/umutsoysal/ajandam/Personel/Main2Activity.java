@@ -77,8 +77,8 @@ public class Main2Activity extends AppCompatActivity
         getSupportActionBar().setTitle("Bugün");
 
         derslistesi = (ListView) findViewById(R.id.derslistesi);
-        LayoutInflater inflater2 = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View listHeader = inflater2.inflate(R.layout.listheader, null);
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View listHeader = inflater.inflate(R.layout.listheader, null);
         saati = (TextView) findViewById(R.id.saat);
         yeri = (TextView) findViewById(R.id.location);
         dersiveren = (TextView) findViewById(R.id.bugun_dersiVeren);
@@ -86,7 +86,7 @@ public class Main2Activity extends AppCompatActivity
         Hsaati = (TextView) listHeader.findViewById(R.id.saat);
         Hyeri = (TextView) listHeader.findViewById(R.id.location);
         Hdersiveren = (TextView) listHeader.findViewById(R.id.bugun_dersiVeren);
-        Hdersinismi = (TextView) listHeader.findViewById(R.id.isim);
+        Hdersinismi = (TextView) listHeader.findViewById(R.id.now_lesson);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -409,28 +409,44 @@ public class Main2Activity extends AppCompatActivity
             {
                 if (dayOfTheWeek != null)
                 {
-                    int temp=saatFarki.get(0);
-                    for(int i=0;i<saatFarki.size();i++)
+                    if(saatFarki.size()!=0)
                     {
-                        if(saatFarki.get(i)<=temp)
+                        int temp = saatFarki.get(0);
+                        for (int i = 0; i < saatFarki.size(); i++)
                         {
-                            index=inlastindex.get(i);
+                            if (saatFarki.get(i) <= temp)
+                            {
+                                index = inlastindex.get(i);
+                            }
                         }
+
+
+                        Hsaati.setText(clock[index]);
+                        Hdersinismi.setText(username);
+                        Hdersiveren.setText(name[index]);
+                        Hyeri.setText(location[index]);
                     }
-
-
-                    Hsaati.setText(clock[index]);
-                    Hdersinismi.setText(name[index]);
-                    Hdersiveren.setText(name[index]);
-                    Hyeri.setText(location[index]);;
+                    else{
+                        Hsaati.setVisibility(View.INVISIBLE);
+                        Hdersinismi.setText(username);
+                        Hdersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
+                        Hyeri.setVisibility(View.INVISIBLE);
+                    }
                 }
                 else
                 {
-                    saati.setText(" ");
-                    hocaninismi.setText(name[index]);
-                    dersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
-                    yeri.setText("");
+                    Hsaati.setVisibility(View.INVISIBLE);
+                    Hdersinismi.setText(username);
+                    Hdersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
+                    Hyeri.setVisibility(View.INVISIBLE);
                 }
+            }
+            else
+            {
+                Hsaati.setVisibility(View.INVISIBLE);
+                Hdersinismi.setText(name[index]);
+                Hdersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
+                Hyeri.setVisibility(View.INVISIBLE);
             }
 
             Textviewusername.setText(username);
