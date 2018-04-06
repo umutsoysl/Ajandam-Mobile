@@ -31,6 +31,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.umutsoysal.ajandam.Adapter.AkademisyenBildirimAdapter;
 import com.umutsoysal.ajandam.Adapter.DersListesiAdapter;
 import com.umutsoysal.ajandam.HttpHandler;
@@ -133,6 +135,10 @@ public class DuyuruGonder extends Activity {
         liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+
+                YoYo.with(Techniques.FlipInX)
+                        .duration(700)
+                        .playOn(view);
                 ayrinti_goster(position);
             }
         });

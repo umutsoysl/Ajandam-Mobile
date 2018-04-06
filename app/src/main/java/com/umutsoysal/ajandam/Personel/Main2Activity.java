@@ -22,6 +22,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.umutsoysal.ajandam.Adapter.OgrenciDersListesiAdapter;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.HttpHandler;
@@ -66,6 +68,8 @@ public class Main2Activity extends AppCompatActivity
     private Boolean exit = false;
     private ProgressDialog progressDialog;
     private Calendar calendar;
+    private static int scount = 0;
+    private static int lcount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -118,6 +122,56 @@ public class Main2Activity extends AppCompatActivity
                 }
             }
         });
+
+        Hsaati.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (scount % 2 == 0)
+                {
+                    Hsaati.setText("Saat");
+                    YoYo.with(Techniques.FlipInX)
+                            .duration(800)
+                            .playOn(Hsaati);
+                }
+                else
+                {
+                    Hsaati.setText(clock[index]);
+                    YoYo.with(Techniques.FlipInX)
+                            .duration(800)
+                            .playOn(Hsaati);
+
+                }
+                scount++;
+            }
+        });
+
+        Hyeri.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+
+                if (lcount % 2 == 0)
+                {
+                    Hyeri.setText("Sınıf");
+                    YoYo.with(Techniques.FlipInX)
+                            .duration(800)
+                            .playOn(Hyeri);
+
+                }
+                else
+                {
+                    Hyeri.setText(location[index]);
+                    YoYo.with(Techniques.FlipInX)
+                            .duration(800)
+                            .playOn(Hyeri);
+                }
+                lcount++;
+            }
+        });
+
 
         db = new Sqllite(Main2Activity.this);
         Bilgiler = db.getAkademisyen();

@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.umutsoysal.ajandam.R;
 
 import java.util.Random;
@@ -64,7 +66,7 @@ public class BildirimListesiAdapter extends BaseAdapter {
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View itemView = inflater.inflate(R.layout.bildirim_list_item, parent, false);//list_item_row dan yeni bir view oluşturuyoruz
+        final View itemView = inflater.inflate(R.layout.bildirim_list_item, parent, false);//list_item_row dan yeni bir view oluşturuyoruz
 
         icerik2 = (TextView) itemView.findViewById(R.id.detail);
         header=(TextView)itemView.findViewById(R.id.duyuru_title);
@@ -93,7 +95,6 @@ public class BildirimListesiAdapter extends BaseAdapter {
 
         Random random=new Random();
         int count=random.nextInt(14);
-
 
 
         if (android.os.Build.VERSION.SDK_INT >= 21) {

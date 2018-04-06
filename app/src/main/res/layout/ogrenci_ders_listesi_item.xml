@@ -9,30 +9,53 @@
         android:id="@+id/relative"
         android:layout_marginTop="0.1dp"
         android:background="#ffffff">
+        <RelativeLayout
+                android:layout_width="7dp"
+                android:layout_height="47dp"
+                android:layout_marginLeft="34dp"
+                android:layout_below="@+id/frame"
+                android:background="@drawable/kesikli"
+                android:id="@+id/cizgi"
+        >
+
+        </RelativeLayout>
+        <RelativeLayout
+                android:layout_width="41dp"
+                android:layout_height="41dp"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/circle_layout"
+                android:id="@+id/frame"
+                android:backgroundTint="@color/colorPrimary">
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:textColor="#ffffff"
+                android:id="@+id/gun"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:text="Salı"/>
+    </RelativeLayout>
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17dp"
-            android:textColor="@color/colorAccent"
+            android:textSize="12dp"
+            android:textColor="#ffffff"
             android:layout_alignParentLeft="true"
             android:id="@+id/saat"
             android:textStyle="bold"
-            android:layout_marginLeft="13dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="16dp"
-            android:text="19.45"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="17dp"
-            android:textColor="@color/colorAccent"
-            android:id="@+id/gun"
-            android:layout_below="@+id/saat"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="-5dp"
-            android:layout_marginLeft="13dp"
-            android:layout_marginBottom="5dp"
-            android:text="Salı"/>
+            android:background="@drawable/clockbackground"
+            android:paddingLeft="4dp"
+            android:paddingRight="2dp"
+            android:layout_marginLeft="39dp"
+            android:layout_below="@+id/frame"
+            android:layout_marginTop="10dp"
+            android:text="17:00"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,8 +63,9 @@
             android:textColor="#251c00"
             android:layout_centerHorizontal="true"
             android:id="@+id/now_lesson"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="16dp"
+            android:layout_below="@+id/frame"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="1dp"
             android:text="DAĞITIK SİSTEMLERE GİRİŞ"/>
         <TextView
             android:layout_width="wrap_content"
@@ -53,7 +77,7 @@
             android:layout_below="@+id/now_lesson"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="7dp"
             android:text="Doç.Dr.AHMET SAYAR"/>
 
         <TextView
@@ -61,11 +85,11 @@
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:id="@+id/yer"
-            android:layout_centerVertical="true"
+            android:layout_below="@+id/frame"
             android:layout_alignParentRight="true"
             android:textColor="#251c00"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="13dp"
-            android:layout_marginBottom="15dp"
             android:text="Amfi-A"/>
 
 
@@ -75,5 +99,5 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/relative"
-        android:background="#efefef"/>
+        android:background="#f9f9f9"/>
 </RelativeLayout>

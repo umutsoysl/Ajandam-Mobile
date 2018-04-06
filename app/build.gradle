@@ -38,5 +38,9 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.GrenderG:Toasty:1.2.8'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.10'
+    compile 'mobi.inthepocket.android:ibeaconscanner:1.2.2'
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.3@aar'
     testCompile 'junit:junit:4.12'
 }

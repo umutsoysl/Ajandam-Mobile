@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +27,8 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.umutsoysal.ajandam.Adapter.OgrenciDersListesiAdapter;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.HttpHandler;
@@ -71,12 +75,16 @@ public class MainActivity extends AppCompatActivity
     private Boolean exit = false;
     private ProgressDialog progressDialog;
     private Calendar calendar;
+    private static final String LOG_TAG = "MainActivity";
+    private static int scount = 0;
+    private static int lcount = 0;
     private BluetoothManager btManager;
     private BluetoothAdapter btAdapter;
     private Handler scanHandler = new Handler();
     private int scan_interval_ms = 5000;
     private boolean isScanning = false;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -96,6 +104,55 @@ public class MainActivity extends AppCompatActivity
         Hdersiveren = (TextView) listHeader.findViewById(R.id.bugun_dersiVeren);
         Hdersinismi = (TextView) listHeader.findViewById(R.id.now_lesson);
 
+        Hsaati.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (scount % 2 == 0)
+                {
+                    Hsaati.setText("Saat");
+                    YoYo.with(Techniques.FlipInX)
+                            .duration(800)
+                            .playOn(Hsaati);
+                }
+                else
+                {
+                    Hsaati.setText(clock[index]);
+                    YoYo.with(Techniques.FlipInX)
+                            .duration(800)
+                            .playOn(Hsaati);
+
+                }
+                scount++;
+            }
+        });
+
+        Hyeri.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+
+                if (lcount % 2 == 0)
+                {
+                    Hyeri.setText("Sınıf");
+                    YoYo.with(Techniques.FlipInX)
+                            .duration(800)
+                            .playOn(Hyeri);
+
+                }
+                else
+                {
+                    Hyeri.setText(location[index]);
+                    YoYo.with(Techniques.FlipInX)
+                            .duration(800)
+                            .playOn(Hyeri);
+                }
+                lcount++;
+            }
+        });
+
         getSupportActionBar().setTitle("Bugün");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -104,15 +161,10 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
         btManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-        {
-            btAdapter = btManager.getAdapter();
-        }
+        btAdapter = btManager.getAdapter();
 
         scanHandler.post(scanRunnable);
-
 
         derslistesi.addHeaderView(listHeader);
         /* Handle list View scroll events */
@@ -343,37 +395,170 @@ public class MainActivity extends AppCompatActivity
                     now = cal2.getTime();
                     // Different formatters for 12 and 24 hour timestamps
                     simdikiSaat = formatter24.format(now);
+                    String tempDay = "";
 
                     int fark = 0;
-
-                    for (int i = 0; i < object.length(); i++)
+                    int i=0;
+                    for (int a = 0; a < object.length(); a++)
                     {
-                        JSONObject c = object.getJSONObject(i);
-                        name[i] = c.getString("name");
-                        day[i] = c.getString("day");
-                        dersId[i] = c.getString("id");
-                        clock[i] = c.getString("clock");
-                        String[] ar = clock[i].split(":");
-
-                        if (day[i].equals(dayOfTheWeek))
+                        JSONObject c = object.getJSONObject(a);
+                        if (c.getString("day").equals("Pazartesi"))
                         {
-                            int a = Math.abs(Integer.parseInt(ar[0]) - Integer.parseInt(simdikiSaat));
-                            saatFarki.add(a);
-                            index = i;
-                            inlastindex.add(index);
+                            name[i] = c.getString("name");
+                            day[i] = c.getString("day");
+                            dersId[i] = c.getString("id");
+                            clock[i] = c.getString("clock");
+                            String[] ar = clock[i].split(":");
+
+                            if (day[i].equals(dayOfTheWeek))
+                            {
+                                int b = Math.abs(Integer.parseInt(ar[0]) - Integer.parseInt(simdikiSaat));
+                                saatFarki.add(b);
+                                index = i;
+                                inlastindex.add(index);
+                            }
+
+                            location[i] = c.getString("location");
+
+                            JSONObject phone = c.getJSONObject("academician");
+                            String n = phone.getString("name");
+                            String s = phone.getString("surname");
+                            dersiVeren[i] = n + " " + s;
+
+                            i++;
                         }
-
-                        location[i] = c.getString("location");
-
-                        JSONObject phone = c.getJSONObject("academician");
-                        String n = phone.getString("name");
-                        String s = phone.getString("surname");
-                        dersiVeren[i] = n + " " + s;
 
                     }
 
-                    adapter = new OgrenciDersListesiAdapter(MainActivity.this, clock, day, name, dersiVeren, location);
+                    for (int a = 0; a < object.length(); a++)
+                    {
+                        JSONObject c = object.getJSONObject(a);
+                        if (c.getString("day").equals("Salı"))
+                        {
+                            name[i] = c.getString("name");
+                            day[i] = c.getString("day");
+                            dersId[i] = c.getString("id");
+                            clock[i] = c.getString("clock");
+                            String[] ar = clock[i].split(":");
 
+                            if (day[i].equals(dayOfTheWeek))
+                            {
+                                int b = Math.abs(Integer.parseInt(ar[0]) - Integer.parseInt(simdikiSaat));
+                                saatFarki.add(b);
+                                index = i;
+                                inlastindex.add(index);
+                            }
+
+                            location[i] = c.getString("location");
+
+                            JSONObject phone = c.getJSONObject("academician");
+                            String n = phone.getString("name");
+                            String s = phone.getString("surname");
+                            dersiVeren[i] = n + " " + s;
+
+                            i++;
+                        }
+
+                    }
+
+
+                    for (int a = 0; a < object.length(); a++)
+                    {
+                        JSONObject c = object.getJSONObject(a);
+                        if (c.getString("day").equals("Çarşamba"))
+                        {
+                            name[i] = c.getString("name");
+                            day[i] = c.getString("day");
+                            dersId[i] = c.getString("id");
+                            clock[i] = c.getString("clock");
+                            String[] ar = clock[i].split(":");
+
+                            if (day[i].equals(dayOfTheWeek))
+                            {
+                                int b = Math.abs(Integer.parseInt(ar[0]) - Integer.parseInt(simdikiSaat));
+                                saatFarki.add(b);
+                                index = i;
+                                inlastindex.add(index);
+                            }
+
+                            location[i] = c.getString("location");
+
+                            JSONObject phone = c.getJSONObject("academician");
+                            String n = phone.getString("name");
+                            String s = phone.getString("surname");
+                            dersiVeren[i] = n + " " + s;
+
+                            i++;
+                        }
+
+                    }
+
+
+                    for (int a = 0; a < object.length(); a++)
+                    {
+                        JSONObject c = object.getJSONObject(a);
+                        if (c.getString("day").equals("Perşembe"))
+                        {
+                            name[i] = c.getString("name");
+                            day[i] = c.getString("day");
+                            dersId[i] = c.getString("id");
+                            clock[i] = c.getString("clock");
+                            String[] ar = clock[i].split(":");
+
+                            if (day[i].equals(dayOfTheWeek))
+                            {
+                                int b = Math.abs(Integer.parseInt(ar[0]) - Integer.parseInt(simdikiSaat));
+                                saatFarki.add(b);
+                                index = i;
+                                inlastindex.add(index);
+                            }
+
+                            location[i] = c.getString("location");
+
+                            JSONObject phone = c.getJSONObject("academician");
+                            String n = phone.getString("name");
+                            String s = phone.getString("surname");
+                            dersiVeren[i] = n + " " + s;
+
+                            i++;
+                        }
+
+                    }
+
+                    for (int a = 0; a < object.length(); a++)
+                    {
+                        JSONObject c = object.getJSONObject(a);
+                        if (c.getString("day").equals("Cuma"))
+                        {
+                            name[i] = c.getString("name");
+                            day[i] = c.getString("day");
+                            dersId[i] = c.getString("id");
+                            clock[i] = c.getString("clock");
+                            String[] ar = clock[i].split(":");
+
+                            if (day[i].equals(dayOfTheWeek))
+                            {
+                                int b = Math.abs(Integer.parseInt(ar[0]) - Integer.parseInt(simdikiSaat));
+                                saatFarki.add(b);
+                                index = i;
+                                inlastindex.add(index);
+                            }
+
+                            location[i] = c.getString("location");
+
+                            JSONObject phone = c.getJSONObject("academician");
+                            String n = phone.getString("name");
+                            String s = phone.getString("surname");
+                            dersiVeren[i] = n + " " + s;
+
+                            i++;
+                        }
+
+                    }
+
+
+                    adapter = new OgrenciDersListesiAdapter(MainActivity.this, clock, day, name, dersiVeren, location);
+                    i=0;
                 }
                 catch (final JSONException e)
                 {
@@ -549,6 +734,34 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private Runnable scanRunnable = new Runnable()
+    {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+        @Override
+        public void run()
+        {
+
+            if (isScanning)
+            {
+                if (btAdapter != null)
+                {
+                    btAdapter.stopLeScan(leScanCallback);
+                }
+            }
+            else
+            {
+                if (btAdapter != null)
+                {
+                    btAdapter.startLeScan(leScanCallback);
+                }
+            }
+
+            isScanning = !isScanning;
+
+            scanHandler.postDelayed(this, scan_interval_ms);
+        }
+    };
+
 
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback()
     {
@@ -588,12 +801,12 @@ public class MainActivity extends AppCompatActivity
                 // minor
                 final int minor = (scanRecord[startByte + 22] & 0xff) * 0x100 + (scanRecord[startByte + 23] & 0xff);
 
-                Toast.makeText(getApplicationContext(), "UUID: " + uuid + "\\nmajor: " + major + "\\nminor" + minor, Toast.LENGTH_LONG).show();
-
+                Log.i(LOG_TAG, "UUID: " + uuid + "\\nmajor: " + major + "\\nminor" + minor);
             }
 
         }
     };
+
 
     static final char[] hexArray = "0123456789ABCDEF".toCharArray();
 
@@ -609,38 +822,5 @@ public class MainActivity extends AppCompatActivity
         return new String(hexChars);
     }
 
-
-    private Runnable scanRunnable = new Runnable()
-    {
-        @Override
-        public void run()
-        {
-
-            if (isScanning)
-            {
-                if (btAdapter != null)
-                {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                    {
-                        btAdapter.stopLeScan(leScanCallback);
-                    }
-                }
-            }
-            else
-            {
-                if (btAdapter != null)
-                {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                    {
-                        btAdapter.startLeScan(leScanCallback);
-                    }
-                }
-            }
-
-            isScanning = !isScanning;
-
-            scanHandler.postDelayed(this, scan_interval_ms);
-        }
-    };
 
 }

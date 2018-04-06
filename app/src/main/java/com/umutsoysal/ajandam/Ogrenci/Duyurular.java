@@ -20,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.umutsoysal.ajandam.Adapter.BildirimListesiAdapter;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.R;
@@ -79,7 +81,12 @@ public class Duyurular extends Activity {
         liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-               ayrinti_goster(position);
+
+                YoYo.with(Techniques.FlipInX)
+                        .duration(700)
+                        .playOn(view);
+                ayrinti_goster(position);
+
             }
         });
 
@@ -183,6 +190,7 @@ public class Duyurular extends Activity {
         dialog = new Dialog(Duyurular.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.duyuru_more_dialog);
+
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         Window window = dialog.getWindow();

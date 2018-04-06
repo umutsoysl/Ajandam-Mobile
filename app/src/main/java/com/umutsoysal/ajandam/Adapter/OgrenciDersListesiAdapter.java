@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.umutsoysal.ajandam.R;
 
@@ -59,6 +60,7 @@ public class OgrenciDersListesiAdapter extends BaseAdapter
 
         // Declare Variables
         TextView gun, saat, ders, dersiVeren, yer;
+        RelativeLayout frame,cizgi;
 
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -71,6 +73,19 @@ public class OgrenciDersListesiAdapter extends BaseAdapter
         ders = (TextView) itemView.findViewById(R.id.now_lesson);
         dersiVeren = (TextView) itemView.findViewById(R.id.bugun_dersiVeren);
         yer = (TextView) itemView.findViewById(R.id.yer);
+        frame=(RelativeLayout)itemView.findViewById(R.id.frame);
+        cizgi=(RelativeLayout)itemView.findViewById(R.id.cizgi);
+
+
+        if(position-1>=0&&day[position].equals(day[position-1]))
+        {
+            frame.setVisibility(View.GONE);
+           // cizgi.setVisibility(View.VISIBLE);
+        }
+        else {
+            frame.setVisibility(View.VISIBLE);
+            //cizgi.setVisibility(View.INVISIBLE);
+        }
 
 
         if (day[position].equals("Pazartesi"))
