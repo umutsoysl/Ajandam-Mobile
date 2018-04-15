@@ -41,6 +41,18 @@
     <color name="Grafikonuc">#5c718a</color>
 
 
+    <color name="chat1">#0095ff</color>
+    <color name="chat2">#ed5d5d</color>
+    <color name="chat3">#9a4bed</color>
+    <color name="chat4">#f38d46</color>
+    <color name="chat5">#5fba7d</color>
+    <color name="chat6">#b7701b</color>
+    <color name="chat7">#dfb956</color>
+    <color name="chat8">#a0514d</color>
+    <color name="chat9">#81c6c1</color>
+    <color name="chat10">#e280d0</color>
+    <color name="chat11">#8bc34a</color>
+
     <color name="colorPrimaryWhatsApp">#075E54</color>
     <color name="colorPrimaryDarkWhatsApp">#054D44</color>
 

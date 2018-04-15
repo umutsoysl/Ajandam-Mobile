@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,9 +24,12 @@ import com.umutsoysal.ajandam.Ogrenci.MainActivity;
 import com.umutsoysal.ajandam.R;
 import com.umutsoysal.ajandam.conversation.adapter.CustomAdapter;
 import com.umutsoysal.ajandam.conversation.model.Message;
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ChatActivity extends Activity
@@ -39,19 +43,38 @@ public class ChatActivity extends Activity
     private String username;
     private ListView listView;
     private ImageView floatingActionButton;
-    private EditText inputChat;
+    private EmojiconEditText inputChat;
     ImageButton back;
     TextView dersismi;
+    ImageView emojiButton;
+    View rootView;
+    EmojIconActions emojIcon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        rootView = findViewById(R.id.root_view);
         listView = (ListView)findViewById(R.id.chatListView);
-        inputChat = (EditText)findViewById(R.id.inputChat);
+        inputChat = ( EmojiconEditText)findViewById(R.id.inputChat);
         floatingActionButton = (ImageView) findViewById(R.id.fab);
         back=(ImageButton)findViewById(R.id.back);
         dersismi=(TextView) findViewById(R.id.name);
+        emojiButton = (ImageView) findViewById(R.id.emoji_btn);
+        emojIcon = new EmojIconActions(this, rootView, inputChat, emojiButton);
+        emojIcon.ShowEmojIcon();
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.e("Keyboard", "open");
+            }
+
+            @Override
+            public void onKeyboardClose() {
+                Log.e("Keyboard", "close");
+            }
+        });
+
 
         db = FirebaseDatabase.getInstance();
 
@@ -109,6 +132,11 @@ public class ChatActivity extends Activity
 
                     long msTime = System.currentTimeMillis();
                     Date curDateTime = new Date(msTime);
+                  //  curDateTime.setHours(curDateTime.getHours() + 12);
+                    Calendar cal2 = Calendar.getInstance();
+                    cal2.setTime(curDateTime);
+                    cal2.add(Calendar.HOUR, +12);
+                    curDateTime = cal2.getTime();
                     SimpleDateFormat formatter = new SimpleDateFormat("dd'/'MM'/'y hh:mm");
                     String dateTime = formatter.format(curDateTime);
                     Message message = new Message(inputChat.getText().toString(),username,dateTime);

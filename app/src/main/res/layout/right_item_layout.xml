@@ -6,13 +6,12 @@
 
     <RelativeLayout
             android:layout_width="wrap_content"
-            android:background="@drawable/rounded_rectangle_orange"
+            android:background="@drawable/right_bouble_chat_bg"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="60dp"
-            android:backgroundTint="#e2fdc7"
             android:padding="7dip">
 
         <TextView

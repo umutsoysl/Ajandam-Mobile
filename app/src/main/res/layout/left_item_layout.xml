@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
+
+    <RelativeLayout
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/circle_layout"
+            android:id="@+id/frame">
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="#ffffff"
+                android:id="@+id/name"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:text="US"/>
+    </RelativeLayout>
+
 
     <RelativeLayout
             android:layout_width="wrap_content"
@@ -10,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="41dp"
             android:layout_alignParentLeft="true"
             android:layout_marginRight="60dp"
             android:padding="7dip">
@@ -20,16 +42,17 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/username"
                 android:textColor="#e94f4f"
-                android:textSize="14.5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="4dp"/>
+                android:textSize="13dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"/>
 
         <TextView
                 android:text="hi man, how are you?"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:textSize="14dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textSize="13.5dp"
                 android:id="@+id/content"
                 android:layout_below="@+id/username"
                 android:textColor="#363535"
