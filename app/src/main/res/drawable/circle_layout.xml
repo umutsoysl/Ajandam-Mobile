@@ -2,9 +2,9 @@
     android:shape="oval"   >
 
     <solid
-        android:color="#159fa6" >
+        android:color="@color/colorPrimary" >
     </solid>
     <stroke
         android:width="0.8dp"
-        android:color="#000000"/>
+        android:color="#ffffff"/>
 </shape>

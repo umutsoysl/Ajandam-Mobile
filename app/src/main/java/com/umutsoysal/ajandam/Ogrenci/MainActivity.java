@@ -1,18 +1,25 @@
 package com.umutsoysal.ajandam.Ogrenci;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Region;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -24,16 +31,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.umutsoysal.ajandam.Adapter.OgrenciDersListesiAdapter;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.LoginPage;
 import com.umutsoysal.ajandam.R;
+import com.umutsoysal.ajandam.conversation.activity.ChatActivity;
 import es.dmoral.toasty.Toasty;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,6 +97,12 @@ public class MainActivity extends AppCompatActivity
     private Handler scanHandler = new Handler();
     private int scan_interval_ms = 5000;
     private boolean isScanning = false;
+    public static String uuid="";
+    public static int LOCATION_PERMISSION_REQUEST_CODE=1;
+    private ArrayList<String> subjectLists = new ArrayList<>();
+    private FirebaseDatabase dbFire;
+    private DatabaseReference dbRef;
+
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
@@ -103,6 +123,40 @@ public class MainActivity extends AppCompatActivity
         Hyeri = (TextView) listHeader.findViewById(R.id.location);
         Hdersiveren = (TextView) listHeader.findViewById(R.id.bugun_dersiVeren);
         Hdersinismi = (TextView) listHeader.findViewById(R.id.now_lesson);
+
+
+        dbFire = FirebaseDatabase.getInstance();
+        dbRef = dbFire.getReference("ChatSubjects");
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                subjectLists.clear();
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    subjectLists.add(ds.getKey());
+                    Log.d("LOGVALUE",ds.getKey());
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                Toast.makeText(getApplicationContext(),""+databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        derslistesi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            intent.putExtra("subject",name[position-1]);
+            intent.putExtra("username",username+"-"+okulnumber);
+            startActivity(intent);
+        }
+    });
+
 
         Hsaati.setOnClickListener(new View.OnClickListener()
         {
@@ -164,7 +218,21 @@ public class MainActivity extends AppCompatActivity
         btManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         btAdapter = btManager.getAdapter();
 
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                &&
+                ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            askForLocationPermissions();
+        } else {
+            //do your work
+        }
         scanHandler.post(scanRunnable);
+
+
 
         derslistesi.addHeaderView(listHeader);
         /* Handle list View scroll events */
@@ -660,79 +728,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private class GetDevamsizlik extends AsyncTask<Void, Void, Void>
-    {
-        @Override
-        protected void onPreExecute()
-        {
-            super.onPreExecute();
 
-            progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setMessage("Lütfen Bekleyiniz..");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0)
-        {
-            HttpHandler sh = new HttpHandler();
-            // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall("https://spring-kou-service.herokuapp.com/api/rollcall?lessonId=" + dersId[position] + "&studentId=" + MainActivity.id);
-
-            if (jsonStr != null)
-            {
-                try
-                {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-
-                    // Getting JSON Array node
-                    JSONArray object = jsonObj.getJSONArray("devamlilik_sayisi");
-                    String a = object.toString();
-                    int as = 2;
-                    // looping through All Contacts
-                }
-                catch (final JSONException e)
-                {
-                    runOnUiThread(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            Toasty.error(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-                }
-
-            }
-            else
-            {
-                runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        Toasty.error(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result)
-        {
-            super.onPostExecute(result);
-            progressDialog.cancel();
-            progressDialog.dismiss();
-        }
-    }
 
     private Runnable scanRunnable = new Runnable()
     {
@@ -822,5 +818,68 @@ public class MainActivity extends AppCompatActivity
         return new String(hexChars);
     }
 
+
+    private void askForLocationPermissions() {
+
+        // Should we show an explanation?
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+            new android.support.v7.app.AlertDialog.Builder(this)
+                    .setTitle("Location permessions needed")
+                    .setMessage("you need to allow this permission!")
+                    .setPositiveButton("Sure", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    LOCATION_PERMISSION_REQUEST_CODE);
+                        }
+                    })
+                    .setNegativeButton("Not now", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+//                                        //Do nothing
+                        }
+                    })
+                    .show();
+
+            // Show an expanation to the user *asynchronously* -- don't block
+            // this thread waiting for the user's response! After the user
+            // sees the explanation, try again to request the permission.
+
+        } else {
+
+            // No explanation needed, we can request the permission.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
+
+            // MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (isPermissionGranted(permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    //Do you work
+                } else {
+                    Toast.makeText(this, "Can not proceed! i need permission" , Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    public static boolean isPermissionGranted(@NonNull String[] grantPermissions, @NonNull int[] grantResults,
+                                              @NonNull String permission) {
+        for (int i = 0; i < grantPermissions.length; i++) {
+            if (permission.equals(grantPermissions[i])) {
+                return grantResults[i] == PackageManager.PERMISSION_GRANTED;
+            }
+        }
+        return false;
+    }
 
 }

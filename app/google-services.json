@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "48024326327",
+    "firebase_url": "https://ajandam-9b8c2.firebaseio.com",
+    "project_id": "ajandam-9b8c2",
+    "storage_bucket": "ajandam-9b8c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:48024326327:android:8ce38b070632f72f",
+        "android_client_info": {
+          "package_name": "com.umutsoysal.ajandam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "48024326327-5bdb4unnk2k5g66jkmujec0863blo557.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKoWU2Lzsxwb0F8fBfliTsIT0oa7bn6oU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

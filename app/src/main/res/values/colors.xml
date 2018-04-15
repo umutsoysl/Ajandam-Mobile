@@ -41,4 +41,12 @@
     <color name="Grafikonuc">#5c718a</color>
 
 
+    <color name="colorPrimaryWhatsApp">#075E54</color>
+    <color name="colorPrimaryDarkWhatsApp">#054D44</color>
+
+    <color name="rsc_emoji_layout_bkg">#EBEFF2</color>
+    <color name="rsc_emoji_tab_bkg">#E3E7E8</color>
+    <color name="rsc_bottom_panel_bkg">#F8F8F8</color>
+    <color name="rsc_bottom_panel_accent">#263239</color>
+
 </resources>

@@ -24,8 +24,7 @@
                 android:layout_height="41dp"
                 android:layout_marginLeft="16dp"
                 android:background="@drawable/circle_layout"
-                android:id="@+id/frame"
-                android:backgroundTint="@color/colorPrimary">
+                android:id="@+id/frame">
 
 
         <TextView
