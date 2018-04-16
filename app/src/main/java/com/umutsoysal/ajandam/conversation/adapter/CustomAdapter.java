@@ -1,18 +1,35 @@
 package com.umutsoysal.ajandam.conversation.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 import com.umutsoysal.ajandam.R;
 import com.umutsoysal.ajandam.conversation.model.Message;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 
@@ -20,12 +37,15 @@ public class CustomAdapter extends ArrayAdapter<Message>
 {
 
     private String username;
-    private Context context;
+    Context context;
+    public static  int width;
+    public static  int height;
+    Dialog dialog;
 
     public CustomAdapter(Context context, ArrayList<Message> chatList, String username)
     {
         super(context, 0, chatList);
-        this.context=context;
+        this.context = context;
         this.username = username;
     }
 
@@ -33,7 +53,9 @@ public class CustomAdapter extends ArrayAdapter<Message>
     public View getView(int position, View convertView, ViewGroup parent)
     {
 
-        Message message = getItem(position);
+        final Message message = getItem(position);
+        width= context.getResources().getDisplayMetrics().widthPixels;
+        height= context.getResources().getDisplayMetrics().heightPixels;
         if (username.equalsIgnoreCase(message.getGonderici()))
         {
 
@@ -42,7 +64,29 @@ public class CustomAdapter extends ArrayAdapter<Message>
             // TextView txtUser = (TextView) convertView.findViewById(R.id.username);
             TextView txtMessage = (TextView) convertView.findViewById(R.id.content);
             TextView txtTime = (TextView) convertView.findViewById(R.id.time);
+            ImageView resfoto=(ImageView) convertView.findViewById(R.id.images);
 
+            resfoto.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    image_show(context,message.getUri(),message.getZaman());
+                }
+            });
+
+
+            if(message.getUri()!=null&&message.getUri().length()>5)
+            {
+
+                resfoto.setVisibility(View.VISIBLE);
+                txtMessage.setVisibility(View.GONE);
+                Picasso.with(context).load(Uri.parse(message.getUri())).centerCrop().centerCrop().resize(((width / 2) ) , ((height /3))).into(resfoto);
+            }
+            else{
+                resfoto.setVisibility(View.GONE);
+                txtMessage.setVisibility(View.VISIBLE);
+            }
             //  txtUser.setText(message.getGonderici());
             txtMessage.setText(message.getMesajText());
             String taemp[] = message.getZaman().split(" ");
@@ -55,13 +99,34 @@ public class CustomAdapter extends ArrayAdapter<Message>
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.left_item_layout, parent, false);
 
             TextView txtUser = (TextView) convertView.findViewById(R.id.username);
-            TextView txtMessage = (TextView) convertView.findViewById(R.id.content);
+            EmojiconTextView txtMessage = (EmojiconTextView) convertView.findViewById(R.id.content);
             TextView txtTime = (TextView) convertView.findViewById(R.id.time);
-            RelativeLayout frame=(RelativeLayout) convertView.findViewById(R.id.frame);
+            RelativeLayout frame = (RelativeLayout) convertView.findViewById(R.id.frame);
             TextView name = (TextView) convertView.findViewById(R.id.name);
+            ImageView resfoto=(ImageView) convertView.findViewById(R.id.images);
+
+            resfoto.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                   image_show(context,message.getUri(),message.getZaman());
+                }
+            });
+
+            if(message.getUri()!=null&&message.getUri().length()>5)
+            {
+                resfoto.setVisibility(View.VISIBLE);
+                txtMessage.setVisibility(View.GONE);
+                Picasso.with(context).load(Uri.parse(message.getUri())).centerCrop().centerCrop().resize(((width / 2) ) , ((height /3))).into(resfoto);
+            }
+            else{
+                resfoto.setVisibility(View.GONE);
+                txtMessage.setVisibility(View.VISIBLE);
+            }
 
             String color[] = new String[]{"#0095ff", "#ed5d5d", "#9a4bed", "#f38d46", "#5fba7d", "#b7701b", "#dfb956", "#a0514d", "#81c6c1", "#e280d0", "#8bc34a"};
-            int bgcolor[]=new int[]{R.color.chat1,R.color.chat2,R.color.chat3,R.color.chat4,R.color.chat5,R.color.chat6,R.color.chat7,R.color.chat8,R.color.chat9,R.color.chat10,R.color.chat11};
+            int bgcolor[] = new int[]{R.color.chat1, R.color.chat2, R.color.chat3, R.color.chat4, R.color.chat5, R.color.chat6, R.color.chat7, R.color.chat8, R.color.chat9, R.color.chat10, R.color.chat11};
             String nu = message.getGonderici().substring(message.getGonderici().length() - 1);
             if (nu.equals("0"))
             {
@@ -163,9 +228,27 @@ public class CustomAdapter extends ArrayAdapter<Message>
             }
 
 
+            if (position - 1 >= 0)
+            {
+                Message message2 = getItem(position - 1);
+                if (message.getGonderici().equals(message2.getGonderici()))
+                {
+                    frame.setVisibility(View.GONE);
+                }
+                else
+                {
+                    frame.setVisibility(View.VISIBLE);
+                }
+            }
+            else
+            {
+                frame.setVisibility(View.VISIBLE);
+            }
+
+
             String temp[] = message.getGonderici().split("-");
-            String names[]=temp[0].split(" ");
-            name.setText(names[0].substring(0,1)+names[1].substring(0,1));
+            String names[] = temp[0].split(" ");
+            name.setText(names[0].substring(0, 1) + names[1].substring(0, 1));
             txtUser.setText(Html.fromHtml("<b>" + temp[0] + "</b>"));
             txtMessage.setText(message.getMesajText());
             String taemp[] = message.getZaman().split(" ");
@@ -175,4 +258,42 @@ public class CustomAdapter extends ArrayAdapter<Message>
 
         return convertView;
     }
+
+    public void image_show(Context context1,final String uri,final String time)
+    {
+        dialog = new Dialog(context1,android.R.style.Theme_Light);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.image_show);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams param = window.getAttributes();
+        param.gravity = Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL;
+        dialog.setCanceledOnTouchOutside(true);
+        final View dis =(View) dialog.findViewById(R.id.arka_layout2);
+        final ImageView rem2=(ImageView) dialog.findViewById(R.id.view_resim);
+        Picasso.with(context).load(Uri.parse(uri)).centerCrop().centerCrop().resize(((width / 2) ) , ((height /3))).into(rem2);
+        final ImageButton close=(ImageButton) dialog.findViewById(R.id.geri);
+        final TextView page_date=(TextView) dialog.findViewById(R.id.image_create_date);
+
+        page_date.setText(time);
+
+        dis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+
+
 }

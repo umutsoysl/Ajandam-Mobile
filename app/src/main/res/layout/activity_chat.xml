@@ -16,13 +16,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+    <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="7dp"
+            android:layout_marginBottom="-1dp"
+            android:layout_above="@+id/layout"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bottom_shadow"/>
+
     <LinearLayout
             android:orientation="horizontal"
             android:id="@+id/layout"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:background="#ffffff"
-            android:layout_marginTop="10dp"
             android:layout_height="wrap_content">
 
         <ImageView
@@ -50,6 +57,18 @@
                 android:layout_marginLeft="10dp"
                 emojicon:emojiconSize="20sp"
                 android:layout_height="wrap_content" />
+
+        <ImageView
+                android:id="@+id/camera"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="bottom|end|center_vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/foto" />
+
 
         <ImageView
                 android:id="@+id/fab"

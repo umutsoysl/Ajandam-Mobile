@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:weightSum="1"
+              android:id="@+id/arka_layout2"
+              android:orientation="vertical"
+              android:background="#020202">
+
+    <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent">
+
+
+        <com.alexvasilkov.gestures.views.GestureFrameLayout
+                android:id="@+id/view_resiim"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="35dp">
+
+            <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                <ImageView
+                        android:id="@+id/view_resim"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="22dp" />
+
+                <android.support.v4.view.ViewPager
+                        android:id="@+id/viewpager"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="22dp"
+                        android:visibility="gone" />
+            </FrameLayout>
+
+        </com.alexvasilkov.gestures.views.GestureFrameLayout>
+
+
+
+        <TextView
+                android:id="@+id/image_etiket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:layout_marginBottom="45dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#fafafa"
+                android:textSize="14dp" />
+
+
+        <TextView
+                android:id="@+id/image_create_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|top"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="18dp"
+                android:text="Bugün 17:50"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#fafafa"
+                android:textSize="14dp" />
+
+        <ImageButton
+                android:id="@+id/geri"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="left|top"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/back" />
+
+    </FrameLayout>
+
+</LinearLayout>

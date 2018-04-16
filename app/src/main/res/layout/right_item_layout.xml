@@ -2,7 +2,7 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" xmlns:emojicon="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
             android:layout_width="wrap_content"
@@ -14,15 +14,25 @@
             android:layout_marginLeft="60dp"
             android:padding="7dip">
 
-        <TextView
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
                 android:text="hi man, how are you?"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:textSize="14dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:id="@+id/content"
+                emojicon:emojiconAlignment="bottom"
                 android:textColor="#363535"
         />
+        <ImageView android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:padding="5dp"
+                   android:layout_below="@+id/time"
+                   android:id="@+id/images"
+                   android:visibility="gone"
+        />
+
 
         <TextView
                 android:text="17:55"
