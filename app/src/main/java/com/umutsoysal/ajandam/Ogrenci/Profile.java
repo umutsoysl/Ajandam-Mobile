@@ -3,7 +3,6 @@ package com.umutsoysal.ajandam.Ogrenci;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -17,9 +16,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,19 +30,13 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-import com.umutsoysal.ajandam.Adapter.DevamsizlikAdapter;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.LoginPage;
 import com.umutsoysal.ajandam.R;
-import com.umutsoysal.ajandam.conversation.activity.ChatActivity;
-import com.umutsoysal.ajandam.conversation.model.Message;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -54,11 +45,11 @@ import java.util.UUID;
 public class Profile extends Fragment
 {
 
-    RelativeLayout alarmlar,sifreDegistir,cikis;
-    TextView name,no,departman;
+    RelativeLayout alarmlar, sifreDegistir, cikis;
+    TextView name, no, departman;
     ImageView profile_image;
     private final static int REQUEST_SELECT_IMAGE = 100;
-    public static String yol="",password;
+    public static String yol = "", password, username;
     private static final int REQUEST_WRITE_PERMISSION = 786;
     public static FirebaseDatabase db;
     FirebaseStorage storage;
@@ -66,6 +57,7 @@ public class Profile extends Fragment
     StorageReference storageReference;
     ArrayList<HashMap<String, String>> user_info;
     CircleImageView profil_resmi;
+
     public Profile()
     {
         // Required empty public constructor
@@ -76,20 +68,20 @@ public class Profile extends Fragment
     {
         // Inflate the layout for this fragment
         View item = inflater.inflate(R.layout.fragment_activity_profile, container, false);
-        alarmlar=(RelativeLayout)item.findViewById(R.id.dersAlarm);
-        sifreDegistir=(RelativeLayout)item.findViewById(R.id.sifreYenile);
-        cikis=(RelativeLayout)item.findViewById(R.id.oturumuKapat);
-        name=(TextView)item.findViewById(R.id.name);
-        no=(TextView)item.findViewById(R.id.no);
-        departman=(TextView)item.findViewById(R.id.bolum);
-        profile_image=(ImageView)item.findViewById(R.id.select_image);
-        profil_resmi=(CircleImageView)item.findViewById(R.id.profile_image);
+        alarmlar = (RelativeLayout) item.findViewById(R.id.dersAlarm);
+        sifreDegistir = (RelativeLayout) item.findViewById(R.id.sifreYenile);
+        cikis = (RelativeLayout) item.findViewById(R.id.oturumuKapat);
+        name = (TextView) item.findViewById(R.id.name);
+        no = (TextView) item.findViewById(R.id.no);
+        departman = (TextView) item.findViewById(R.id.bolum);
+        profile_image = (ImageView) item.findViewById(R.id.select_image);
+        profil_resmi = (CircleImageView) item.findViewById(R.id.profile_image);
 
         db = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        sql=new Sqllite(getActivity());
+        sql = new Sqllite(getActivity());
 
         profile_image.setOnClickListener(new View.OnClickListener()
         {
@@ -101,13 +93,12 @@ public class Profile extends Fragment
         });
 
 
-
         alarmlar.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(getActivity(),AlarmKur.class));
+                startActivity(new Intent(getActivity(), AlarmKur.class));
                 getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
             }
         });
@@ -117,8 +108,8 @@ public class Profile extends Fragment
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(getActivity(),StudentPassChange.class));
-                getActivity(). overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
+                startActivity(new Intent(getActivity(), StudentPassChange.class));
+                getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
             }
         });
 
@@ -128,7 +119,7 @@ public class Profile extends Fragment
             public void onClick(View view)
             {
 
-               Sqllite db = new Sqllite(getActivity());
+                Sqllite db = new Sqllite(getActivity());
                 db.resetAkademisyen();
                 db.resetUSER();
                 Intent i = new Intent(getActivity(), LoginPage.class);
@@ -139,23 +130,30 @@ public class Profile extends Fragment
         return item;
     }
 
-    private void requestPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    private void requestPermission()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
             requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
 
-        } else {
+        }
+        else
+        {
             startActivityForResult(resimSecimiIntent(), REQUEST_SELECT_IMAGE);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == REQUEST_WRITE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        if (requestCode == REQUEST_WRITE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        {
             startActivityForResult(resimSecimiIntent(), REQUEST_SELECT_IMAGE);
         }
     }
 
-    public Intent resimSecimiIntent() {
+    public Intent resimSecimiIntent()
+    {
 
         Uri outputFileUri = getCaptureImageOutputUri();
 
@@ -164,11 +162,13 @@ public class Profile extends Fragment
 
         Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
-        for (ResolveInfo res : listCam) {
+        for (ResolveInfo res : listCam)
+        {
             Intent intent = new Intent(captureIntent);
             intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
             intent.setPackage(res.activityInfo.packageName);
-            if (outputFileUri != null) {
+            if (outputFileUri != null)
+            {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
             }
             allIntents.add(intent);
@@ -177,7 +177,8 @@ public class Profile extends Fragment
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
         List<ResolveInfo> listGallery = packageManager.queryIntentActivities(galleryIntent, 0);
-        for (ResolveInfo res : listGallery) {
+        for (ResolveInfo res : listGallery)
+        {
             Intent intent = new Intent(galleryIntent);
             intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
             intent.setPackage(res.activityInfo.packageName);
@@ -185,8 +186,10 @@ public class Profile extends Fragment
         }
 
         Intent mainIntent = allIntents.get(allIntents.size() - 1);
-        for (Intent intent : allIntents) {
-            if (intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity")) {
+        for (Intent intent : allIntents)
+        {
+            if (intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity"))
+            {
                 mainIntent = intent;
                 break;
             }
@@ -200,32 +203,41 @@ public class Profile extends Fragment
         return chooserIntent;
     }
 
-    private Uri getCaptureImageOutputUri() {
+    private Uri getCaptureImageOutputUri()
+    {
         Uri outputFileUri = null;
         File getImage = getActivity().getExternalCacheDir();
-        if (getImage != null) {
+        if (getImage != null)
+        {
             outputFileUri = Uri.fromFile(new File(getImage.getPath(), "pickImageResult.jpeg"));
         }
         return outputFileUri;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
 
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK)
+        {
 
-            if (requestCode == REQUEST_SELECT_IMAGE) {
+            if (requestCode == REQUEST_SELECT_IMAGE)
+            {
                 Uri imageUri = getPickImageResultUri(data);
                 startCropActivity(imageUri);
             }
 
-            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+            {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 yol = result.getUri().toString();
-                if (result.getUri() != null) {
+                if (result.getUri() != null)
+                {
 
                     uploadImage(Uri.parse(yol));
-                } else {
+                }
+                else
+                {
                     Toast.makeText(getActivity(), "Fotoğraf seçilemedi!", Toast.LENGTH_LONG).show();
                 }
 
@@ -233,16 +245,19 @@ public class Profile extends Fragment
         }
     }
 
-    public Uri getPickImageResultUri(Intent data) {
+    public Uri getPickImageResultUri(Intent data)
+    {
         boolean isCamera = true;
-        if (data != null && data.getData() != null) {
+        if (data != null && data.getData() != null)
+        {
             String action = data.getAction();
             isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
         }
         return isCamera ? getCaptureImageOutputUri() : data.getData();
     }
 
-    private void startCropActivity(Uri imgUri) {
+    private void startCropActivity(Uri imgUri)
+    {
         CropImage.activity(imgUri)
                 .setAutoZoomEnabled(true)
                 .setAspectRatio(400, 400)
@@ -250,44 +265,51 @@ public class Profile extends Fragment
                 .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(getActivity());
-            uploadImage(imgUri);
+        uploadImage(imgUri);
     }
 
-    private void uploadImage(Uri filePath) {
+    private void uploadImage(Uri filePath)
+    {
 
-        if(filePath != null)
+        if (filePath != null)
         {
             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            final StorageReference ref = storageReference.child("profile/"+ UUID.randomUUID().toString());
+            final StorageReference ref = storageReference.child("profile/" + UUID.randomUUID().toString());
             ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+                    {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+                        {
                             progressDialog.dismiss();
                             Uri downloadUrl = taskSnapshot.getDownloadUrl();
                             sql.resetUSER();
-                            sql.userEkle(name.getText().toString(),password.toString(),downloadUrl.toString());
+                            sql.userEkle(username, password.toString(), downloadUrl.toString());
                             Picasso.with(getActivity()).load(downloadUrl).into(profil_resmi);
 
-                            yol="";
+                            yol = "";
                         }
                     })
-                    .addOnFailureListener(new OnFailureListener() {
+                    .addOnFailureListener(new OnFailureListener()
+                    {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
+                        public void onFailure(@NonNull Exception e)
+                        {
                             progressDialog.dismiss();
-                            Toast.makeText(getActivity(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>()
+                    {
                         @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot)
+                        {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
         }
@@ -297,17 +319,21 @@ public class Profile extends Fragment
     public void onResume()
     {
         super.onResume();
-        sql=new Sqllite(getActivity());
-        user_info=sql.getUSERINFO();
+        sql = new Sqllite(getActivity());
+        user_info = sql.getUSERINFO();
 
-        if(user_info.size()>0)
+        if (user_info.size() > 0)
         {
-            name.setText(user_info.get(0).get("username").toString());
-            password=user_info.get(0).get("password").toString();
+            name.setText(DersProgrami.username);
+            username = (user_info.get(0).get("username").toString());
+            password = user_info.get(0).get("password").toString();
             no.setText(DersProgrami.okulnumber);
-            if(user_info.get(0).get("profile")!=null&&user_info.get(0).get("profile").length()>5){
+            if (user_info.get(0).get("profile") != null && user_info.get(0).get("profile").length() > 5)
+            {
                 Picasso.with(getActivity()).load(user_info.get(0).get("profile")).into(profil_resmi);
-            }else {
+            }
+            else
+            {
                 Picasso.with(getActivity()).load(R.drawable.avatar).into(profil_resmi);
             }
         }

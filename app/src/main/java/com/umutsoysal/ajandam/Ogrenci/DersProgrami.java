@@ -1,6 +1,7 @@
 package com.umutsoysal.ajandam.Ogrenci;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -9,12 +10,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +59,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class DersProgrami extends Fragment
 {
@@ -100,7 +106,7 @@ public class DersProgrami extends Fragment
     private BluetoothAdapter BTAdapter;
     public static int REQUEST_BLUETOOTH = 1;
     public static Boolean burdayim = false;
-
+    FloatingActionButton scanButton;
 
     public DersProgrami()
     {
@@ -126,6 +132,64 @@ public class DersProgrami extends Fragment
         Hyeri = (TextView) listHeader.findViewById(R.id.location);
         Hdersiveren = (TextView) listHeader.findViewById(R.id.bugun_dersiVeren);
         Hdersinismi = (TextView) listHeader.findViewById(R.id.now_lesson);
+        scanButton=(FloatingActionButton)item.findViewById(R.id.scanButton);
+
+
+        scanButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    scanButton.setImageDrawable(getResources().getDrawable(R.drawable.scananim, getActivity().getTheme()));
+                } else {
+                    scanButton.setImageDrawable(getResources().getDrawable(R.drawable.scananim));
+                }
+
+                final AnimationDrawable animationDrawable = (AnimationDrawable) scanButton.getDrawable();
+                animationDrawable.start();
+
+                btManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
+                btAdapter = btManager.getAdapter();
+
+                burdayim=false;
+                scanHandler.post(scanRunnable);
+
+                //ble beacon scanner start
+                BTAdapter = BluetoothAdapter.getDefaultAdapter();
+                // Phone does not support Bluetooth so let the user know and exit.
+                if (BTAdapter == null)
+                {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Not compatible")
+                            .setMessage("Your phone does not support Bluetooth")
+                            .setPositiveButton("Exit", new DialogInterface.OnClickListener()
+                            {
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    System.exit(0);
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+
+                if (!BTAdapter.isEnabled())
+                {
+                    Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(enableBT, REQUEST_BLUETOOTH);
+                }
+
+                Log.d("DEVICELIST", "Super called for DeviceListFragment onCreate\n");
+                Set<BluetoothDevice> pairedDevices = BTAdapter.getBondedDevices();
+
+                List<String> s = new ArrayList<String>();
+                for (BluetoothDevice bt : pairedDevices)
+                    s.add(bt.getName());
+
+            }
+        });
 
 
         dbFire = FirebaseDatabase.getInstance();

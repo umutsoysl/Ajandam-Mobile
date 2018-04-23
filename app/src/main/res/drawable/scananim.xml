@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+            android:drawable="@drawable/yuvarlak2"
+            android:duration="700"/>
+    <item
+            android:drawable="@drawable/yuvarlak3"
+            android:duration="700"/>
+    <item
+            android:drawable="@drawable/yuvarlak4"
+            android:duration="700"/>
+</animation-list>
