@@ -170,7 +170,7 @@ public class LoginPage extends Activity
             if (result.toString().length() > 4)
             {
                 db = new Sqllite(LoginPage.this);
-                db.userEkle(username.getText().toString(), password.getText().toString());
+                db.userEkle(username.getText().toString(), password.getText().toString(),"");
                 uyariMesaji.setVisibility(View.INVISIBLE);
                 Log.e(TAG, "populate UI after response from service using OkHttp client");
                 govde = result.toString();

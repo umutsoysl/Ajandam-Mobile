@@ -1,16 +1,16 @@
 package com.umutsoysal.ajandam.Ogrenci;
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.text.Html;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -19,19 +19,18 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.umutsoysal.ajandam.Adapter.BildirimListesiAdapter;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.R;
-
 import es.dmoral.toasty.Toasty;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Duyurular extends Activity {
+public class Duyurular extends Fragment
+{
 
     ImageButton back;
     ListView liste;
@@ -42,45 +41,33 @@ public class Duyurular extends Activity {
     String baslik[];
     String icerik[];
     String duyuruSahibi[];
-    public static String id="";
+    public static String id;
     Dialog dialog;
 
+    public Duyurular()
+    {
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_duyurular);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState)
+    {
+        // Inflate the layout for this fragment
+        View item = inflater.inflate(R.layout.activity_duyurular, container, false);
+        liste = (ListView) item.findViewById(R.id.bildirimler);
 
-        back=(ImageButton)findViewById(R.id.back);
-        liste=(ListView)findViewById(R.id.bildirimler);
+        id = DersProgrami.id;
 
-
-
-
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                id= null;
-            } else {
-                id= extras.getString("id");
-            }
-        } else {
-            id= (String) savedInstanceState.getSerializable("id");
-            id=MainActivity.id;
+        if(id!=null)
+        {
+            new DuyuruListele().execute();
         }
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i=new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(i);
-            }
-        });
-
-        new DuyuruListele().execute();
-
-        liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        liste.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+                                    int position, long id)
+            {
 
                 YoYo.with(Techniques.FlipInX)
                         .duration(700)
@@ -89,16 +76,17 @@ public class Duyurular extends Activity {
 
             }
         });
-
+        return item;
     }
 
 
     private class DuyuruListele extends AsyncTask<String, Void, String>
     {
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(Duyurular.this);
+            progressDialog = new ProgressDialog(getActivity());
             progressDialog.setMessage("Yükleniyor..");
             progressDialog.setCancelable(false);
             progressDialog.show();
@@ -109,46 +97,53 @@ public class Duyurular extends Activity {
         {
             HttpHandler sh = new HttpHandler();
 
-            String jsonStr=sh.makeServiceCall("https://spring-kou-service.herokuapp.com/api/announcement/student?studentId="+id);
+            String jsonStr = sh.makeServiceCall("https://spring-kou-service.herokuapp.com/api/announcement/student?studentId=" + id);
 
-            if (jsonStr != null) {
-                try {
+            if (jsonStr != null)
+            {
+                try
+                {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     JSONArray object = jsonObj.getJSONArray("duyurular");
 
                     // looping through All Contacts
-                    dersAdi=new String[object.length()];
-                    tarih=new String[object.length()];
-                    baslik=new String[object.length()];
-                    icerik=new String[object.length()];
-                    duyuruSahibi=new String[object.length()];
+                    dersAdi = new String[object.length()];
+                    tarih = new String[object.length()];
+                    baslik = new String[object.length()];
+                    icerik = new String[object.length()];
+                    duyuruSahibi = new String[object.length()];
 
-                    int a=object.length();
-                    for (int i = 0; i < object.length(); i++) {
+                    int a = object.length();
+                    for (int i = 0; i < object.length(); i++)
+                    {
                         JSONObject c = object.getJSONObject(i);
                         baslik[i] = c.getString("title");
-                        icerik[i]=c.getString("content");
-                        tarih[i]=c.getString("date");
+                        icerik[i] = c.getString("content");
+                        tarih[i] = c.getString("date");
 
                         JSONObject akademisyen = c.getJSONObject("academician");
                         String n = akademisyen.getString("name");
                         String s = akademisyen.getString("surname");
-                        duyuruSahibi[i]=n+" "+s;
+                        duyuruSahibi[i] = n + " " + s;
 
                         JSONObject lesson = c.getJSONObject("lesson");
-                        dersAdi[i]=lesson.getString("name");
+                        dersAdi[i] = lesson.getString("name");
 
                     }
 
-                    adapter=new BildirimListesiAdapter(getApplicationContext(),baslik,icerik,tarih,dersAdi,duyuruSahibi);
+                    adapter = new BildirimListesiAdapter(getActivity(), baslik, icerik, tarih, dersAdi, duyuruSahibi);
 
 
-                } catch (final JSONException e) {
-                    runOnUiThread(new Runnable() {
+                }
+                catch (final JSONException e)
+                {
+                    getActivity().runOnUiThread(new Runnable()
+                    {
                         @Override
-                        public void run() {
-                            Toasty.error(getApplicationContext(),
+                        public void run()
+                        {
+                            Toasty.error(getActivity(),
                                     "Json parsing error: " + e.getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
@@ -156,11 +151,15 @@ public class Duyurular extends Activity {
 
                 }
 
-            } else {
-                runOnUiThread(new Runnable() {
+            }
+            else
+            {
+                getActivity().runOnUiThread(new Runnable()
+                {
                     @Override
-                    public void run() {
-                        Toasty.error(getApplicationContext(),
+                    public void run()
+                    {
+                        Toasty.error(getActivity(),
                                 "Bilgiler alınırken beklenmedik hata oldu.Tekrar deneyiniz!",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -169,7 +168,6 @@ public class Duyurular extends Activity {
 
             return null;
         }
-
 
 
         @Override
@@ -185,9 +183,10 @@ public class Duyurular extends Activity {
     }
 
 
-    public void ayrinti_goster(int position) {
+    public void ayrinti_goster(int position)
+    {
 
-        dialog = new Dialog(Duyurular.this);
+        dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.duyuru_more_dialog);
 
@@ -201,17 +200,19 @@ public class Duyurular extends Activity {
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
 
-        View dis =(View) dialog.findViewById(R.id.arkaplan);
-        RelativeLayout kapat=(RelativeLayout)dialog.findViewById(R.id.kapat);
-        TextView header= (TextView) dialog.findViewById(R.id.baslik);
-        TextView metin= (TextView) dialog.findViewById(R.id.icerik);
+        View dis = (View) dialog.findViewById(R.id.arkaplan);
+        RelativeLayout kapat = (RelativeLayout) dialog.findViewById(R.id.kapat);
+        TextView header = (TextView) dialog.findViewById(R.id.baslik);
+        TextView metin = (TextView) dialog.findViewById(R.id.icerik);
 
         header.setText(baslik[position].toString());
         metin.setText(Html.fromHtml(icerik[position].toString()));
 
-        kapat.setOnClickListener(new View.OnClickListener() {
+        kapat.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 dialog.dismiss();
             }
         });

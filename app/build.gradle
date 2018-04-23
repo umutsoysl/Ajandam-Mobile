@@ -28,6 +28,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support:design:26.+'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
     compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
@@ -51,6 +52,8 @@ dependencies {
     compile 'com.alexvasilkov:gesture-views:2.3.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
+    implementation 'com.google.firebase:firebase-messaging:10.0.1'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
     testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'

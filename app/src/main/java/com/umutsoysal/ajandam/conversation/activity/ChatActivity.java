@@ -40,6 +40,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import com.umutsoysal.ajandam.Database.Sqllite;
+import com.umutsoysal.ajandam.Ogrenci.DersProgrami;
 import com.umutsoysal.ajandam.Ogrenci.MainActivity;
 import com.umutsoysal.ajandam.R;
 import com.umutsoysal.ajandam.conversation.adapter.CustomAdapter;
@@ -52,6 +54,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,6 +81,9 @@ public class ChatActivity extends Activity implements ActivityCompat.OnRequestPe
     private static final int REQUEST_WRITE_PERMISSION = 786;
     FirebaseStorage storage;
     StorageReference storageReference;
+    ArrayList<HashMap<String, String>> user_info;
+    public static String pp_username,pp_number,pp_departman,pp_photo;
+    Sqllite sqllite;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +115,16 @@ public class ChatActivity extends Activity implements ActivityCompat.OnRequestPe
         db = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        sqllite=new Sqllite(ChatActivity.this);
+        user_info=sqllite.getUSERINFO();
+
+        if(user_info.size()>0)
+        {
+            pp_username=user_info.get(0).get("username").toString();
+            pp_number= DersProgrami.okulnumber;
+            pp_photo=user_info.get(0).get("profile");
+        }
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
@@ -182,7 +198,7 @@ public class ChatActivity extends Activity implements ActivityCompat.OnRequestPe
                     curDateTime = cal2.getTime();
                     SimpleDateFormat formatter = new SimpleDateFormat("dd'/'MM'/'y hh:mm");
                     String dateTime = formatter.format(curDateTime);
-                    Message message = new Message(inputChat.getText().toString(),username,dateTime,yol);
+                    Message message = new Message(inputChat.getText().toString(),username,pp_photo,dateTime,yol);
                     dbRef.push().setValue(message);
                     inputChat.setText("");
 
@@ -342,8 +358,9 @@ public class ChatActivity extends Activity implements ActivityCompat.OnRequestPe
                             SimpleDateFormat formatter = new SimpleDateFormat("dd'/'MM'/'y hh:mm");
                             String dateTime = formatter.format(curDateTime);
                             Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            Message message = new Message(inputChat.getText().toString(),username,dateTime,downloadUrl.toString());
+                            Message message = new Message(inputChat.getText().toString(),username,pp_photo,dateTime,downloadUrl.toString());
                             dbRef.push().setValue(message);
+                            yol="";
                             inputChat.setText("");
                         }
                     })
@@ -365,4 +382,19 @@ public class ChatActivity extends Activity implements ActivityCompat.OnRequestPe
         }
     }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        sqllite=new Sqllite(ChatActivity.this);
+        user_info=sqllite.getUSERINFO();
+
+        if(user_info.size()>0)
+        {
+            pp_username=user_info.get(0).get("username").toString();
+            pp_number= DersProgrami.okulnumber;
+            pp_photo=user_info.get(0).get("profile");
+        }
+
+    }
 }

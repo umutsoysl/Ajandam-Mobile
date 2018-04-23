@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:background="#88838383"
+                android:id="@+id/discerceve"
+                android:layout_height="fill_parent">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffffff"
+            android:layout_marginRight="60dp"
+            android:layout_alignParentLeft="true">
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/scrollView">
+            <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content">
+
+                <ImageView android:layout_width="28dp" android:layout_height="28dp"
+                           android:layout_alignParentRight="true"
+                           android:background="@drawable/close"
+                           android:padding="15dp"
+                           android:id="@+id/close"
+                           android:layout_margin="16dp"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/avatar"
+                        app:civ_border_width="3dp"
+                        android:layout_marginTop="30dp"
+                        android:id="@+id/profile_image"
+                        android:layout_marginLeft="16dp"
+                        app:civ_border_color="#ffffff"
+                        android:layout_marginBottom="6dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:layout_below="@+id/profile_image"
+                          android:text="Umut Soysal"
+                          android:textColor="#1d1d1d"
+                          android:textStyle="bold"
+                          android:textSize="21dp"
+                          android:id="@+id/username"
+                          android:layout_marginLeft="17dp"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:layout_below="@+id/username"
+                          android:text="140202040"
+                          android:textColor="#657785"
+                          android:textSize="14dp"
+                          android:id="@+id/numuro"
+                          android:layout_marginBottom="25dp"
+                          android:layout_marginLeft="17dp"/>
+
+                <ImageView android:layout_width="match_parent" android:layout_height="0.09dp"
+                           android:layout_below="@+id/numuro"
+                           android:id="@+id/line1"
+                           android:background="#98a3ac"/>
+
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:layout_below="@+id/line1"
+                                android:paddingRight="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="15dp"
+                                android:layout_marginTop="5dp"
+                                android:id="@+id/profile"
+                                android:paddingBottom="15dp">
+                    <ImageView android:layout_width="23dp" android:layout_height="23dp"
+                               android:background="@drawable/profile"
+                               android:layout_marginLeft="6dp"
+                               android:layout_centerVertical="true"
+                    />
+
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:text="Profil"
+                              android:textSize="18dp"
+                              android:textColor="#1d1d1d"
+                              android:layout_marginLeft="52dp"
+                              android:layout_centerVertical="true"/>
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:layout_below="@+id/profile"
+                                android:paddingRight="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="15dp"
+                                android:layout_marginTop="5dp"
+                                android:id="@+id/dersListesi"
+                                android:paddingBottom="15dp"
+                                android:background="#ffffff">
+                    <ImageView android:layout_width="23dp" android:layout_height="25dp"
+                               android:background="@drawable/liste"
+                               android:layout_marginLeft="6dp"
+                               android:layout_centerVertical="true"
+                    />
+
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:text="Ders Listesi"
+                              android:textSize="18dp"
+                              android:textColor="#1d1d1d"
+                              android:layout_marginLeft="52dp"
+                              android:layout_centerVertical="true"/>
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:layout_below="@+id/dersListesi"
+                                android:paddingRight="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="15dp"
+                                android:layout_marginTop="5dp"
+                                android:id="@+id/dersTakip"
+                                android:paddingBottom="15dp"
+                                android:layout_marginBottom="15dp">
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                               android:background="@drawable/alarmliste"
+                               android:layout_marginLeft="6dp"
+                               android:layout_centerVertical="true"
+                    />
+
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:text="Ders Alarm"
+                              android:textSize="18dp"
+                              android:textColor="#1d1d1d"
+                              android:layout_marginLeft="52dp"
+                              android:layout_centerVertical="true"/>
+
+
+                </RelativeLayout>
+
+
+                <ImageView android:layout_width="match_parent" android:layout_height="0.09dp"
+                           android:layout_below="@+id/dersTakip"
+                           android:id="@+id/line"
+                           android:background="#98a3ac"/>
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:layout_below="@+id/line"
+                                android:paddingRight="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="15dp"
+                                android:layout_marginTop="20dp"
+                                android:id="@+id/info"
+                                android:paddingBottom="5dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:text="Hakkımızda"
+                              android:textSize="18dp"
+                              android:textColor="#1d1d1d"
+                              android:layout_marginLeft="16dp"
+                              android:layout_centerVertical="true"/>
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:layout_below="@+id/info"
+                                android:paddingRight="10dp"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="15dp"
+                                android:layout_marginTop="5dp"
+                                android:id="@+id/help">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:text="Yardım merkezi"
+                              android:textSize="18dp"
+                              android:textColor="#1d1d1d"
+                              android:layout_marginLeft="16dp"
+                              android:layout_centerVertical="true"/>
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:paddingRight="10dp"
+                                android:layout_below="@+id/help"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="15dp"
+                                android:layout_marginTop="5dp"
+                                android:id="@+id/out">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                              android:text="Oturumu Kapat"
+                              android:textSize="18dp"
+                              android:textColor="#f43e3e"
+                              android:layout_marginLeft="16dp"
+                              android:layout_centerVertical="true"/>
+
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+        </ScrollView>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

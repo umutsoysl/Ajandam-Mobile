@@ -35,6 +35,7 @@
             android:text="194 defa görüntülendi"
             android:textSize="9dp"
             android:layout_marginBottom="5dp"
+            android:autoLink="all"
             android:visibility="visible"
             android:layout_below="@+id/duyuru_title"
             android:layout_marginLeft="40dp"
@@ -49,6 +50,7 @@
             android:visibility="visible"
             android:layout_below="@+id/dersAdi"
             android:layout_marginLeft="40dp"
+            android:autoLink="all"
             android:layout_marginRight="22dp"
             android:textColor="#6f6f6f" />
 

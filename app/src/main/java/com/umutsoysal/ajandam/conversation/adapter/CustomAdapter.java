@@ -2,6 +2,7 @@ package com.umutsoysal.ajandam.conversation.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -9,6 +10,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +28,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.umutsoysal.ajandam.R;
 import com.umutsoysal.ajandam.conversation.model.Message;
+import de.hdodenhof.circleimageview.CircleImageView;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconTextView;
 
 import java.io.BufferedInputStream;
@@ -65,6 +71,7 @@ public class CustomAdapter extends ArrayAdapter<Message>
             TextView txtMessage = (TextView) convertView.findViewById(R.id.content);
             TextView txtTime = (TextView) convertView.findViewById(R.id.time);
             ImageView resfoto=(ImageView) convertView.findViewById(R.id.images);
+            txtMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
             resfoto.setOnClickListener(new View.OnClickListener()
             {
@@ -81,7 +88,7 @@ public class CustomAdapter extends ArrayAdapter<Message>
 
                 resfoto.setVisibility(View.VISIBLE);
                 txtMessage.setVisibility(View.GONE);
-                Picasso.with(context).load(Uri.parse(message.getUri())).centerCrop().centerCrop().resize(((width / 2) ) , ((height /3))).into(resfoto);
+                Picasso.with(context).load(Uri.parse(message.getUri())).centerCrop().centerCrop().resize(((width /2)+200 ) , ((height /3))).into(resfoto);
             }
             else{
                 resfoto.setVisibility(View.GONE);
@@ -103,7 +110,23 @@ public class CustomAdapter extends ArrayAdapter<Message>
             TextView txtTime = (TextView) convertView.findViewById(R.id.time);
             RelativeLayout frame = (RelativeLayout) convertView.findViewById(R.id.frame);
             TextView name = (TextView) convertView.findViewById(R.id.name);
+            CircleImageView profile=(CircleImageView)convertView.findViewById(R.id.profile_image);
             ImageView resfoto=(ImageView) convertView.findViewById(R.id.images);
+            txtMessage.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+
+
+
+            profile.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    image_show(context,message.getGondericiPP(),message.getGonderici());
+                }
+            });
+
 
             resfoto.setOnClickListener(new View.OnClickListener()
             {
@@ -118,113 +141,124 @@ public class CustomAdapter extends ArrayAdapter<Message>
             {
                 resfoto.setVisibility(View.VISIBLE);
                 txtMessage.setVisibility(View.GONE);
-                Picasso.with(context).load(Uri.parse(message.getUri())).centerCrop().centerCrop().resize(((width / 2) ) , ((height /3))).into(resfoto);
+                Picasso.with(context).load(Uri.parse(message.getUri())).centerCrop().centerCrop().resize(((width / 2)+200 ) , ((height /3))).into(resfoto);
             }
             else{
                 resfoto.setVisibility(View.GONE);
                 txtMessage.setVisibility(View.VISIBLE);
             }
 
-            String color[] = new String[]{"#0095ff", "#ed5d5d", "#9a4bed", "#f38d46", "#5fba7d", "#b7701b", "#dfb956", "#a0514d", "#81c6c1", "#e280d0", "#8bc34a"};
-            int bgcolor[] = new int[]{R.color.chat1, R.color.chat2, R.color.chat3, R.color.chat4, R.color.chat5, R.color.chat6, R.color.chat7, R.color.chat8, R.color.chat9, R.color.chat10, R.color.chat11};
-            String nu = message.getGonderici().substring(message.getGonderici().length() - 1);
-            if (nu.equals("0"))
+            if(message.getGondericiPP()!=null&&message.getGondericiPP().length()>5)
             {
-                txtUser.setTextColor(Color.parseColor(color[0]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[0]));
-                }
-            }
-            else if (nu.equals("1"))
+                profile.setVisibility(View.VISIBLE);
+                frame.setVisibility(View.GONE);
+                Picasso.with(context).load(message.getGondericiPP()).resize(200,200).into(profile);
+            }else
             {
-                txtUser.setTextColor(Color.parseColor(color[1]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[1]));
-                }
+                profile.setVisibility(View.GONE);
+                frame.setVisibility(View.VISIBLE);
 
-            }
-            else if (nu.equals("2"))
-            {
-                txtUser.setTextColor(Color.parseColor(color[2]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                String color[] = new String[]{"#0095ff", "#ed5d5d", "#9a4bed", "#f38d46", "#5fba7d", "#b7701b", "#dfb956", "#a0514d", "#81c6c1", "#e280d0", "#8bc34a"};
+                int bgcolor[] = new int[]{R.color.chat1, R.color.chat2, R.color.chat3, R.color.chat4, R.color.chat5, R.color.chat6, R.color.chat7, R.color.chat8, R.color.chat9, R.color.chat10, R.color.chat11};
+                String nu = message.getGonderici().substring(message.getGonderici().length() - 1);
+                if (nu.equals("0"))
                 {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[2]));
+                    txtUser.setTextColor(Color.parseColor(color[0]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[0]));
+                    }
                 }
-
-            }
-            else if (nu.equals("3"))
-            {
-                txtUser.setTextColor(Color.parseColor(color[3]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                else if (nu.equals("1"))
                 {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[3]));
-                }
+                    txtUser.setTextColor(Color.parseColor(color[1]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[1]));
+                    }
 
-            }
-            else if (nu.equals("4"))
-            {
-                txtUser.setTextColor(Color.parseColor(color[4]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                }
+                else if (nu.equals("2"))
                 {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[4]));
-                }
+                    txtUser.setTextColor(Color.parseColor(color[2]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[2]));
+                    }
 
-            }
-            else if (nu.equals("5"))
-            {
-                txtUser.setTextColor(Color.parseColor(color[5]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                }
+                else if (nu.equals("3"))
                 {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[5]));
-                }
+                    txtUser.setTextColor(Color.parseColor(color[3]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[3]));
+                    }
 
-            }
-            else if (nu.equals("6"))
-            {
-                txtUser.setTextColor(Color.parseColor(color[6]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                }
+                else if (nu.equals("4"))
                 {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[6]));
-                }
+                    txtUser.setTextColor(Color.parseColor(color[4]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[4]));
+                    }
 
-            }
-            else if (nu.equals("7"))
-            {
-                txtUser.setTextColor(Color.parseColor(color[7]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                }
+                else if (nu.equals("5"))
                 {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[7]));
-                }
+                    txtUser.setTextColor(Color.parseColor(color[5]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[5]));
+                    }
 
-            }
-            else if (nu.equals("8"))
-            {
-                txtUser.setTextColor(Color.parseColor(color[8]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                }
+                else if (nu.equals("6"))
                 {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[8]));
-                }
+                    txtUser.setTextColor(Color.parseColor(color[6]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[6]));
+                    }
 
-            }
-            else if (nu.equals("9"))
-            {
-                txtUser.setTextColor(Color.parseColor(color[9]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                }
+                else if (nu.equals("7"))
                 {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[9]));
-                }
+                    txtUser.setTextColor(Color.parseColor(color[7]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[7]));
+                    }
 
-            }
-            else
-            {
-                txtUser.setTextColor(Color.parseColor(color[10]));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                }
+                else if (nu.equals("8"))
                 {
-                    frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[10]));
-                }
+                    txtUser.setTextColor(Color.parseColor(color[8]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[8]));
+                    }
 
+                }
+                else if (nu.equals("9"))
+                {
+                    txtUser.setTextColor(Color.parseColor(color[9]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[9]));
+                    }
+
+                }
+                else
+                {
+                    txtUser.setTextColor(Color.parseColor(color[10]));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    {
+                        frame.setBackgroundTintList(context.getResources().getColorStateList(bgcolor[10]));
+                    }
+
+                }
             }
 
 
@@ -234,15 +268,34 @@ public class CustomAdapter extends ArrayAdapter<Message>
                 if (message.getGonderici().equals(message2.getGonderici()))
                 {
                     frame.setVisibility(View.GONE);
+                    profile.setVisibility(View.GONE);
                 }
                 else
                 {
-                    frame.setVisibility(View.VISIBLE);
+                    if(message.getGondericiPP()!=null&&message.getGondericiPP().length()>5)
+                    {
+                        profile.setVisibility(View.VISIBLE);
+                        frame.setVisibility(View.GONE);
+                        Picasso.with(context).load(message.getGondericiPP()).resize(200,200).into(profile);
+                    }else
+                    {
+                        frame.setVisibility(View.VISIBLE);
+                        profile.setVisibility(View.GONE);
+                    }
                 }
             }
             else
             {
-                frame.setVisibility(View.VISIBLE);
+                if(message.getGondericiPP()!=null&&message.getGondericiPP().length()>5)
+                {
+                    profile.setVisibility(View.VISIBLE);
+                    frame.setVisibility(View.GONE);
+                    Picasso.with(context).load(message.getGondericiPP()).resize(200,200).into(profile);
+                }else
+                {
+                    frame.setVisibility(View.VISIBLE);
+                    profile.setVisibility(View.GONE);
+                }
             }
 
 

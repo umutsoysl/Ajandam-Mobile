@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_dersler"
+        android:checked="true"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Ders Programı"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_devamsizlik"
+        android:checked="false"
+        android:icon="@drawable/devamsizlik"
+        android:title="Devamsızlık"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_duyuru"
+        android:checked="false"
+        android:icon="@drawable/duyuru"
+        android:title="Duyurular"
+        app:showAsAction="ifRoom" />
+
+    <item
+            android:id="@+id/action_sohbet"
+            android:checked="false"
+            android:icon="@drawable/sohbet"
+            android:title="Sohbetler"
+            app:showAsAction="ifRoom" />
+
+    <item
+            android:id="@+id/action_profile"
+            android:checked="false"
+            android:icon="@drawable/user"
+            android:title="Profilim"
+            app:showAsAction="ifRoom" />
+
+</menu>

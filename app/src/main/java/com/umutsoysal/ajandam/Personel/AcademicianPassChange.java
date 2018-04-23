@@ -195,7 +195,7 @@ public class AcademicianPassChange extends Activity
             {
                 Sqllite db=new Sqllite(getApplicationContext());
                 db.resetUSER();
-                db.userEkle(name[0],password2.getText().toString().trim());
+                db.userEkle(name[0],password2.getText().toString().trim(),"");
 
                 Toasty.success(getApplicationContext(), "\n" +
                         "Şifre Başarıyla Yenilendi", Toast.LENGTH_LONG).show();

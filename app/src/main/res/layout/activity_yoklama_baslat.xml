@@ -54,7 +54,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:id="@+id/metin"
-            android:text="Yoklamayı başlattıktan sonra süre girmediğinizde 10 dk sonra yoklama otomatik olarak tamamlanır."/>
+            android:text="Yoklama esnasında yaşanan teknik hatalardan dolayı yoklamaya katılamayan öğrenciyi elle ekle."/>
 
         <EditText
             android:layout_width="fill_parent"
@@ -62,34 +62,31 @@
             android:padding="9dp"
             android:id="@+id/sure"
             android:fontFamily="serif"
-            android:backgroundTint="#60000000"
+            android:backgroundTint="#60808080"
             android:textColor="#ffffff"
             android:inputType="number"
-            android:drawableLeft="@drawable/timer"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/metin"
             android:layout_marginRight="40dp"
             android:layout_marginLeft="40dp"
             android:textColorHint="#ffffff"
             android:background="@drawable/edittext_round"
-            android:hint="  Süre Giriniz.." />
+            android:hint="  Öğr. numarası.." />
 
         <Button
-            android:layout_width="fill_parent"
-            android:layout_height="43dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:padding="10dp"
             android:id="@+id/submit"
-            android:textColor="#ffffff"
-            android:text="Yoklamayı Başlat"
+            android:textColor="@color/colorPrimary"
+            android:text="Ekle"
             android:fontFamily="serif"
-            android:textSize="17dp"
+            android:textSize="16dp"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/sure"
-            android:layout_marginRight="65dp"
-            android:layout_marginLeft="65dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:background="@drawable/button_round"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/message_button"
             />
         <ListView
             android:layout_width="fill_parent"

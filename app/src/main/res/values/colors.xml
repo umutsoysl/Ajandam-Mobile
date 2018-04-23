@@ -3,8 +3,15 @@
     <color name="colorPrimary">#00a1d9</color>
     <color name="colorPrimaryDark">#007aa4</color>
     <color name="colorAccent">#f2ae2d</color>
-    <color name="gri">#a3a3a3</color>
+    <color name="gri">#c1c1c1</color>
     <color name="alti">#00a1d9</color>
+    <color name="tab_background">#faf9f9</color>
+    <color name="tab_disable">#c7c7c7</color>
+    <color name="tab_enable">#27861b</color>
+    <color name="tab_checked">#1e1e1e</color>
+    <color name="tab_unchecked">#9b9b9b</color>
+    <!-- light blue 800 -->
+    <color name="colorButton">#0277bd</color>
 
     <color name="siyah">#FF302E2E</color>
 

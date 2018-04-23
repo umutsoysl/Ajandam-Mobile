@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:paddingBottom="15dp"
+                android:paddingTop="8dp"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/circle_layout"
+            android:id="@+id/frame">
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="19dp"
+                android:textColor="#ffffff"
+                android:id="@+id/textHarf"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:text="US"/>
+    </RelativeLayout>
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:text="Laks"
+              android:textSize="17dp"
+              android:textStyle="bold"
+              android:layout_marginLeft="67dp"
+              android:layout_marginTop="4dp"
+              android:id="@+id/sohbetBaslik"
+    android:textColor="#1d1d1d"/>
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:text="Ramaza:parayı sonra düşünürz:D"
+              android:textSize="14dp"
+              android:layout_marginLeft="67dp"
+              android:layout_marginTop="4dp"
+              android:layout_below="@+id/sohbetBaslik"
+              android:id="@+id/icerik"
+              android:textColor="#808080"/>
+
+    <ImageView android:layout_width="match_parent" android:layout_height="0.06dp"
+    android:layout_below="@+id/icerik"
+               android:layout_marginLeft="66dp"
+               android:layout_marginTop="10dp"
+               android:background="#c4c4c4"/>
+
+</RelativeLayout>

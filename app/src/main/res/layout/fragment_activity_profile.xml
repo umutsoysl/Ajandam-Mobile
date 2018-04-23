@@ -1,0 +1,188 @@
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="#ffffff"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/layout_profile"
+                android:background="@color/colorPrimary">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/avatar"
+                    app:civ_border_width="3dp"
+                    android:id="@+id/profile_image"
+                    android:layout_marginLeft="2dp"
+                    app:civ_border_color="#fbcb00"
+                    android:layout_marginBottom="11dp"/>
+
+            <ImageView android:layout_width="26dp" android:layout_height="26dp"
+                       android:background="@drawable/camera_cjanpng"
+                       android:layout_below="@+id/profile_image"
+                       android:layout_marginTop="-25dp"
+                       android:layout_centerHorizontal="true"
+                       android:layout_marginBottom="5dp"
+                       android:id="@+id/select_image"
+                       android:layout_marginLeft="30dp"
+            />
+
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Umut Soysal"
+                      android:layout_below="@+id/profile_image"
+                      android:layout_centerHorizontal="true"
+                      android:textColor="#ffffff"
+                      android:layout_marginTop="4dp"
+                      android:id="@+id/name"
+                      android:textSize="20dp"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="14020202040"
+                      android:layout_below="@+id/name"
+                      android:layout_centerHorizontal="true"
+                      android:textColor="#f2f2f2"
+                      android:id="@+id/no"
+                      android:layout_marginBottom="10dp"
+                      android:textSize="17dp"/>
+
+            <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="5dp"
+                    android:layout_below="@+id/no"
+                    android:id="@+id/cizgi"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="25dp"
+                    android:background="@drawable/cizgim"
+                    android:layout_marginBottom="10dp"
+            />
+
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Bilgisayar Mühendisliği İ.Ö"
+                      android:layout_below="@+id/cizgi"
+                      android:layout_centerHorizontal="true"
+                      android:textColor="#ffffff"
+                      android:id="@+id/bolum"
+                      android:textSize="19dp"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Kocaeli - Türkiye"
+                      android:layout_below="@+id/bolum"
+                      android:layout_centerHorizontal="true"
+                      android:textColor="#f2f2f2"
+                      android:id="@+id/konum"
+                      android:textSize="15dp"/>
+
+        </RelativeLayout>
+
+        <ImageView android:layout_width="match_parent" android:layout_height="60dp"
+                   android:background="@drawable/layout_alt"
+                   android:id="@+id/temp"
+                   android:layout_below="@+id/layout_profile"/>
+
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_below="@+id/temp"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:id="@+id/dersAlarm"
+                        android:background="#fafeff">
+            <ImageView android:layout_width="27dp" android:layout_height="27dp"
+                       android:background="@drawable/alarmders"
+                       android:layout_marginLeft="6dp"
+            />
+
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Ders Alarmlarım"
+                      android:textSize="17dp"
+                      android:textColor="#3d444d"
+                      android:layout_marginLeft="52dp"
+                      android:layout_centerVertical="true"/>
+
+            <ImageView android:layout_width="16dp" android:layout_height="16dp"
+                       android:background="@drawable/right"
+                       android:layout_alignParentRight="true"
+                       android:layout_centerVertical="true"
+                       android:layout_marginRight="16dp"
+            />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_below="@+id/dersAlarm"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="15dp"
+                        android:id="@+id/sifreYenile"
+                        android:paddingBottom="15dp"
+                        android:background="#e9f8ff">
+            <ImageView android:layout_width="27dp" android:layout_height="27dp"
+                       android:background="@drawable/img_pass"
+                       android:layout_marginLeft="6dp"
+            />
+
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Şifremi Değiştir"
+                      android:textSize="17dp"
+                      android:textColor="#3d444d"
+                      android:layout_marginLeft="52dp"
+                      android:layout_centerVertical="true"/>
+
+            <ImageView android:layout_width="16dp" android:layout_height="16dp"
+                       android:background="@drawable/right"
+                       android:layout_alignParentRight="true"
+                       android:layout_centerVertical="true"
+                       android:layout_marginRight="16dp"
+            />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_below="@+id/sifreYenile"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="15dp"
+                        android:id="@+id/oturumuKapat"
+                        android:paddingBottom="15dp"
+                        android:background="#fafeff">
+            <ImageView android:layout_width="27dp" android:layout_height="27dp"
+                       android:background="@drawable/session_out"
+                       android:layout_marginLeft="6dp"
+            />
+
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="Oturumu Kapat"
+                      android:textSize="17dp"
+                      android:textColor="#3d444d"
+                      android:layout_marginLeft="52dp"
+                      android:layout_centerVertical="true"/>
+
+            <ImageView android:layout_width="16dp" android:layout_height="16dp"
+                       android:background="@drawable/right"
+                       android:layout_alignParentRight="true"
+                       android:layout_centerVertical="true"
+                       android:layout_marginRight="16dp"
+            />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</ScrollView>

@@ -1,76 +1,66 @@
 package com.umutsoysal.ajandam.Ogrenci;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.umutsoysal.ajandam.Adapter.DevamsizlikAdapter;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.R;
-
 import es.dmoral.toasty.Toasty;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Devamsizlik extends Activity {
+public class Devamsizlik extends Fragment
+{
 
     ImageButton back;
     ListView liste;
     DevamsizlikAdapter adapter;
-    public static String id="";
+    public static String id;
     private ProgressDialog progressDialog;
     String[] dersAdi;
     String[] devam;
     String[] devamsizlik;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_devamsizlik);
 
-        back=(ImageButton)findViewById(R.id.back);
-        liste=(ListView)findViewById(R.id.derslistesi);
+    public Devamsizlik()
+    {
+        // Required empty public constructor
+    }
 
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                id= null;
-            } else {
-                id= extras.getString("id");
-            }
-        } else {
-            id= (String) savedInstanceState.getSerializable("id");
-            id=MainActivity.id;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState)
+    {
+        // Inflate the layout for this fragment
+        View item = inflater.inflate(R.layout.activity_devamsizlik, container, false);
+
+        liste = (ListView) item.findViewById(R.id.derslistesi);
+        id = DersProgrami.id;
+
+        if (id != null)
+        {
+            Task tsk = new Task();
+            tsk.execute();
         }
-        Task tsk = new Task();
-        tsk.execute();
 
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i=new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(i);
-            }
-        });
-
-
-
+        return item;
 
     }
 
     private class Task extends AsyncTask<String, Void, String>
     {
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(Devamsizlik.this);
+            progressDialog = new ProgressDialog(getActivity());
             progressDialog.setMessage("Lütfen Bekleyiniz..");
             progressDialog.setCancelable(false);
             progressDialog.show();
@@ -80,20 +70,23 @@ public class Devamsizlik extends Activity {
         protected String doInBackground(String... params)
         {
             HttpHandler sh = new HttpHandler();
-            String jsonStr=sh.makeServiceCall("https://spring-kou-service.herokuapp.com/api/rollcall/RollCallInfo?studentId="+id);
+            String jsonStr = sh.makeServiceCall("https://spring-kou-service.herokuapp.com/api/rollcall/RollCallInfo?studentId=" + id);
 
-            if (jsonStr != null) {
-                try {
+            if (jsonStr != null)
+            {
+                try
+                {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     JSONArray object = jsonObj.getJSONArray("devam_bilgileri");
 
                     // looping through All Contacts
-                    dersAdi=new String[object.length()];
-                    devam=new String[object.length()];
-                    devamsizlik=new String[object.length()];
+                    dersAdi = new String[object.length()];
+                    devam = new String[object.length()];
+                    devamsizlik = new String[object.length()];
 
-                    for (int i = 0; i < object.length(); i++) {
+                    for (int i = 0; i < object.length(); i++)
+                    {
                         JSONObject c = object.getJSONObject(i);
                         dersAdi[i] = c.getString("dersAdi");
                         devam[i] = c.getString("devamBilgisi");
@@ -102,13 +95,17 @@ public class Devamsizlik extends Activity {
 
                     }
 
-                    adapter=new DevamsizlikAdapter(Devamsizlik.this,dersAdi,devam,devamsizlik);
+                    adapter = new DevamsizlikAdapter(getActivity(), dersAdi, devam, devamsizlik);
 
-                } catch (final JSONException e) {
-                    runOnUiThread(new Runnable() {
+                }
+                catch (final JSONException e)
+                {
+                    getActivity().runOnUiThread(new Runnable()
+                    {
                         @Override
-                        public void run() {
-                            Toasty.error(getApplicationContext(),
+                        public void run()
+                        {
+                            Toasty.error(getActivity(),
                                     "Json parsing error: " + e.getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
@@ -116,11 +113,15 @@ public class Devamsizlik extends Activity {
 
                 }
 
-            } else {
-                runOnUiThread(new Runnable() {
+            }
+            else
+            {
+                getActivity().runOnUiThread(new Runnable()
+                {
                     @Override
-                    public void run() {
-                        Toasty.error(getApplicationContext(),
+                    public void run()
+                    {
+                        Toasty.error(getActivity(),
                                 "Bilgiler alınırken beklenmedik hata oldu.Tekrar deneyiniz!",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -129,7 +130,6 @@ public class Devamsizlik extends Activity {
 
             return null;
         }
-
 
 
         @Override

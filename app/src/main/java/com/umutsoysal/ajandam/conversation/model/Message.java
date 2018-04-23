@@ -6,6 +6,7 @@ public class Message
 
     String mesajText;
     String gonderici;
+    String gondericiPP;
     String zaman;
     String uri;
 
@@ -13,13 +14,23 @@ public class Message
     {
     }
 
-    public Message(String mesajText, String gonderici, String zaman, String uri)
+    public Message(String mesajText, String gonderici,String gondericiPP, String zaman, String uri)
     {
         this.mesajText = mesajText;
         this.gonderici = gonderici;
         this.zaman = zaman;
         this.uri = uri;
+        this.gondericiPP=gondericiPP;
 
+    }
+    public String getGondericiPP()
+    {
+        return gondericiPP;
+    }
+
+    public void setGondericiPP(String gondericiPP)
+    {
+        this.gondericiPP = gondericiPP;
     }
 
     public String getMesajText()

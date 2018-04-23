@@ -24,6 +24,7 @@ public class Sqllite extends SQLiteOpenHelper {
     private static final String USER = "user";
     private static String USERNAME = "username";
     private static String PASSWORD = "password";
+    private static String IMAGE = "profile";
 
     private static final String TABLE_NAME_2 = "ogrenci";
     private static String OGRENCI_JSON = "json";
@@ -46,7 +47,8 @@ public class Sqllite extends SQLiteOpenHelper {
 
         String tablo = "CREATE TABLE " + USER + "( "
                 + USERNAME + " TEXT ,"
-                + PASSWORD + " TEXT" + ")";
+                + PASSWORD + " TEXT ,"
+                + IMAGE + " TEXT" + ")";
         db.execSQL(tablo);
 
 
@@ -85,12 +87,13 @@ public class Sqllite extends SQLiteOpenHelper {
     }
 
 
-    public void userEkle(String username,String password) {
+    public void userEkle(String username,String password,String image) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USERNAME,username);
         values.put(PASSWORD,password);
+        values.put(IMAGE,image);
 
         db.insert(USER, null, values);
         db.close(); //Database Bağlantısını kapattık*/

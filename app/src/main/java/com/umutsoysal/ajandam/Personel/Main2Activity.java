@@ -56,7 +56,7 @@ public class Main2Activity extends AppCompatActivity
     String[] name;
     String[] location;
     String[] bolum;
-    String[] dersID;
+    public static String[] dersID;
     String dayOfTheWeek;
     ArrayList<Integer> saatFarki = new ArrayList<>();
     ArrayList<Integer> inlastindex = new ArrayList<>();

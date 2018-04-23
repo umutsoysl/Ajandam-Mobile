@@ -46,6 +46,7 @@
             android:layout_height="wrap_content"
             android:text="194 defa görüntülendi"
             android:textSize="12dp"
+            android:autoLink="all"
             android:visibility="visible"
             android:layout_below="@+id/dersAdi"
             android:layout_marginLeft="40dp"

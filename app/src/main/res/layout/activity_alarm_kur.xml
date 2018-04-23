@@ -4,53 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context="com.umutsoysal.ajandam.Ogrenci.AlarmKur">
+    android:background="#ffffff">
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-    <FrameLayout
-        android:id="@+id/frameLayout303"
-        android:layout_width="fill_parent"
-        android:layout_height="58dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
+
+        <FrameLayout
+                android:id="@+id/frameLayout303"
+                android:layout_width="fill_parent"
+                android:layout_height="58dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPrimary"
         >
 
-        <ImageButton
-            android:id="@+id/back"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_gravity="left|top"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/back" />
+            <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="left|top"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/back" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Alarm Oluştur"
-            android:layout_gravity="left|top"
-            android:layout_marginTop="18dp"
-            android:layout_marginLeft="60dp"
-            android:textSize="16dp"
-            android:textColor="#ffffff" />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Alarm Oluştur"
+                    android:layout_gravity="left|top"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginLeft="60dp"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff" />
 
-    </FrameLayout>
+        </FrameLayout>
         <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="8dp"
-            android:layout_below="@+id/frameLayout303"
-            android:background="@drawable/toolbarshadow"/>
+                android:layout_width="fill_parent"
+                android:layout_height="8dp"
+                android:id="@+id/sda"
+                android:layout_below="@+id/frameLayout303"
+                android:background="@drawable/toolbarshadow"/>
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="67dp"
+            android:layout_marginTop="16dp"
             android:textColor="#4e4e4e"
             android:id="@+id/metin"
+            android:layout_below="@+id/sda"
             android:text="Ders takip aktif duruma getirildiğinde ders programından alınan bilgiler doğrultusunda kullanıcıya ders saatinden önce bildirim atarak kullanıcının dersi kaçırmasını önler."
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -109,13 +112,12 @@
             android:text="Kaydet"
             android:textSize="17dp"
             android:layout_marginTop="10dp"
-            android:textStyle="bold"
             android:backgroundTint="@color/colorPrimary"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="15dp"
             android:layout_marginRight="65dp"
             android:layout_marginLeft="65dp"
-            android:background="@drawable/button_round"
+            android:background="@drawable/message_button"
             />
 
 </RelativeLayout>

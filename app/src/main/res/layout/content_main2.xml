@@ -99,6 +99,7 @@
             android:layout_height="30dp"
             android:layout_below="@+id/relative"
             android:id="@+id/alt"
+            android:visibility="invisible"
             android:layout_marginTop="-1dp"
             android:background="@drawable/bottomlayout"/>
 
@@ -106,6 +107,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/alt"
+            android:visibility="invisible"
             android:id="@+id/linetop">
 
             <TextView

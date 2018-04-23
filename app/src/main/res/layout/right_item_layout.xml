@@ -11,6 +11,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="60dp"
             android:padding="7dip">
 
@@ -22,6 +23,7 @@
                 android:textSize="14dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:id="@+id/content"
+                android:autoLink="all"
                 emojicon:emojiconAlignment="bottom"
                 android:textColor="#363535"
         />

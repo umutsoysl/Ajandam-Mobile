@@ -36,6 +36,7 @@ public class StudentPassChange extends Activity
     String[] name;
     String[] password;
     String[] email;
+    public static String resimProfile;
     ImageButton back, ok;
     FrameLayout toolbar;
     ArrayList<HashMap<String, String>> user;
@@ -110,6 +111,7 @@ public class StudentPassChange extends Activity
         {
             password = new String[user.size()];
             name = new String[user.size()];
+            resimProfile= user.get(0).get("profile");
             for (int i = 0; i < user.size(); i++)
             {
                 name[i] = user.get(i).get("username");
@@ -197,7 +199,7 @@ public class StudentPassChange extends Activity
             {
                 Sqllite db=new Sqllite(getApplicationContext());
                 db.resetUSER();
-                db.userEkle(name[0],password2.getText().toString().trim());
+                db.userEkle(name[0],password2.getText().toString().trim(),resimProfile);
 
                 Toasty.success(getApplicationContext(), "\n" +
                         "Şifre Başarıyla Yenilendi", Toast.LENGTH_LONG).show();

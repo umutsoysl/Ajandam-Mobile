@@ -6,7 +6,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/root_view"
                 xmlns:emojicon="http://schemas.android.com/apk/res-auto"
-                android:background="@drawable/whatsapp_bkg"
+                android:background="#ffffff"
                 tools:context="com.umutsoysal.ajandam.conversation.activity.ChatActivity">
     <ListView
             android:layout_above="@+id/layout"
