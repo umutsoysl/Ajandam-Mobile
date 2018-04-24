@@ -1,11 +1,15 @@
 package com.umutsoysal.ajandam.Ogrenci;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,7 +31,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +55,7 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import pl.droidsonroids.gif.GifTextView;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -61,6 +65,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
+import static android.content.ContentValues.TAG;
 
 public class DersProgrami extends Fragment
 {
@@ -98,7 +104,7 @@ public class DersProgrami extends Fragment
     private Handler scanHandler = new Handler();
     private int scan_interval_ms = 5000;
     private boolean isScanning = false;
-    public static String uuid = "";
+    public static String BeaconName = "";
     public static int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private ArrayList<String> subjectLists = new ArrayList<>();
     private FirebaseDatabase dbFire;
@@ -107,6 +113,10 @@ public class DersProgrami extends Fragment
     public static int REQUEST_BLUETOOTH = 1;
     public static Boolean burdayim = false;
     FloatingActionButton scanButton;
+    ScanCallback mCallback;
+    BluetoothLeScanner btScanner;
+
+
 
     public DersProgrami()
     {
@@ -132,18 +142,24 @@ public class DersProgrami extends Fragment
         Hyeri = (TextView) listHeader.findViewById(R.id.location);
         Hdersiveren = (TextView) listHeader.findViewById(R.id.bugun_dersiVeren);
         Hdersinismi = (TextView) listHeader.findViewById(R.id.now_lesson);
-        scanButton=(FloatingActionButton)item.findViewById(R.id.scanButton);
+        scanButton = (FloatingActionButton) item.findViewById(R.id.scanButton);
 
 
         scanButton.setOnClickListener(new View.OnClickListener()
         {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view)
             {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                {
                     scanButton.setImageDrawable(getResources().getDrawable(R.drawable.scananim, getActivity().getTheme()));
-                } else {
+                }
+                else
+                {
                     scanButton.setImageDrawable(getResources().getDrawable(R.drawable.scananim));
                 }
 
@@ -153,8 +169,8 @@ public class DersProgrami extends Fragment
                 btManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
                 btAdapter = btManager.getAdapter();
 
-                burdayim=false;
-                scanHandler.post(scanRunnable);
+                burdayim = false;
+                //scanHandler.post(scanRunnable);
 
                 //ble beacon scanner start
                 BTAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -179,6 +195,11 @@ public class DersProgrami extends Fragment
                 {
                     Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBT, REQUEST_BLUETOOTH);
+
+                }else{
+
+                    btScanner = btAdapter.getBluetoothLeScanner();
+                    btScanner.startScan(leScanCallback2);
                 }
 
                 Log.d("DEVICELIST", "Super called for DeviceListFragment onCreate\n");
@@ -763,6 +784,28 @@ public class DersProgrami extends Fragment
         return false;
     }
 
+    // Device scan callback.
+    private ScanCallback leScanCallback2 = new ScanCallback() {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public void onScanResult(int callbackType, ScanResult result) {
+
+            BeaconName =(result.getDevice().getName());
+
+            if(!burdayim&&BeaconName !=null&& BeaconName.toString().trim().equals("iTAG"))
+            {
+                String uuid="00002A00-0000-1000-8000-00805F9B34FB";
+                new OkHttpAync().execute(this, "post", id, dersId[index], uuid);
+                btScanner.stopScan(leScanCallback2);
+            }
+            // auto scroll for text view
+        /*    final int scrollAmount = peripheralTextView.getLayout().getLineTop(peripheralTextView.getLineCount()) - peripheralTextView.getHeight();
+            // if there is no need to scroll, scrollAmount will be <=0
+            if (scrollAmount > 0)
+                peripheralTextView.scrollTo(0, scrollAmount);*/
+        }
+    };
+
 
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback()
     {
@@ -770,6 +813,8 @@ public class DersProgrami extends Fragment
         @Override
         public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord)
         {
+
+
             int startByte = 2;
             boolean patternFound = false;
             while (startByte <= 5)
@@ -806,7 +851,7 @@ public class DersProgrami extends Fragment
                 Log.i(LOG_TAG, "UUID: " + uuid + "\\nmajor: " + major + "\\nminor" + minor);
 
                 btAdapter.stopLeScan(leScanCallback);
-                new OkHttpAync().execute(this, "post", id, dersId[index], uuid);
+             //   new OkHttpAync().execute(this, "post", id, dersId[index], uuid);
 
 
             }
@@ -841,36 +886,33 @@ public class DersProgrami extends Fragment
         public void run()
         {
 
-            if (burdayim == false)
+            if (isScanning)
             {
-                if (isScanning)
+                if (btAdapter != null)
                 {
-                    if (btAdapter != null)
-                    {
-                        btAdapter.stopLeScan(leScanCallback);
-                    }
+                    btAdapter.stopLeScan(leScanCallback);
                 }
-                else
-                {
-                    if (btAdapter != null)
-                    {
-                        btAdapter.startLeScan(leScanCallback);
-                    }
-                }
-
-                isScanning = !isScanning;
             }
             else
             {
-                btAdapter.stopLeScan(leScanCallback);
+                if (btAdapter != null)
+                {
+                    btAdapter.startLeScan(leScanCallback);
+                }
             }
+
+            isScanning = !isScanning;
+
+           // scanHandler.postDelayed(this, scan_interval_ms);
 
         }
     };
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public Object postHttpResponse(String studentId, String lessonId, String uuid)
     {
+        btScanner.stopScan(leScanCallback2);
         OkHttpClient httpClient = new OkHttpClient();
         String url = "https://spring-kou-service.herokuapp.com/api/rollcall";
 
@@ -916,6 +958,7 @@ public class DersProgrami extends Fragment
             progressDialog.show();
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected Object doInBackground(Object... params)
         {
@@ -934,7 +977,7 @@ public class DersProgrami extends Fragment
             return null;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onPostExecute(Object result)
         {
@@ -946,10 +989,15 @@ public class DersProgrami extends Fragment
             if (result != null && result.toString().equals("true"))
             {
                 Toasty.success(getActivity(), "Yoklamaya Kaydedildin.").show();
+                btScanner.stopScan(leScanCallback2);
+                burdayim=true;
+                scanButton.setImageDrawable(getResources().getDrawable(R.drawable.yuvarlak));
+
             }
             else
             {
                 Toasty.error(getActivity(), "İşlem Başarısız!!").show();
+
             }
 
 
@@ -957,5 +1005,14 @@ public class DersProgrami extends Fragment
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.d(TAG, "Destroy");
+        btScanner.stopScan(leScanCallback2);
+    }
 
 }
+

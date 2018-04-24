@@ -144,6 +144,12 @@
                 android:id="@+id/temp"
                 android:background="#f1f1f1"/>
 
+        <ImageView android:layout_width="150dp" android:layout_height="150dp"
+                   android:layout_centerHorizontal="true"
+                   android:layout_centerVertical="true"
+                   android:id="@+id/oky"
+                   android:background="@drawable/animation"/>
+
         <ListView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -160,7 +166,8 @@
                 android:layout_alignParentRight="true"
                 app:backgroundTint="@color/colorPrimary"
                 android:layout_margin="@dimen/fab_margin"
-                android:src="@drawable/yuvarlak" />
+                android:src="@drawable/yuvarlak"/>
+
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

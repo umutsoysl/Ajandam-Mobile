@@ -176,7 +176,7 @@ public class NotificationIntentService extends IntentService
     {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.logo2)
+                        .setSmallIcon(R.drawable.harf)
                         .setContentTitle("A J A N D A M")
                         .setContentText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır.")
                         .setStyle(new NotificationCompat.BigTextStyle().bigText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır."));

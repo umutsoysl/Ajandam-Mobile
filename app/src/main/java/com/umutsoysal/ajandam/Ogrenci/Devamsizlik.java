@@ -1,6 +1,7 @@
 package com.umutsoysal.ajandam.Ogrenci;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.umutsoysal.ajandam.Adapter.DevamsizlikAdapter;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.R;
@@ -17,6 +23,8 @@ import es.dmoral.toasty.Toasty;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class Devamsizlik extends Fragment
 {
@@ -29,6 +37,7 @@ public class Devamsizlik extends Fragment
     String[] dersAdi;
     String[] devam;
     String[] devamsizlik;
+    BarChart mBarChart;
 
     public Devamsizlik()
     {
@@ -40,8 +49,11 @@ public class Devamsizlik extends Fragment
     {
         // Inflate the layout for this fragment
         View item = inflater.inflate(R.layout.activity_devamsizlik, container, false);
-
+        LayoutInflater inflater2 = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View listHeader = inflater2.inflate(R.layout.devamszilik_list_header, null);
+        mBarChart = (BarChart) listHeader.findViewById(R.id.hesablar);
         liste = (ListView) item.findViewById(R.id.derslistesi);
+        liste.addHeaderView(listHeader);
         id = DersProgrami.id;
 
         if (id != null)
@@ -139,6 +151,26 @@ public class Devamsizlik extends Fragment
             progressDialog.cancel();
             progressDialog.dismiss();
             liste.setAdapter(adapter);
+
+            ArrayList<BarEntry> bargroup2 = new ArrayList<>();
+            ArrayList<String> gelir = new ArrayList<String>();
+            for(int i=0;i<devam.length;i++){
+                bargroup2.add(new BarEntry(Integer.parseInt(devam[i]), i));
+                String harf[]=dersAdi[i].split(" ");
+                gelir.add(harf[0].substring(0,2)+harf[1].substring(0,2));
+            }
+// creating dataset for Bar Group1
+            BarDataSet barDataSet1 = new BarDataSet(bargroup2, " ");
+            mBarChart.setDescription("Devam durumu");
+
+
+            barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+            barDataSet1.setValueTextSize(13);
+            BarData dataa = new BarData(gelir, barDataSet1);
+            mBarChart.setData(dataa);
+
+            mBarChart.animateY(2500);
+
 
         }
 
