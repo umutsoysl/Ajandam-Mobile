@@ -659,7 +659,7 @@ public class DuyuruGonder extends Activity {
         });
 
         header.setText(baslikListe[pozisyon].toString());
-        metin.setText(Html.fromHtml(icerikListe[pozisyon].toString()));
+        metin.setText(icerikListe[pozisyon].toString());
 
         kapat.setOnClickListener(new View.OnClickListener() {
             @Override

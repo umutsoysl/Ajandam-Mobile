@@ -12,6 +12,10 @@
     <color name="tab_unchecked">#9b9b9b</color>
     <!-- light blue 800 -->
     <color name="colorButton">#0277bd</color>
+    <color name="green">#1a7609</color>
+    <color name="blue">#ff33b5e5</color>
+    <color name="kirmizi">#f44848</color>
+    <color name="white">#ffffff</color>
 
     <color name="siyah">#FF302E2E</color>
 

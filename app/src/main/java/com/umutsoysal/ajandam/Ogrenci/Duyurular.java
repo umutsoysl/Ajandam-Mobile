@@ -206,7 +206,7 @@ public class Duyurular extends Fragment
         TextView metin = (TextView) dialog.findViewById(R.id.icerik);
 
         header.setText(baslik[position].toString());
-        metin.setText(Html.fromHtml(icerik[position].toString()));
+        metin.setText(icerik[position].toString());
 
         kapat.setOnClickListener(new View.OnClickListener()
         {

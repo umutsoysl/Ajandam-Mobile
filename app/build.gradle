@@ -71,6 +71,7 @@ dependencies {
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
     compile 'org.altbeacon:android-beacon-library:2+'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+    compile 'com.roomorama:caldroid:3.0.1'
     testCompile 'junit:junit:4.12'
     compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true;

@@ -422,7 +422,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                viewPager.setCurrentItem(2);
+                viewPager.setCurrentItem(4);
                 dialog.dismiss();
             }
         });

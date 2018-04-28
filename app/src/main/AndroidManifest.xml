@@ -31,8 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-                android:name=".Ogrenci.MainActivity"/>
+        <activity android:name=".Ogrenci.MainActivity"/>
         <activity
                 android:name=".Personel.Main2Activity"
                 android:label="@string/title_activity_main2"
@@ -69,9 +68,13 @@
         </activity>
         <activity android:name=".Personel.AcademicianPassChange">
         </activity>
+
         <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="40fae35e5d9f3dddd25a027081fb743ca7e86486" />
+                android:name="io.fabric.ApiKey"
+                android:value="40fae35e5d9f3dddd25a027081fb743ca7e86486"/>
+
+        <activity android:name=".Ogrenci.CalendarView">
+        </activity>
     </application>
 
 </manifest>

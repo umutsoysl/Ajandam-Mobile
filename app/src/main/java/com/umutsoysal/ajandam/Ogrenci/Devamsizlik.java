@@ -2,12 +2,14 @@ package com.umutsoysal.ajandam.Ogrenci;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.umutsoysal.ajandam.Adapter.DevamsizlikAdapter;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.R;
+import com.umutsoysal.ajandam.conversation.activity.ChatActivity;
 import es.dmoral.toasty.Toasty;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +40,7 @@ public class Devamsizlik extends Fragment
     String[] dersAdi;
     String[] devam;
     String[] devamsizlik;
+    String[] dersID;
     BarChart mBarChart;
 
     public Devamsizlik()
@@ -61,6 +65,20 @@ public class Devamsizlik extends Fragment
             Task tsk = new Task();
             tsk.execute();
         }
+
+        liste.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Intent intent = new Intent(getActivity(), CalendarView.class);
+                intent.putExtra("ogrenci",DersProgrami.id );
+                intent.putExtra("ders",dersID[position-1] );
+                intent.putExtra("name",dersAdi[position-1] );
+                startActivity(intent);
+            }
+        });
+
 
         return item;
 
@@ -96,6 +114,7 @@ public class Devamsizlik extends Fragment
                     dersAdi = new String[object.length()];
                     devam = new String[object.length()];
                     devamsizlik = new String[object.length()];
+                    dersID=new String[object.length()];
 
                     for (int i = 0; i < object.length(); i++)
                     {
@@ -103,6 +122,7 @@ public class Devamsizlik extends Fragment
                         dersAdi[i] = c.getString("dersAdi");
                         devam[i] = c.getString("devamBilgisi");
                         devamsizlik[i] = c.getString("devamsizlikBilgisi");
+                        dersID[i] = c.getString("dersId");
 
 
                     }

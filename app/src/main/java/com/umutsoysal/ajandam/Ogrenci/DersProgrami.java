@@ -792,7 +792,7 @@ public class DersProgrami extends Fragment
 
             BeaconName =(result.getDevice().getName());
 
-            if(!burdayim&&BeaconName !=null&& BeaconName.toString().trim().equals("iTAG"))
+            if(!burdayim&&BeaconName !=null&& BeaconName.toString().trim().equals("iTAG")||BeaconName.toString().trim().equals("FF:FF:90:01:A8:89"))
             {
                 String uuid="00002A00-0000-1000-8000-00805F9B34FB";
                 new OkHttpAync().execute(this, "post", id, dersId[index], uuid);
