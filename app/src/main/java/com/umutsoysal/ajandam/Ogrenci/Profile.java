@@ -99,7 +99,7 @@ public class Profile extends Fragment
             public void onClick(View view)
             {
                 startActivity(new Intent(getActivity(), AlarmKur.class));
-                getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
+                getActivity().overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
             }
         });
 
@@ -109,7 +109,7 @@ public class Profile extends Fragment
             public void onClick(View view)
             {
                 startActivity(new Intent(getActivity(), StudentPassChange.class));
-                getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
+                getActivity().overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
             }
         });
 

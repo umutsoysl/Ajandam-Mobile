@@ -9,13 +9,13 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+
         <FrameLayout
             android:id="@+id/frameLayout303"
             android:layout_width="fill_parent"
             android:layout_height="58dp"
             android:layout_alignParentTop="true"
-            android:background="@color/colorPrimary"
-            >
+            android:background="@color/colorPrimary">
 
             <ImageButton
                 android:id="@+id/back2"
@@ -37,6 +37,14 @@
                 android:textSize="16dp"
                 android:textColor="#ffffff" />
 
+            <ImageButton
+                    android:id="@+id/refresh"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="right|top"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/refresh" />
 
 
         </FrameLayout>

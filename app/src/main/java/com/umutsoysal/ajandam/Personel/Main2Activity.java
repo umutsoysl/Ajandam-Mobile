@@ -186,6 +186,10 @@ public class Main2Activity extends AppCompatActivity
                                     int position, long id)
             {
                 Intent i = new Intent(getApplicationContext(), DersiAlanOgrenciler.class);
+                if(position!=0)
+                {
+                    position=position-1;
+                }
                 i.putExtra("id", dersID[position]);
                 i.putExtra("ders", name[position]);
                 startActivity(i);

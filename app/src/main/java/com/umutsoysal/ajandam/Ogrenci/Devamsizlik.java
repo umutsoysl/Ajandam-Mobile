@@ -176,8 +176,8 @@ public class Devamsizlik extends Fragment
             ArrayList<String> gelir = new ArrayList<String>();
             for(int i=0;i<devam.length;i++){
                 bargroup2.add(new BarEntry(Integer.parseInt(devam[i]), i));
-                String harf[]=dersAdi[i].split(" ");
-                gelir.add(harf[0].substring(0,2)+harf[1].substring(0,2));
+                String harf[]=dersAdi[i].trim().split(" ");
+                gelir.add(harf[0].substring(0,2)+harf[1].substring(0,1));
             }
 // creating dataset for Bar Group1
             BarDataSet barDataSet1 = new BarDataSet(bargroup2, " ");

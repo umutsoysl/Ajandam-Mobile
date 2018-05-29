@@ -44,6 +44,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.umutsoysal.ajandam.Adapter.OgrenciDersListesiAdapter;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.HttpHandler;
+import com.umutsoysal.ajandam.LoginPage;
 import com.umutsoysal.ajandam.R;
 import com.umutsoysal.ajandam.conversation.activity.ChatActivity;
 import es.dmoral.toasty.Toasty;
@@ -115,7 +116,7 @@ public class DersProgrami extends Fragment
     FloatingActionButton scanButton;
     ScanCallback mCallback;
     BluetoothLeScanner btScanner;
-
+    private Handler mHandler;
 
 
     public DersProgrami()
@@ -790,13 +791,17 @@ public class DersProgrami extends Fragment
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
 
-            BeaconName =(result.getDevice().getName());
-
-            if(!burdayim&&BeaconName !=null&& BeaconName.toString().trim().equals("iTAG")||BeaconName.toString().trim().equals("FF:FF:90:01:A8:89"))
+            if(result!=null)
             {
-                String uuid="00002A00-0000-1000-8000-00805F9B34FB";
-                new OkHttpAync().execute(this, "post", id, dersId[index], uuid);
-                btScanner.stopScan(leScanCallback2);
+                BeaconName = (result.getDevice().getName());
+
+
+                if (BeaconName != null && BeaconName.toString().trim().equals("iTAG") || BeaconName.toString().trim().equals("FF:FF:90:01:A8:89"))
+                {
+                    String uuid = "00002A00-0000-1000-8000-00805F9B34FB";
+                    new OkHttpAync().execute(this, "post", id, dersId[index], uuid);
+                    btScanner.stopScan(leScanCallback2);
+                }
             }
             // auto scroll for text view
         /*    final int scrollAmount = peripheralTextView.getLayout().getLineTop(peripheralTextView.getLineCount()) - peripheralTextView.getHeight();
@@ -989,17 +994,22 @@ public class DersProgrami extends Fragment
             if (result != null && result.toString().equals("true"))
             {
                 Toasty.success(getActivity(), "Yoklamaya Kaydedildin.").show();
-                btScanner.stopScan(leScanCallback2);
-                burdayim=true;
                 scanButton.setImageDrawable(getResources().getDrawable(R.drawable.yuvarlak));
 
             }
             else
             {
-                Toasty.error(getActivity(), "İşlem Başarısız!!").show();
+                Toasty.error(getActivity(), "İşlem Başarısız!! Yoklamada varlığınızı kontrol ediniz!").show();
 
             }
 
+
+
+            btScanner.stopScan(leScanCallback2);
+            burdayim=true;
+          /*  Intent i = new Intent(getActivity(), Devamsizlik.class);
+            startActivity(i);
+            getActivity().finish();*/
 
         }
 
@@ -1013,6 +1023,8 @@ public class DersProgrami extends Fragment
         Log.d(TAG, "Destroy");
         btScanner.stopScan(leScanCallback2);
     }
+
+
 
 }
 

@@ -1,30 +1,18 @@
 package com.umutsoysal.ajandam.Ogrenci;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
-import com.umutsoysal.ajandam.Adapter.DevamsizlikAdapter;
-import com.umutsoysal.ajandam.Database.Sqllite;
-import com.umutsoysal.ajandam.HttpHandler;
-import com.umutsoysal.ajandam.LoginPage;
-import com.umutsoysal.ajandam.Personel.Main2Activity;
 import com.umutsoysal.ajandam.R;
 import es.dmoral.toasty.Toasty;
 import okhttp3.FormBody;
@@ -37,20 +25,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class CalendarView extends AppCompatActivity
 {
     private static final String TAG = "";
     private boolean undo = false;
     private CaldroidFragment caldroidFragment;
-    private CaldroidFragment dialogCaldroidFragment;
     public static String[] devam;
     public static String dersId;
     public static String ogrenciid;
@@ -63,14 +46,14 @@ public class CalendarView extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            // referansa ulaşıp ilgili sohbetleri getirebilmemiz için gerekli yapı
+        if (bundle != null)
+        {
             ogrenciid = bundle.getString("ogrenci");
-            dersId=bundle.getString("ders");
-            dersAdi=bundle.getString("name");
+            dersId = bundle.getString("ders");
+            dersAdi = bundle.getString("name");
         }
 
-        new OkHttpAync().execute(this, "post",dersId ,ogrenciid );
+        new OkHttpAync().execute(this, "post", dersId, ogrenciid);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_view);
@@ -81,20 +64,14 @@ public class CalendarView extends AppCompatActivity
         // **** If you want normal CaldroidFragment, use below line ****
         caldroidFragment = new CaldroidFragment();
 
-        // //////////////////////////////////////////////////////////////////////
-        // **** This is to show customized fragment. If you want customized
-        // version, uncomment below line ****
-//		 caldroidFragment = new CaldroidSampleCustomFragment();
-
-        // Setup arguments
-
-        // If Activity is created after rotation
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
+        {
             caldroidFragment.restoreStatesFromKey(savedInstanceState,
                     "CALDROID_SAVED_STATE");
         }
         // If activity is created from fresh
-        else {
+        else
+        {
             Bundle args = new Bundle();
             Calendar cal = Calendar.getInstance();
             args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
@@ -102,46 +79,41 @@ public class CalendarView extends AppCompatActivity
             args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
             args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
 
-            // Uncomment this to customize startDayOfWeek
-            // args.putInt(CaldroidFragment.START_DAY_OF_WEEK,
-            // CaldroidFragment.TUESDAY); // Tuesday
-
-            // Uncomment this line to use Caldroid in compact mode
-            // args.putBoolean(CaldroidFragment.SQUARE_TEXT_VIEW_CELL, false);
-
-            // Uncomment this line to use dark theme
-//            args.putInt(CaldroidFragment.THEME_RESOURCE, com.caldroid.R.style.CaldroidDefaultDark);
 
             caldroidFragment.setArguments(args);
         }
 
 
-
-
         // Setup listener
-        final CaldroidListener listener = new CaldroidListener() {
+        final CaldroidListener listener = new CaldroidListener()
+        {
 
             @Override
-            public void onSelectDate(Date date, View view) {
+            public void onSelectDate(Date date, View view)
+            {
                 Toast.makeText(getApplicationContext(), formatter.format(date),
                         Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onChangeMonth(int month, int year) {
+            public void onChangeMonth(int month, int year)
+            {
                 String text = "month: " + month + " year: " + year;
                 Toast.makeText(getApplicationContext(), text,
                         Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onLongClickDate(Date date, View view) {
+            public void onLongClickDate(Date date, View view)
+            {
 
             }
 
             @Override
-            public void onCaldroidViewCreated() {
-                if (caldroidFragment.getLeftArrowButton() != null) {
+            public void onCaldroidViewCreated()
+            {
+                if (caldroidFragment.getLeftArrowButton() != null)
+                {
 
                 }
             }
@@ -202,8 +174,8 @@ public class CalendarView extends AppCompatActivity
                 try
                 {
                     response = httpClient.newCall(request).execute();
-                     jsonStr=response.body().string();
-                    if (response.isSuccessful()&&!jsonStr.contains("false"))
+                    jsonStr = response.body().string();
+                    if (response.isSuccessful() && !jsonStr.contains("false"))
                     {
                         Log.e(TAG, "Got response from server using OkHttp ");
 
@@ -274,7 +246,7 @@ public class CalendarView extends AppCompatActivity
             super.onPostExecute(result);
             progressDialog.cancel();
             progressDialog.dismiss();
-            if(!jsonStr.toString().contains("false"))
+            if (!jsonStr.toString().contains("false"))
             {
                 for (int i = 0; i < devam.length; i++)
                 {
@@ -291,12 +263,14 @@ public class CalendarView extends AppCompatActivity
                         caldroidFragment.setTextColorForDate(R.color.white, greenDate);
                     }
                     // Attach to the activity
-                    FragmentTransaction t =getSupportFragmentManager().beginTransaction();
+                    FragmentTransaction t = getSupportFragmentManager().beginTransaction();
                     t.replace(R.id.calendar1, caldroidFragment);
                     t.commit();
                 }
-            }else{
-                FragmentTransaction t =getSupportFragmentManager().beginTransaction();
+            }
+            else
+            {
+                FragmentTransaction t = getSupportFragmentManager().beginTransaction();
                 t.replace(R.id.calendar1, caldroidFragment);
                 t.commit();
             }
@@ -304,8 +278,6 @@ public class CalendarView extends AppCompatActivity
         }
 
     }
-
-
 
 
 }

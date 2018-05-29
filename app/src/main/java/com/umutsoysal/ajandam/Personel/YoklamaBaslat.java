@@ -36,11 +36,12 @@ import static com.umutsoysal.ajandam.Personel.YoklamaBaslat.jsonStr;
 public class YoklamaBaslat extends Activity
 {
 
+    String uuid="00002A00-0000-1000-8000-00805F9B34FB";
     EditText sure;
     Button start;
     ListView liste;
     YoklamaAdapter adapter;
-    ImageButton back;
+    ImageButton back,refresh;
     private ProgressDialog progressDialog,progressDialog2;
     public static String jsonStr="";
     public String[] name;
@@ -57,6 +58,7 @@ public class YoklamaBaslat extends Activity
         start = (Button) findViewById(R.id.submit);
         liste = (ListView) findViewById(R.id.ogrenciListesi);
         back = (ImageButton) findViewById(R.id.back2);
+        refresh=(ImageButton)findViewById(R.id.refresh);
 
         new getStudents().execute(this, "post", Main2Activity.akademisyenID,Main2Activity.dersID[Main2Activity.index] );
 
@@ -71,6 +73,14 @@ public class YoklamaBaslat extends Activity
         });
 
 
+        refresh.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                new getStudents().execute(this, "post", Main2Activity.akademisyenID,Main2Activity.dersID[Main2Activity.index] );
+            }
+        });
 
         start.setOnClickListener(new View.OnClickListener()
         {
@@ -78,7 +88,7 @@ public class YoklamaBaslat extends Activity
             public void onClick(View view)
             {
                 String id=Main2Activity.dersID[Main2Activity.index];
-                new OkHttpAync().execute(this, "post", sure.getText().toString(),id , "1554545556445a5564asd5466");
+                new OkHttpAync().execute(this, "post", sure.getText().toString(),id , uuid);
 
 
             }
@@ -254,7 +264,7 @@ public class YoklamaBaslat extends Activity
             }
             else
             {
-                Toasty.error(YoklamaBaslat.this, "İşlem Başarısız!!").show();
+                Toasty.warning(YoklamaBaslat.this, "Henüz Yoklama başlatılmadı!").show();
             }
 
 

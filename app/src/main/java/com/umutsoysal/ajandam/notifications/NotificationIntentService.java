@@ -1,12 +1,15 @@
 package com.umutsoysal.ajandam.notifications;
 
 import android.app.IntentService;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
@@ -84,6 +87,9 @@ public class NotificationIntentService extends IntentService
     private void processStartNotification()
     {
         // Do something. For example, fetch fresh data from backend to create a rich notification?
+
+       // headsUpNotification("Kontrol Sistemlerine Giriş", "305", "19:45");
+
         db = new Sqllite(conText);
         alarmlar = db.alarmGET();
         int byt = alarmlar.size();
@@ -134,7 +140,7 @@ public class NotificationIntentService extends IntentService
 
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(now);
-        cal2.add(Calendar.HOUR, +1);
+        cal2.add(Calendar.HOUR, -1);
         now = cal2.getTime();
         // Different formatters for 12 and 24 hour timestamps
         simdikiSaat2 = formatter24.format(now);
@@ -172,39 +178,33 @@ public class NotificationIntentService extends IntentService
 
     }
 
-    public void bildirimAt(String dersAdi, String mekan, String saat)
-    {
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.harf)
-                        .setContentTitle("A J A N D A M")
-                        .setContentText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır.")
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır."));
-
-        Intent notificationIntent = new Intent(this, Splashscreen.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
-        builder.setDeleteIntent(NotificationEventReceiver.getDeleteIntent(this));
-        builder.setAutoCancel(true);
-
-       // Add as notification
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
-    }
-
-
     private void headsUpNotification(String dersAdi, String mekan, String saat) {
+
+        String CHANNEL_ID = "ajandam";
+        String CHANNEL_NAME = "ajandam bildirimleri";
+        NotificationChannel channel=null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        {
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.deleteNotificationChannel(CHANNEL_ID);
+            channel = new NotificationChannel(CHANNEL_ID,
+                    CHANNEL_NAME,NotificationManager.IMPORTANCE_DEFAULT);
+
+            channel.setDescription("Ajandam Channel");
+            channel.enableVibration(true);
+            manager.createNotificationChannel(channel);
+        }
+
 
         int NOTIFICATION_ID = 1;
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.harf)
+                new NotificationCompat.Builder(this,CHANNEL_ID)
+                        .setSmallIcon(R.drawable.bildirimlogo)
                         .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
                                 R.mipmap.ic_launcher))
                         .setContentTitle("HAYDİ DERSE!")
                         .setContentText(dersAdi + " dersin başlamak üzere hemen hazırlan...")
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır."))
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Merhaba, bugün " + dersAdi + " dersin saat " + saat + " 'de " + mekan + " sınıfında başlayacaktır. Dersine zamanında gitmeyi unutma!"))
                         .setAutoCancel(true)
                         .setDefaults(NotificationCompat.DEFAULT_ALL)
                         .setPriority(NotificationCompat.PRIORITY_HIGH);
@@ -219,9 +219,11 @@ public class NotificationIntentService extends IntentService
         buttonIntent.putExtra("notificationId", NOTIFICATION_ID);
         PendingIntent dismissIntent = PendingIntent.getBroadcast(getBaseContext(), 0, buttonIntent, 0);
 
-        builder.addAction(android.R.drawable.presence_invisible, "DISMISS", dismissIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
+
+
+
     }
 }

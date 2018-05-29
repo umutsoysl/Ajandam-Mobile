@@ -125,9 +125,10 @@ public class DersiAlanOgrenciler extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toasty.error(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
+                            Toasty.warning(getApplicationContext(), "Ögrencilerin henüz devam bilgisi girilmemiştir..",
+                                    Toast.LENGTH_LONG,true).show();
+                            Intent i=new Intent(getApplicationContext(),Main2Activity.class);
+                            startActivity(i);
                         }
                     });
 
@@ -137,9 +138,10 @@ public class DersiAlanOgrenciler extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toasty.error(getApplicationContext(),
-                                "Bilgiler alınırken beklenmedik hata oldu.Tekrar deneyiniz!",
-                                Toast.LENGTH_LONG).show();
+                        Toasty.warning(getApplicationContext(), "Ögrencilerin henüz devam bilgisi girilmemiştir..",
+                                Toast.LENGTH_LONG,true).show();
+                        Intent i=new Intent(getApplicationContext(),Main2Activity.class);
+                        startActivity(i);
                     }
                 });
             }
