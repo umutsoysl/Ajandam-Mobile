@@ -44,7 +44,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.umutsoysal.ajandam.Adapter.OgrenciDersListesiAdapter;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.HttpHandler;
-import com.umutsoysal.ajandam.LoginPage;
 import com.umutsoysal.ajandam.R;
 import com.umutsoysal.ajandam.conversation.activity.ChatActivity;
 import es.dmoral.toasty.Toasty;
@@ -56,7 +55,6 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import pl.droidsonroids.gif.GifTextView;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -101,10 +99,6 @@ public class DersProgrami extends Fragment
     private static int scount = 0;
     private static int lcount = 0;
     private BluetoothManager btManager;
-    private BluetoothAdapter btAdapter;
-    private Handler scanHandler = new Handler();
-    private int scan_interval_ms = 5000;
-    private boolean isScanning = false;
     public static String BeaconName = "";
     public static int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private ArrayList<String> subjectLists = new ArrayList<>();
@@ -114,10 +108,7 @@ public class DersProgrami extends Fragment
     public static int REQUEST_BLUETOOTH = 1;
     public static Boolean burdayim = false;
     FloatingActionButton scanButton;
-    ScanCallback mCallback;
-    BluetoothLeScanner btScanner;
-    private Handler mHandler;
-
+    public static String academicianUUID;
 
     public DersProgrami()
     {
@@ -153,8 +144,6 @@ public class DersProgrami extends Fragment
             public void onClick(View view)
             {
 
-
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 {
                     scanButton.setImageDrawable(getResources().getDrawable(R.drawable.scananim, getActivity().getTheme()));
@@ -166,12 +155,6 @@ public class DersProgrami extends Fragment
 
                 final AnimationDrawable animationDrawable = (AnimationDrawable) scanButton.getDrawable();
                 animationDrawable.start();
-
-                btManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-                btAdapter = btManager.getAdapter();
-
-                burdayim = false;
-                //scanHandler.post(scanRunnable);
 
                 //ble beacon scanner start
                 BTAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -197,18 +180,12 @@ public class DersProgrami extends Fragment
                     Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBT, REQUEST_BLUETOOTH);
 
-                }else{
-
-                    btScanner = btAdapter.getBluetoothLeScanner();
-                    btScanner.startScan(leScanCallback2);
                 }
+                else
+                {
 
-                Log.d("DEVICELIST", "Super called for DeviceListFragment onCreate\n");
-                Set<BluetoothDevice> pairedDevices = BTAdapter.getBondedDevices();
-
-                List<String> s = new ArrayList<String>();
-                for (BluetoothDevice bt : pairedDevices)
-                    s.add(bt.getName());
+                   //islemler burada yapilacak...
+                }
 
             }
         });
@@ -301,10 +278,6 @@ public class DersProgrami extends Fragment
                 lcount++;
             }
         });
-
-
-        btManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-        btAdapter = btManager.getAdapter();
 
 
         if (ContextCompat.checkSelfPermission(getActivity(),
@@ -785,139 +758,10 @@ public class DersProgrami extends Fragment
         return false;
     }
 
-    // Device scan callback.
-    private ScanCallback leScanCallback2 = new ScanCallback() {
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-
-            if(result!=null)
-            {
-                BeaconName = (result.getDevice().getName());
-
-
-                if (BeaconName != null && BeaconName.toString().trim().equals("iTAG") || BeaconName.toString().trim().equals("FF:FF:90:01:A8:89"))
-                {
-                    String uuid = "00002A00-0000-1000-8000-00805F9B34FB";
-                    new OkHttpAync().execute(this, "post", id, dersId[index], uuid);
-                    btScanner.stopScan(leScanCallback2);
-                }
-            }
-            // auto scroll for text view
-        /*    final int scrollAmount = peripheralTextView.getLayout().getLineTop(peripheralTextView.getLineCount()) - peripheralTextView.getHeight();
-            // if there is no need to scroll, scrollAmount will be <=0
-            if (scrollAmount > 0)
-                peripheralTextView.scrollTo(0, scrollAmount);*/
-        }
-    };
-
-
-    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback()
-    {
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-        @Override
-        public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord)
-        {
-
-
-            int startByte = 2;
-            boolean patternFound = false;
-            while (startByte <= 5)
-            {
-                if (((int) scanRecord[startByte + 2] & 0xff) == 0x02 && //Identifies an iBeacon
-                        ((int) scanRecord[startByte + 3] & 0xff) == 0x15)
-                { //Identifies correct data length
-                    patternFound = true;
-                    break;
-                }
-                startByte++;
-            }
-
-            if (patternFound)
-            {
-                //Convert to hex String
-                byte[] uuidBytes = new byte[16];
-                System.arraycopy(scanRecord, startByte + 4, uuidBytes, 0, 16);
-                String hexString = bytesToHex(uuidBytes);
-
-                //UUID detection
-                String uuid = hexString.substring(0, 8) + "-" +
-                        hexString.substring(8, 12) + "-" +
-                        hexString.substring(12, 16) + "-" +
-                        hexString.substring(16, 20) + "-" +
-                        hexString.substring(20, 32);
-
-                // major
-                final int major = (scanRecord[startByte + 20] & 0xff) * 0x100 + (scanRecord[startByte + 21] & 0xff);
-
-                // minor
-                final int minor = (scanRecord[startByte + 22] & 0xff) * 0x100 + (scanRecord[startByte + 23] & 0xff);
-
-                Log.i(LOG_TAG, "UUID: " + uuid + "\\nmajor: " + major + "\\nminor" + minor);
-
-                btAdapter.stopLeScan(leScanCallback);
-             //   new OkHttpAync().execute(this, "post", id, dersId[index], uuid);
-
-
-            }
-            else
-            {
-                btAdapter.stopLeScan(leScanCallback);
-                Toasty.error(getActivity(), "İşlem Başarısız!!").show();
-            }
-
-        }
-    };
-
-    static final char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-    private static String bytesToHex(byte[] bytes)
-    {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++)
-        {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChars);
-    }
-
-
-    private Runnable scanRunnable = new Runnable()
-    {
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-        @Override
-        public void run()
-        {
-
-            if (isScanning)
-            {
-                if (btAdapter != null)
-                {
-                    btAdapter.stopLeScan(leScanCallback);
-                }
-            }
-            else
-            {
-                if (btAdapter != null)
-                {
-                    btAdapter.startLeScan(leScanCallback);
-                }
-            }
-
-            isScanning = !isScanning;
-
-           // scanHandler.postDelayed(this, scan_interval_ms);
-
-        }
-    };
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public Object postHttpResponse(String studentId, String lessonId, String uuid)
     {
-        btScanner.stopScan(leScanCallback2);
         OkHttpClient httpClient = new OkHttpClient();
         String url = "https://spring-kou-service.herokuapp.com/api/rollcall";
 
@@ -988,7 +832,6 @@ public class DersProgrami extends Fragment
         {
             super.onPostExecute(result);
             burdayim = true;
-            btAdapter.stopLeScan(leScanCallback);
             progressDialog.dismiss();
             progressDialog.cancel();
             if (result != null && result.toString().equals("true"))
@@ -1005,25 +848,19 @@ public class DersProgrami extends Fragment
 
 
 
-            btScanner.stopScan(leScanCallback2);
-            burdayim=true;
-          /*  Intent i = new Intent(getActivity(), Devamsizlik.class);
-            startActivity(i);
-            getActivity().finish();*/
-
         }
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
 
         Log.d(TAG, "Destroy");
-        btScanner.stopScan(leScanCallback2);
-    }
 
+    }
 
 
 }

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="#ffffff"
+                                             tools:context="com.umutsoysal.ajandam.Personel.SelectBeacon">
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+        <FrameLayout
+                android:id="@+id/frameLayout303"
+                android:layout_width="fill_parent"
+                android:layout_height="58dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPrimary"
+        >
+
+            <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="left|top"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/back" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Beacon Ekle"
+                    android:layout_gravity="left|top"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginLeft="60dp"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff" />
+
+        </FrameLayout>
+        <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="8dp"
+                android:layout_below="@+id/frameLayout303"
+                android:background="@drawable/toolbarshadow"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="67dp"
+                android:textColor="#4e4e4e"
+                android:id="@+id/metin"
+                android:text="Yeni bir beacon eklemek üzeresiniz! Sistemde kayıtlı olan beaconınız kaldırılıp yerine eklenecektir. "
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+        />
+
+        <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/metin"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/BeaconList"
+                android:divider="@null"
+                android:layout_marginRight="3dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="10dp"
+        ></ListView>
+
+        <android.support.design.widget.FloatingActionButton
+                android:id="@+id/scanButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                app:backgroundTint="#ef5350"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/play_icon"/>
+
+        <ProgressBar
+                android:id="@+id/progress_2"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="-2dp"
+                android:layout_marginTop="-6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"
+                android:background="@color/colorPrimary"
+        />
+    </RelativeLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>

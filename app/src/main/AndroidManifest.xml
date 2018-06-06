@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
           package="com.umutsoysal.ajandam">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -13,6 +12,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-feature
+            android:name="android.hardware.bluetooth_le"
+            android:required="true" />
 
     <application
             android:allowBackup="true"
@@ -68,13 +71,19 @@
         </activity>
         <activity android:name=".Personel.AcademicianPassChange">
         </activity>
-
         <meta-data
                 android:name="io.fabric.ApiKey"
                 android:value="40fae35e5d9f3dddd25a027081fb743ca7e86486"/>
 
         <activity android:name=".Ogrenci.CalendarView">
         </activity>
+        <activity android:name=".Personel.SelectBeacon">
+        </activity>
+
+        <service
+                android:name="com.inuker.bluetooth.library.BluetoothService"/>
+
     </application>
+
 
 </manifest>

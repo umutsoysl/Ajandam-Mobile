@@ -10,6 +10,11 @@
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_flash_on_black_24dp"
             android:title="Yoklama Başlat" />
+
+        <item
+                android:id="@+id/nav_beacon"
+                android:icon="@drawable/ic_network_check_black_24dp"
+                android:title="Beacon Ekle" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_timer_black_24dp"

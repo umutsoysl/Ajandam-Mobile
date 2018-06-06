@@ -280,6 +280,12 @@ public class Main2Activity extends AppCompatActivity
             Intent i = new Intent(getApplicationContext(), Alarm.class);
             startActivity(i);
 
+        } else if (id == R.id.nav_beacon)
+        {
+            Intent i = new Intent(getApplicationContext(), SelectBeacon.class);
+            i.putExtra("id", Main2Activity.akademisyenID);
+            startActivity(i);
+
         }
         else if (id == R.id.nav_manage)
         {

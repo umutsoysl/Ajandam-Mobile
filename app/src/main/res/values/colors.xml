@@ -72,4 +72,45 @@
     <color name="rsc_bottom_panel_bkg">#F8F8F8</color>
     <color name="rsc_bottom_panel_accent">#263239</color>
 
+
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#E0E0E0</color>
+
+    <color name="statusBarColor">#F5F5F5</color>
+    <color name="toolbarColor">#FFFFFF</color>
+    <color name="toolbarTextColor">#424242</color>
+
+    <color name="primaryTextDisabled">#80212121</color>
+    <color name="secondaryTextDisabled">#80757575</color>
+
+    <!-- Bluetooth State colors -->
+    <color name="bluetoothStateTextcolor">#CCFFFFFF</color>
+    <color name="bluetoothDisabled">#F44336</color>
+    <color name="bluetoothTurningOff">#FF9800</color>
+    <color name="bluetoothTurningOn">#8BC34A</color>
+
+
+    <color name="bgMoreInfo">#455A64</color>
+    <color name="progressColor">#FFC107</color>
+    <color name="colorPauseFab">#EF5350 </color>
+
+    <color name="rating_background">#00BCD4</color>
+
+    <!-- Cards background colors -->
+    <color name="ibeaconBackground">#64B5F6</color>
+    <color name="eddystoneUidBackground">#7986CB</color>
+    <color name='eddystoneUrlBackground'>#4DB6AC</color>
+    <color name="ruuvitagBackground">#A1887F</color>
+
+    <!-- Cards text colors -->
+    <color name="cardTitleColor">@android:color/white</color>
+    <color name="cardSubtitleColor">#CCFFFFFF</color>
+    <color name="cardPropertyColor">@android:color/white</color>
+
+    <!-- Cards icon colors -->
+    <color name="iconColors">#FFD54F</color>
+    <color name="rateStarColor">#FFD54F</color>
+
 </resources>
