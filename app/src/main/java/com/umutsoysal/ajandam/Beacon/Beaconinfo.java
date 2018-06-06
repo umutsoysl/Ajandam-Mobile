@@ -14,79 +14,87 @@ public class Beaconinfo
 
     }
 
-    public  Beaconinfo (String BeaconName,String BeaconUid,String DeviceMac,String major ,String minor)
+    public Beaconinfo(String BeaconName, String BeaconUid, String DeviceMac, String major, String minor)
     {
-        this.beaconName=BeaconName;
-        this.beaconUUID=BeaconUid;
-        this.deviceMac=DeviceMac;
-        this.beaconMajor=major;
-        this.beaconMinor=minor;
+        this.beaconName = BeaconName;
+        this.beaconUUID = BeaconUid;
+        this.deviceMac = DeviceMac;
+        this.beaconMajor = major;
+        this.beaconMinor = minor;
     }
 
     public String getBeaconName()
     {
         return this.beaconName;
     }
+
     public void setBeaconName(String name)
     {
-        this.beaconName=name;
+        this.beaconName = name;
     }
 
     public String getBeaconUUID()
     {
         return this.beaconUUID;
     }
+
     public void setBeaconUUID(String uuid)
     {
-        this.beaconUUID=uuid;
+        this.beaconUUID = uuid;
     }
 
     public String getDeviceMac()
     {
         return this.deviceMac;
     }
+
     public void setDeviceMac(String deviceMac)
     {
-        this.deviceMac=deviceMac;
+        this.deviceMac = deviceMac;
     }
 
     public String getBeaconMajor()
     {
         return this.beaconMajor;
     }
+
     public void setBeaconMajor(String major)
     {
-        this.beaconMajor=major;
+        this.beaconMajor = major;
     }
 
     public String getBeaconMinor()
     {
         return this.beaconMinor;
     }
+
     public void setBeaconMinor(String minor)
     {
-        this.beaconMinor=minor;
+        this.beaconMinor = minor;
     }
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object obj)
     {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (obj instanceof Beaconinfo)
+        {
+            Beaconinfo pp = (Beaconinfo) obj;
 
-        Beaconinfo that = (Beaconinfo) o;
-
-        return beaconUUID != null ? beaconUUID.equals(that.beaconUUID) : that.beaconUUID == null;
+            return (pp.deviceMac.equals(this.deviceMac));
+        }
+        else
+        {
+            return false;
+        }
     }
 
     @Override
     public int hashCode()
     {
-        int result = beaconName != null ? beaconName.hashCode() : 0;
-        result = 31 * result + (beaconUUID != null ? beaconUUID.hashCode() : 0);
-        result = 31 * result + (deviceMac != null ? deviceMac.hashCode() : 0);
-        result = 31 * result + (beaconMajor != null ? beaconMajor.hashCode() : 0);
-        result = 31 * result + (beaconMinor != null ? beaconMinor.hashCode() : 0);
-        return result;
+        int hashcode = 0;
+//        hashcode = beaconUUID*20;
+        hashcode += deviceMac.hashCode();
+        System.out.println("In hashcode " + hashcode);
+        return hashcode;
     }
 }
