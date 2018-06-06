@@ -108,7 +108,8 @@ public class DersProgrami extends Fragment
     public static int REQUEST_BLUETOOTH = 1;
     public static Boolean burdayim = false;
     FloatingActionButton scanButton;
-    public static String academicianUUID;
+    public static String[] academicianUUID;
+    public static String yoklamaUuid;
 
     public DersProgrami()
     {
@@ -378,6 +379,7 @@ public class DersProgrami extends Fragment
                     location = new String[object.length()];
                     dersiVeren = new String[object.length()];
                     dersId = new String[object.length()];
+                    academicianUUID=new String[object.length()];
                     calendar = Calendar.getInstance();
                     int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -441,6 +443,7 @@ public class DersProgrami extends Fragment
                             JSONObject phone = c.getJSONObject("academician");
                             String n = phone.getString("name");
                             String s = phone.getString("surname");
+                            academicianUUID[i]=phone.getString("uuid");
                             dersiVeren[i] = n + " " + s;
 
                             i++;
@@ -472,6 +475,7 @@ public class DersProgrami extends Fragment
                             JSONObject phone = c.getJSONObject("academician");
                             String n = phone.getString("name");
                             String s = phone.getString("surname");
+                            academicianUUID[i]=phone.getString("uuid");
                             dersiVeren[i] = n + " " + s;
 
                             i++;
@@ -504,6 +508,7 @@ public class DersProgrami extends Fragment
                             JSONObject phone = c.getJSONObject("academician");
                             String n = phone.getString("name");
                             String s = phone.getString("surname");
+                            academicianUUID[i]=phone.getString("uuid");
                             dersiVeren[i] = n + " " + s;
 
                             i++;
@@ -536,6 +541,7 @@ public class DersProgrami extends Fragment
                             JSONObject phone = c.getJSONObject("academician");
                             String n = phone.getString("name");
                             String s = phone.getString("surname");
+                            academicianUUID[i]=phone.getString("uuid");
                             dersiVeren[i] = n + " " + s;
 
                             i++;
@@ -567,6 +573,7 @@ public class DersProgrami extends Fragment
                             JSONObject phone = c.getJSONObject("academician");
                             String n = phone.getString("name");
                             String s = phone.getString("surname");
+                            academicianUUID[i]=phone.getString("uuid");
                             dersiVeren[i] = n + " " + s;
 
                             i++;
@@ -626,6 +633,8 @@ public class DersProgrami extends Fragment
 
                     if (saatFarki.size() != 0)
                     {
+
+                        scanButton.setVisibility(View.VISIBLE);
                         int temp = saatFarki.get(0);
                         for (int i = 0; i < saatFarki.size(); i++)
                         {
@@ -645,6 +654,9 @@ public class DersProgrami extends Fragment
                         Hdersinismi.setText(name[index]);
                         Hdersiveren.setText(dersiVeren[index]);
                         Hyeri.setText(location[index]);
+
+                        yoklamaUuid=academicianUUID[index];
+
                     }
                     else
                     {
@@ -652,6 +664,7 @@ public class DersProgrami extends Fragment
                         Hdersinismi.setText("Sn." + username);
                         Hdersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
                         Hyeri.setVisibility(View.INVISIBLE);
+                        scanButton.setVisibility(View.GONE);
                     }
                 }
                 else
@@ -660,6 +673,7 @@ public class DersProgrami extends Fragment
                     Hdersinismi.setText("Sn." + username);
                     Hdersiveren.setText("Bugün herhangi bir dersiniz bulunmamaktadır!");
                     Hyeri.setVisibility(View.INVISIBLE);
+                    scanButton.setVisibility(View.GONE);
                 }
 
             }
@@ -834,7 +848,7 @@ public class DersProgrami extends Fragment
             burdayim = true;
             progressDialog.dismiss();
             progressDialog.cancel();
-            if (result != null && result.toString().equals("true"))
+            if (result != null && result.toString().contains("true"))
             {
                 Toasty.success(getActivity(), "Yoklamaya Kaydedildin.").show();
                 scanButton.setImageDrawable(getResources().getDrawable(R.drawable.yuvarlak));
