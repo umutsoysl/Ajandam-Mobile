@@ -919,9 +919,7 @@ public class DersProgrami extends Fragment
 
                 if (!device.getName().equals("NULL"))
                 {
-                    String u[] = temp[0].split("\n");
-                    String d[] = u[0].split(":");
-                    if (yoklamaUuid.equals(d[1]))
+                    if (yoklamaUuid.equals(device.getAddress()))
                     {
                         new OkHttpAync().execute(this, "post", id, dersId[index], yoklamaUuid);
                         yoklamaUuid = "";

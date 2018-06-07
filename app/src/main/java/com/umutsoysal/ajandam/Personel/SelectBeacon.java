@@ -192,7 +192,7 @@ public class SelectBeacon extends Activity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
             {
-                alertDialog(BeaconUid[i]);
+                alertDialog(DeviceMAc[i]);
             }
         });
 
