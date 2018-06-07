@@ -5,20 +5,16 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.le.BluetoothLeScanner;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
@@ -41,7 +38,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.inuker.bluetooth.library.BluetoothClient;
+import com.inuker.bluetooth.library.beacon.Beacon;
+import com.inuker.bluetooth.library.search.SearchRequest;
+import com.inuker.bluetooth.library.search.SearchResult;
+import com.inuker.bluetooth.library.search.response.SearchResponse;
+import com.inuker.bluetooth.library.utils.BluetoothLog;
+import com.irozon.sneaker.Sneaker;
 import com.umutsoysal.ajandam.Adapter.OgrenciDersListesiAdapter;
+import com.umutsoysal.ajandam.Beacon.Beaconinfo;
 import com.umutsoysal.ajandam.Database.Sqllite;
 import com.umutsoysal.ajandam.HttpHandler;
 import com.umutsoysal.ajandam.R;
@@ -62,8 +67,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.HashSet;
 
 import static android.content.ContentValues.TAG;
 
@@ -110,6 +114,11 @@ public class DersProgrami extends Fragment
     FloatingActionButton scanButton;
     public static String[] academicianUUID;
     public static String yoklamaUuid;
+    public static HashSet<Beaconinfo> beaconInfoList = new HashSet<>();
+    Beaconinfo beaconinfo;
+    ProgressBar scanProgressbar;
+    BluetoothClient mClient;
+    SearchRequest request;
 
     public DersProgrami()
     {
@@ -137,6 +146,8 @@ public class DersProgrami extends Fragment
         Hdersinismi = (TextView) listHeader.findViewById(R.id.now_lesson);
         scanButton = (FloatingActionButton) item.findViewById(R.id.scanButton);
 
+
+        mClient = new BluetoothClient(getActivity());
 
         scanButton.setOnClickListener(new View.OnClickListener()
         {
@@ -184,8 +195,8 @@ public class DersProgrami extends Fragment
                 }
                 else
                 {
-
-                   //islemler burada yapilacak...
+                    BeaconSearch();
+                    //islemler burada yapilacak...
                 }
 
             }
@@ -379,7 +390,7 @@ public class DersProgrami extends Fragment
                     location = new String[object.length()];
                     dersiVeren = new String[object.length()];
                     dersId = new String[object.length()];
-                    academicianUUID=new String[object.length()];
+                    academicianUUID = new String[object.length()];
                     calendar = Calendar.getInstance();
                     int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -443,7 +454,7 @@ public class DersProgrami extends Fragment
                             JSONObject phone = c.getJSONObject("academician");
                             String n = phone.getString("name");
                             String s = phone.getString("surname");
-                            academicianUUID[i]=phone.getString("uuid");
+                            academicianUUID[i] = phone.getString("uuid");
                             dersiVeren[i] = n + " " + s;
 
                             i++;
@@ -475,7 +486,7 @@ public class DersProgrami extends Fragment
                             JSONObject phone = c.getJSONObject("academician");
                             String n = phone.getString("name");
                             String s = phone.getString("surname");
-                            academicianUUID[i]=phone.getString("uuid");
+                            academicianUUID[i] = phone.getString("uuid");
                             dersiVeren[i] = n + " " + s;
 
                             i++;
@@ -508,7 +519,7 @@ public class DersProgrami extends Fragment
                             JSONObject phone = c.getJSONObject("academician");
                             String n = phone.getString("name");
                             String s = phone.getString("surname");
-                            academicianUUID[i]=phone.getString("uuid");
+                            academicianUUID[i] = phone.getString("uuid");
                             dersiVeren[i] = n + " " + s;
 
                             i++;
@@ -541,7 +552,7 @@ public class DersProgrami extends Fragment
                             JSONObject phone = c.getJSONObject("academician");
                             String n = phone.getString("name");
                             String s = phone.getString("surname");
-                            academicianUUID[i]=phone.getString("uuid");
+                            academicianUUID[i] = phone.getString("uuid");
                             dersiVeren[i] = n + " " + s;
 
                             i++;
@@ -573,7 +584,7 @@ public class DersProgrami extends Fragment
                             JSONObject phone = c.getJSONObject("academician");
                             String n = phone.getString("name");
                             String s = phone.getString("surname");
-                            academicianUUID[i]=phone.getString("uuid");
+                            academicianUUID[i] = phone.getString("uuid");
                             dersiVeren[i] = n + " " + s;
 
                             i++;
@@ -655,7 +666,7 @@ public class DersProgrami extends Fragment
                         Hdersiveren.setText(dersiVeren[index]);
                         Hyeri.setText(location[index]);
 
-                        yoklamaUuid=academicianUUID[index];
+                        yoklamaUuid = academicianUUID[index];
 
                     }
                     else
@@ -750,6 +761,7 @@ public class DersProgrami extends Fragment
                 if (isPermissionGranted(permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION))
                 {
                     //Do you work
+                    BeaconSearch();
                 }
                 else
                 {
@@ -815,10 +827,7 @@ public class DersProgrami extends Fragment
         protected void onPreExecute()
         {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Lütfen Bekleyiniz..");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+
         }
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -846,20 +855,25 @@ public class DersProgrami extends Fragment
         {
             super.onPostExecute(result);
             burdayim = true;
-            progressDialog.dismiss();
-            progressDialog.cancel();
             if (result != null && result.toString().contains("true"))
             {
-                Toasty.success(getActivity(), "Yoklamaya Kaydedildin.").show();
+                Sneaker.with(getActivity())
+                        .setTitle("Başarılı!!")
+                        .setMessage("Yoklamaya Kaydedildin.")
+                        .sneakSuccess();
                 scanButton.setImageDrawable(getResources().getDrawable(R.drawable.yuvarlak));
 
             }
             else
             {
-                Toasty.error(getActivity(), "İşlem Başarısız!! Yoklamada varlığınızı kontrol ediniz!").show();
+                String mess[] = result.toString().split("#");
+
+                Sneaker.with(getActivity())
+                        .setTitle("Başarısız!!")
+                        .setMessage(mess[1])
+                        .sneakError();
 
             }
-
 
 
         }
@@ -873,6 +887,64 @@ public class DersProgrami extends Fragment
         super.onDestroy();
 
         Log.d(TAG, "Destroy");
+
+    }
+
+
+    public void BeaconSearch()
+    {
+
+        beaconInfoList.clear();
+        request = new SearchRequest.Builder()
+                .searchBluetoothLeDevice(3000, 3)
+                .searchBluetoothClassicDevice(5000)
+                .searchBluetoothLeDevice(2000)
+                .build();
+
+        mClient.search(request, new SearchResponse()
+        {
+            @Override
+            public void onSearchStarted()
+            {
+
+            }
+
+            @Override
+            public void onDeviceFounded(SearchResult device)
+            {
+                Beacon beacon = new Beacon(device.scanRecord);
+                BluetoothLog.v(String.format("beacon for %s\n%s", device.getAddress(), beacon.toString()));
+                String[] temp = beacon.toString().split("@Len");
+
+
+                if (!device.getName().equals("NULL"))
+                {
+                    String u[] = temp[0].split("\n");
+                    String d[] = u[0].split(":");
+                    if (yoklamaUuid.equals(d[1]))
+                    {
+                        new OkHttpAync().execute(this, "post", id, dersId[index], yoklamaUuid);
+                        yoklamaUuid = "";
+                        mClient.stopSearch();
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onSearchStopped()
+            {
+
+                scanButton.setImageDrawable(getResources().getDrawable(R.drawable.yuvarlak));
+            }
+
+            @Override
+            public void onSearchCanceled()
+            {
+                scanButton.setImageDrawable(getResources().getDrawable(R.drawable.yuvarlak));
+            }
+        });
 
     }
 

@@ -92,7 +92,6 @@ public class Beaconinfo
     public int hashCode()
     {
         int hashcode = 0;
-//        hashcode = beaconUUID*20;
         hashcode += deviceMac.hashCode();
         System.out.println("In hashcode " + hashcode);
         return hashcode;
